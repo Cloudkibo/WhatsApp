@@ -42,7 +42,9 @@
     "passport": "^0.4.0",
     "pino": "^5.1.0",
     "serve-favicon": "^2.5.0",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
+    "socketio-jwt": "^4.5.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
