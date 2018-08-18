@@ -4,6 +4,10 @@ const _ = require('lodash')
 const all = {
   env: process.env.NODE_ENV,
 
+  secrets: {
+    session: process.env.SESSION_SECRET || 'some string'
+  },
+
   // Project root path
   root: path.normalize(`${__dirname}/../../..`),
 

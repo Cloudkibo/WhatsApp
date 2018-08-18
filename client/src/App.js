@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import fetch from 'isomorphic-fetch'
+// import fetch from 'isomorphic-fetch'
 import logo from './logo.svg'
 import './App.css'
+import callApi from './utility/api.caller.service'
 
 class App extends Component {
   state = {
@@ -9,19 +10,11 @@ class App extends Component {
   };
 
   componentDidMount () {
-    this.callApi()
+    callApi('/v1/test').then((resp) => {
+      console.log(resp)
+      this.setState({ response: resp.payload })
+    })
   }
-
-  callApi = () => {
-    fetch('/api/v1/test', {mode: 'cors'})
-      .then((response) => {
-        response.json().then(json => {
-          if (response.status !== 200) console.log(response)
-          console.log(json)
-          this.setState({response: json.payload})
-        })
-      })
-  };
 
   render () {
     return (
