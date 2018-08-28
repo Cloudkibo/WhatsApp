@@ -10,7 +10,7 @@ export function showTestMessage (data) {
 
 export function getTestMessage () {
   return (dispatch) => {
-    callApi('/v1/test').then(resp => {
+    callApi('v1/test').then(resp => {
       dispatch(showTestMessage(resp.payload))
     })
   }
