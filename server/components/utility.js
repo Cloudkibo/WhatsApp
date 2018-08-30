@@ -15,12 +15,14 @@ function validateUrl (str) {
 }
 
 // Following function will be used to make get requests to whatsapp
+let header = {
+  'headers': {'Authorization': 'Bearer ' + config.docker_token, 'Content-Type': 'application/json'}
+}
+
 function getFromWhatsapp (endpoint, cb) {
-  axios.get(config.docker_url + endpoint, {
-    'headers': {'Authorization': 'Bearer ' + config.docker_token, 'Content-Type': 'application/json'}
-  })
+  axios.get(config.docker_url + endpoint)
     .then(resp => {
-      cb(null, resp)
+      cb(null, resp.data)
     })
     .catch(err => {
       cb(err, null)
@@ -28,11 +30,9 @@ function getFromWhatsapp (endpoint, cb) {
 }
 
 function postToWhatsapp (endpoint, params, cb) {
-  axios.post(config.docker_url + endpoint, params, {
-    'headers': {'Authorization': 'Bearer ' + config.docker_token, 'Content-Type': 'application/json'}
-  })
+  axios.post(config.docker_url + endpoint, params)
     .then(resp => {
-      cb(null, resp)
+      cb(null, resp.data)
     })
     .catch(err => {
       cb(err, null)
@@ -40,11 +40,9 @@ function postToWhatsapp (endpoint, params, cb) {
 }
 
 function putToWhatsapp (endpoint, params, cb) {
-  axios.put(config.docker_url + endpoint, params, {
-    'headers': {'Authorization': 'Bearer ' + config.docker_token, 'Content-Type': 'application/json'}
-  })
+  axios.put(config.docker_url + endpoint, params)
     .then(resp => {
-      cb(null, resp)
+      cb(null, resp.data)
     })
     .catch(err => {
       cb(err, null)
