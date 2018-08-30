@@ -5,6 +5,7 @@ let contactSchema = new Schema({
   name: String,
   phone: String,
   isActive: String,
+  status: String,
   wa_id: String,
   isSubscribed: { type: Boolean, default: false },
   createtime: { type: Date, default: Date.now },
