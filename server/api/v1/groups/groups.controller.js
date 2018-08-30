@@ -122,3 +122,29 @@ exports.CreateGroup = function (req, res) {
     })
   })
 }
+
+exports.CreateGroupInvite = function (req, res) {
+  utility.getFromWhatsapp(`/v1/groups/${req.body.groupId}/invite`, (err, result) => {
+    if (err) {
+      logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
+      return res.status(500).json({ status: 'failed', description: err })
+    }
+
+    logger.serverLog(TAG, result.groups)
+
+    Groups.findOne({groupId: req.body.groupId})
+      .exec()
+      .then(group => {
+        group.invite = true
+        group.inviteLink = result.groups[0] && result.groups[0].link ? result.groups[0].link : 'no link was provided by whatsapp'
+        group.save(err => {
+          err
+            ? res.status(500).json({ status: 'failed', description: err })
+            : res.status(200).json({ status: 'success', payload: group.inviteLink })
+        })
+      })
+      .catch(err => {
+        res.status(500).json({ status: 'failed', description: err })
+      })
+  })
+}
