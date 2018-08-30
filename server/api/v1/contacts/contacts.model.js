@@ -2,10 +2,11 @@ let mongoose = require('mongoose')
 let Schema = mongoose.Schema
 
 let contactSchema = new Schema({
-  name: String, 
-  phone: String, 
+  name: String,
+  phone: String,
   isActive: String,
-  isSubscribed: String,
+  wa_id: String,
+  isSubscribed: { type: Boolean, default: false },
   createtime: { type: Date, default: Date.now },
   updatetime: { type: Date }
 })
