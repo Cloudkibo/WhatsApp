@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/app.js",
   "scripts": {
-    "start": "cross-env DEBUG=whatsapp:* NODE_ENV=development nodemon --trace-sync-io server/app.js",
+    "start": "cross-env DEBUG=whatsapp:* NODE_ENV=development nodemon --trace-warnings server/app.js",
     "debug": "cross-env DEBUG=express:router:route,express:application,whatsapp:* NODE_ENV=development nodemon --trace-sync-io server/app.js",
     "lint": "echo 'Pre-commit checks...' && standard --fix && echo \"No code style errors found.\"",
     "test": "echo \"TDD is not implemented yet \" && exit 0"
@@ -24,10 +24,13 @@
   },
   "homepage": "https://github.com/Cloudkibo/WhatsApp#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "composable-middleware": "^0.3.0",
     "compression": "^1.7.3",
+    "connect-multiparty": "^2.1.1",
     "cookie-parser": "^1.4.3",
+    "csv-parser": "^1.12.1",
     "debug": "^2.6.8",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
@@ -39,6 +42,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^5.2.8",
     "morgan": "^1.9.0",
+    "multer": "^1.3.1",
     "passport": "^0.4.0",
     "pino": "^5.1.0",
     "serve-favicon": "^2.5.0",

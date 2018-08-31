@@ -18,6 +18,8 @@ const all = {
 
   domain: `${process.env.DOMAIN || 'https://whatsapp.kibopush.com'}`,
 
+  docker_url: process.env.docker_ip || 'http://localhost:9090',
+  docker_token: process.env.docker_token || undefined,
   // Mongo Options
   mongo: {
     options: {
