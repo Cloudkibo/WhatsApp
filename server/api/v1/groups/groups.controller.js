@@ -95,31 +95,56 @@ exports.UpdateGroupInformation = function (req, res) {
 }
 
 exports.CreateGroup = function (req, res) {
-    utility.postToWhatsapp('/v1/groups', { subject: req.body.title }, (err, result) => {
+  utility.postToWhatsapp('/v1/groups', { subject: req.body.title }, (err, result) => {
+    if (err) {
+      logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
+      return res.status(500).json({ status: 'failed', description: err })
+    }
+    const groupId = result.groups && result.groups.length === 1 && result.groups[0].id
+    const createtime = result.groups && result.groups.length === 1 && result.groups[0].creation_time
+    logger.serverLog(TAG, JSON.stringify(result.groups))
+    const data = {
+      title: req.body.title,
+      groupId: groupId,
+      admins: [req.body.userId ? req.body.userId : 'userID'],
+      creator: req.body.userId ? req.body.userId : 'userID',
+      participants: [ req.body.userId ? req.body.userId : 'userID' ],
+      createtime: createtime
+    }
+
+    let newGroup = new Groups(data)
+    newGroup.save(function (err) {
       if (err) {
-        logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
         return res.status(500).json({ status: 'failed', description: err })
+      } else {
+        return res.status(200).json({ status: 'success', payload: data })
       }
-      const groupId = result.groups && result.groups.length === 1 && result.groups[0].id 
-      const createtime = result.groups && result.groups.length === 1 && result.groups[0].creation_time
-
-      const data = {
-        title: req.body.title,
-        groupId: groupId,
-        admins: [req.body.userId],
-        creator: req.body.userId,
-        participants: [ req.body.userId ],
-        createtime: createtime
-      }
-      
-      let newGroup = new Groups(data);
-      newGroup.save(function (err) {
-          if (err) {
-            return res.status(500).json({ status: 'failed', description: err })
-          } else {
-            return res.status(200).json({ status: 'success', payload: data })
-          }
-      })
-
     })
+  })
+}
+
+exports.CreateGroupInvite = function (req, res) {
+  utility.getFromWhatsapp(`/v1/groups/${req.body.groupId}/invite`, (err, result) => {
+    if (err) {
+      logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
+      return res.status(500).json({ status: 'failed', description: err })
+    }
+
+    logger.serverLog(TAG, result.groups)
+
+    Groups.findOne({groupId: req.body.groupId})
+      .exec()
+      .then(group => {
+        group.invite = true
+        group.inviteLink = result.groups[0] && result.groups[0].link ? result.groups[0].link : 'no link was provided by whatsapp'
+        group.save(err => {
+          err
+            ? res.status(500).json({ status: 'failed', description: err })
+            : res.status(200).json({ status: 'success', payload: group.inviteLink })
+        })
+      })
+      .catch(err => {
+        res.status(500).json({ status: 'failed', description: err })
+      })
+  })
 }

@@ -67,6 +67,7 @@ typings/
 .idea/
 .vscode/
 broadcastFiles/
+uploaded_files/
 
 # .DS_Store file often screated by Mac OS
 .DS_Store
