@@ -255,13 +255,13 @@ exports.postIcon = function (req, res) {
 
     // Using request here because Axios does not support sending multi part form data natively.
     let formData = {'file': fs.createReadStream(dir + '/userfiles' + serverPath)}
-    request.post({url: `${config.docker_url}/v1/groups/${req.params.groupId}/icon`, formData: formData}, (err, bodyCode, result) => {
+    request.post({url: `${config.docker_url}/v1/groups/${req.params.groupId}/icon`, formData: formData}, (err, body, result) => {
       if (err) {
         logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
         return res.status(500).json({ status: 'failed', description: err })
       }
       logger.serverLog(TAG, result)
-      if (result === 'OK') {
+      if (body.statusCode === 200) {
         Groups.findOne({groupId: req.params.groupId})
           .exec()
           .then(group => {
@@ -276,7 +276,7 @@ exports.postIcon = function (req, res) {
             return res.status(500).json({ status: 'failed', description: err })
           })
       } else {
-        return res.status(500).json({ status: 'failed' })
+        return res.status(body.statusCode).json({ status: 'failed' })
       }
     })
   })
