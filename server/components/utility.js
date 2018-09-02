@@ -32,7 +32,7 @@ function getFromWhatsapp (endpoint, cb) {
 function postToWhatsapp (endpoint, params, cb) {
   axios.post(config.docker_url + endpoint, params)
     .then(resp => {
-      cb(null, resp.data)
+      cb(null, resp)
     })
     .catch(err => {
       cb(err, null)

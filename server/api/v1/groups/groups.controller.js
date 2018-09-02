@@ -2,6 +2,8 @@ const logger = require('./../../../components/logger')
 const Groups = require('./groups.model')
 const utility = require('./../../../components/utility')
 
+const _ = require('lodash')
+
 const TAG = '/server/api/v1/groups/groups.controller.js'
 
 exports.index = function (req, res) {
@@ -43,11 +45,11 @@ exports.GetGroupInformation = function (req, res) {
 
         // Save the wgroup in local db
         let payload = {
-          title: wgroup.subject,
-          admins: wgroup.admins,
-          creator: wgroup.creator,
-          participants: wgroup.participants,
-          createtime: wgroup.creation_time
+          title: wgroup.data.subject,
+          admins: wgroup.data.admins,
+          creator: wgroup.data.creator,
+          participants: wgroup.data.participants,
+          createtime: wgroup.data.creation_time
         }
 
         Groups.create(payload, (err, result) => {
@@ -84,7 +86,7 @@ exports.UpdateGroupInformation = function (req, res) {
         group.save(err => {
           if (err) return logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
 
-          res.status(200).json({ status: 'success', payload: result })
+          res.status(200).json({ status: 'success', payload: result.data })
         })
       })
     } else {
@@ -100,9 +102,9 @@ exports.CreateGroup = function (req, res) {
       logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
       return res.status(500).json({ status: 'failed', description: err })
     }
-    const groupId = result.groups && result.groups.length === 1 && result.groups[0].id
-    const createtime = result.groups && result.groups.length === 1 && result.groups[0].creation_time
-    logger.serverLog(TAG, JSON.stringify(result.groups))
+    const groupId = result.data.groups && result.data.groups.length === 1 && result.data.groups[0].id
+    const createtime = result.data.groups && result.data.groups.length === 1 && result.data.groups[0].creation_time
+    logger.serverLog(TAG, JSON.stringify(result.data.groups))
     const data = {
       title: req.body.title,
       groupId: groupId,
@@ -130,13 +132,13 @@ exports.CreateGroupInvite = function (req, res) {
       return res.status(500).json({ status: 'failed', description: err })
     }
 
-    logger.serverLog(TAG, result.groups)
+    logger.serverLog(TAG, result.data.groups)
 
     Groups.findOne({groupId: req.body.groupId})
       .exec()
       .then(group => {
         group.invite = true
-        group.inviteLink = result.groups[0] && result.groups[0].link ? result.groups[0].link : 'no link was provided by whatsapp'
+        group.inviteLink = result.data.groups[0] && result.data.groups[0].link ? result.data.groups[0].link : 'no link was provided by whatsapp'
         group.save(err => {
           err
             ? res.status(500).json({ status: 'failed', description: err })
@@ -147,4 +149,36 @@ exports.CreateGroupInvite = function (req, res) {
         res.status(500).json({ status: 'failed', description: err })
       })
   })
+}
+
+exports.leave = function (req, res) {
+  Groups.findOne({groupId: req.params.groupId})
+    .exec()
+    .then(group => {
+      if (group) {
+        utility.postToWhatsapp(`/v1/groups/${req.params.groupId}/leave`, {}, (err, result) => {
+          if (err) {
+            logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
+            return res.status(500).json({ status: 'failed', description: err })
+          }
+          if (result.status === 200) {
+            group.groupLeft = true
+            _.pull(group.admins, req.params.groupId)
+            _.pull(group.participants, req.params.groupId)
+            group.save(err => {
+              err
+                ? res.status(500).json({ status: 'failed', description: err })
+                : res.status(200).json({ status: 'success', payload: group })
+            })
+          } else {
+            return res.status(result.status).json({ status: 'failed' })
+          }
+        })
+      } else {
+        return res.status(404).json({ status: 'failed' })
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', description: err })
+    })
 }

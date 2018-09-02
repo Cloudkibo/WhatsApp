@@ -65,7 +65,7 @@ exports.uploadContacts = function (req, res) {
             return res.status(500).json({ status: 'failed at getting status from docker', payload: err })
           }
 
-          result.contacts.forEach((contact, index) => {
+          result.data.contacts.forEach((contact, index) => {
             contact.status === 'valid' ? localPayload[index].wa_id = contact.wa_id : valid = true
             localPayload[index].status = contact.status
           })
