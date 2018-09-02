@@ -1,8 +1,13 @@
 const logger = require('./../../../components/logger')
 const Groups = require('./groups.model')
 const utility = require('./../../../components/utility')
+const config = require('./../../../config/environment')
 
+const path = require('path')
+const crypto = require('crypto')
+const fs = require('fs')
 const _ = require('lodash')
+const request = require('request')
 
 const TAG = '/server/api/v1/groups/groups.controller.js'
 
@@ -176,6 +181,153 @@ exports.leave = function (req, res) {
         })
       } else {
         return res.status(404).json({ status: 'failed' })
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', description: err })
+    })
+}
+
+exports.leaveMany = function (req, res) {
+  let respPayload = []
+  let Ids = req.body.groupIds ? req.body.groupIds : []
+  Ids.forEach((id, index) => {
+    Groups.findOne({groupId: id})
+      .exec()
+      .then(group => {
+        if (group) {
+          utility.postToWhatsapp(`/v1/groups/${id}/leave`, {}, (err, result) => {
+            if (err) {
+              logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
+            }
+            if (result.status === 200) {
+              group.groupLeft = true
+              _.pull(group.admins, id)
+              _.pull(group.participants, id)
+              group.save(err => {
+                if (err) {
+                  return res.status(500).json({ status: 'failed', description: err })
+                }
+
+                respPayload.push(group)
+                if (index === (Ids.length - 1)) {
+                  // It means at last index. Now send the response
+                  res.status(200).json({ status: 'success', payload: respPayload })
+                }
+              })
+            }
+          })
+        }
+      })
+      .catch(err => {
+        return res.status(500).json({ status: 'failed', description: err })
+      })
+  })
+}
+
+exports.postIcon = function (req, res) {
+  logger.serverLog(TAG, 'Hit the postIcon endpoint')
+  let today = new Date()
+  let uid = crypto.randomBytes(5).toString('hex')
+  let serverPath = 'f' + uid + '' + today.getFullYear() + '' + (today.getMonth() + 1) + '' + today.getDate()
+
+  serverPath += '' + today.getHours() + '' + today.getMinutes() + '' + today.getSeconds()
+  let fext = req.files.file.name.split('.')
+
+  serverPath += '.' + fext[fext.length - 1]
+
+  let dir = path.resolve(__dirname, '../../../../uploaded_files/')
+
+  if (req.files.file.size === 0) {
+    return res.status(400).json({
+      status: 'failed',
+      description: 'No file submitted'
+    })
+  }
+
+  fs.rename(req.files.file.path, dir + '/userfiles' + serverPath, (err) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        description: 'internal server error' + JSON.stringify(err)
+      })
+    }
+
+    // Using request here because Axios does not support sending multi part form data natively.
+    let formData = {'file': fs.createReadStream(dir + '/userfiles' + serverPath)}
+    request.post({url: `${config.docker_url}/v1/groups/${req.params.groupId}/icon`, formData: formData}, (err, bodyCode, result) => {
+      if (err) {
+        logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
+        return res.status(500).json({ status: 'failed', description: err })
+      }
+      logger.serverLog(TAG, result)
+      if (result === 'OK') {
+        Groups.findOne({groupId: req.params.groupId})
+          .exec()
+          .then(group => {
+            group.iconURL = dir + '/userfiles' + serverPath
+            group.save(err => {
+              err
+                ? res.status(500).json({ status: 'failed', description: err })
+                : res.status(200).json({ status: 'success' })
+            })
+          })
+          .catch(err => {
+            return res.status(500).json({ status: 'failed', description: err })
+          })
+      } else {
+        return res.status(500).json({ status: 'failed' })
+      }
+    })
+  })
+}
+
+exports.deleteIcon = function (req, res) {
+  utility.deleteFromWhatsapp(`/v1/groups/${req.params.groupId}/icon`, (err, result) => {
+    if (err) {
+      logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
+      return res.status(500).json({ status: 'failed', description: err })
+    }
+
+    if (result.status === 200) {
+      Groups.findOne({groupId: req.params.groupId})
+        .exec()
+        .then(group => {
+          // delete the file from file system
+          fs.unlink(group.iconURL, err => {
+            if (err) {
+              logger.serverLog(TAG, `Internal Server error at deleting from file system: ${JSON.stringify(err)}`)
+              return res.status(500).json({ status: 'failed', description: err })
+            }
+
+            group.iconURL = ''
+            group.save(err => {
+              err
+                ? res.status(500).json({ status: 'failed', description: err })
+                : res.status(200).json({ status: 'success' })
+            })
+          })
+        })
+        .catch(err => {
+          return res.status(500).json({ status: 'failed', description: err })
+        })
+    } else {
+      return res.status(result.status).json({ status: 'failed' })
+    }
+  })
+}
+
+exports.getIcon = function (req, res) {
+  Groups.findOne({groupId: req.params.groupId})
+    .exec()
+    .then(group => {
+      if (group.iconURL === '') {
+        // Icon is not set. Send a default avatar
+        let dir = path.resolve(__dirname, '../../../../uploaded_files/')
+        res.sendFile(dir + '/groupAvatar.png')
+      } else {
+        // Icon is set
+        res.sendFile(group.iconURL)
       }
     })
     .catch(err => {

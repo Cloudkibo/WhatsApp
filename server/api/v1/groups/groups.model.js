@@ -9,6 +9,7 @@ let groupSchema = new Schema({
   participants: [String],
   inviteLink: String,
   invite: { type: Boolean, default: false },
+  iconURL: { type: String, default: '' },
   groupLeft: { type: Boolean, default: false },
   createtime: { type: Date, default: Date.now }
 })
