@@ -22,7 +22,7 @@ let header = {
 function getFromWhatsapp (endpoint, cb) {
   axios.get(config.docker_url + endpoint)
     .then(resp => {
-      cb(null, resp.data)
+      cb(null, resp)
     })
     .catch(err => {
       cb(err, null)
@@ -42,7 +42,7 @@ function postToWhatsapp (endpoint, params, cb) {
 function putToWhatsapp (endpoint, params, cb) {
   axios.put(config.docker_url + endpoint, params)
     .then(resp => {
-      cb(null, resp.data)
+      cb(null, resp)
     })
     .catch(err => {
       cb(err, null)
