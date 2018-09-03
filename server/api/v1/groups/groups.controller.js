@@ -269,7 +269,7 @@ exports.postIcon = function (req, res) {
             group.save(err => {
               err
                 ? res.status(500).json({ status: 'failed', description: err })
-                : res.status(200).json({ status: 'success' })
+                : res.status(200).json({ status: 'success', payload: group.iconURL })
             })
           })
           .catch(err => {

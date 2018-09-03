@@ -18,7 +18,6 @@ class Groups extends Component {
     this.state = {
       showModal: false
     }
-    this._onChange = this._onChange.bind(this)
     this.onCreate = this.onCreate.bind(this)
     this.handleClose = this.handleClose.bind(this)
 
@@ -35,38 +34,6 @@ class Groups extends Component {
     }
     this.handleClose()
     this.props.createGroup({title: title})
-  }
-  _onChange (images) {
-    // Assuming only image
-    var file = this.refs.file.files[0]
-    if (file) {
-      if (file && file.type !== 'image/bmp' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-        this.msg.error('Please select an image of type jpg, gif, bmp or png')
-        return
-      }
-      var reader = new FileReader()
-      reader.readAsDataURL(file)
-
-      reader.onloadend = function (e) {
-        this.setState({
-          imgSrc: [reader.result]
-        })
-      }.bind(this)
-
-      this.setState({
-        showPreview: false,
-        loading: true
-      })
-      this.props.uploadImage(file, this.props.pages[0]._id, 'image', {
-        id: this.props.id,
-        componentType: 'image',
-        fileName: file.name,
-        fileurl: '',
-        image_url: '',
-        type: file.type, // jpg, png, gif
-        size: file.size
-      }, this.props.handleImage, this.setLoading)
-    }
   }
   render () {
     console.log('Props from Groups', this.props)
