@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { createGroup } from '../../redux/actions/groups.actions'
+import { createGroup, loadGroupsList } from '../../redux/actions/groups.actions'
 import { Message } from 'semantic-ui-react'
 
 import PageTile from './../../components/pageTitle'
@@ -20,6 +20,8 @@ class Groups extends Component {
     }
     this.onCreate = this.onCreate.bind(this)
     this.handleClose = this.handleClose.bind(this)
+
+    this.props.loadGroupsList()
   }
   handleClose () {
     this.setState({ showModal: false })
@@ -34,6 +36,7 @@ class Groups extends Component {
     this.props.createGroup({title: title})
   }
   render () {
+    console.log('Props from Groups', this.props)
     return (
       <div>
         <PageTile title={'Manage Groups'} />
@@ -48,7 +51,7 @@ class Groups extends Component {
                 <PortletHead title={'Groups'} buttonTitle={'New Group'} buttonAction={() => { this.setState({showModal: true}) }} />
                 <div className='m-portlet__body' />
                 <GroupSearch />
-                <GroupTable viewDetail={() => { this.props.history.push('/groupDetail') }} />
+                <GroupTable viewDetail={() => { this.props.history.push('/groupDetail') }} groups={this.props.groups} />
               </div>
             </div>
           </div>
@@ -60,13 +63,15 @@ class Groups extends Component {
 
 function mapStateToProps (state) {
   return {
-    message: state.testReducer.serverMessage
+    message: state.testReducer.serverMessage,
+    groups: state.groupReducer.groups
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    createGroup: createGroup
+    createGroup,
+    loadGroupsList
   }, dispatch)
 }
 
