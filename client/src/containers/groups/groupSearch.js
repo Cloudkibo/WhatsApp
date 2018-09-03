@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Search } from 'semantic-ui-react'
+import { Search, Select, Button } from 'semantic-ui-react'
 class GroupSearch extends Component {
   constructor (props) {
     super(props)
@@ -16,16 +16,23 @@ class GroupSearch extends Component {
   render () {
     return (
 
-      <div className='row'>
-        <label style={{ marginTop: -37 + 'px', paddingLeft: 50 + 'px' }}>Search Groups: </label>
-        <Search
-          style={{ marginTop: -60 + 'px', padding: 15 + 'px' }}
-          loading={this.state.isLoading}
-          onResultSelect={() => { console.log('Group Selected') }}
-          onSearchChange={() => { console.log('Search Changed') }}
-          results={this.state.results}
-          value={this.state.value}
-        />
+      <div className='row' style={{marginTop: -25 + 'px'}}>
+        <div className='col-xl-8'>
+          <Search
+            style={{ marginTop: 0 + 'px', padding: 5 + 'px' }}
+            loading={this.state.isLoading}
+            onResultSelect={() => { console.log('Group Selected') }}
+            onSearchChange={() => { console.log('Search Changed') }}
+            results={this.state.results}
+            value={this.state.value}
+            placeholder='Search Groups'
+          />
+        </div>
+        <div className='col-xl-4'>
+          <Select placeholder='Bulk Actions' options={[]} />
+          <Button primary style={{marginLeft: 10 + 'px'}}> Execute </Button>
+        </div>
+
       </div>
 
     )
