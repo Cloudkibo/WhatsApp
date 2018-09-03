@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { createGroup } from '../../redux/actions/groups.actions'
+import { createGroup, loadGroupsList } from '../../redux/actions/groups.actions'
 import { Message } from 'semantic-ui-react'
 
 import PageTile from './../../components/pageTitle'
@@ -20,6 +20,8 @@ class Groups extends Component {
     }
     this.onCreate = this.onCreate.bind(this)
     this.handleClose = this.handleClose.bind(this)
+
+    this.props.loadGroupsList()
   }
   handleClose () {
     this.setState({ showModal: false })
@@ -33,7 +35,40 @@ class Groups extends Component {
     this.handleClose()
     this.props.createGroup({title: title})
   }
+  _onChange (images) {
+    // Assuming only image
+    var file = this.refs.file.files[0]
+    if (file) {
+      if (file && file.type !== 'image/bmp' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+        this.msg.error('Please select an image of type jpg, gif, bmp or png')
+        return
+      }
+      var reader = new FileReader()
+      reader.readAsDataURL(file)
+
+      reader.onloadend = function (e) {
+        this.setState({
+          imgSrc: [reader.result]
+        })
+      }.bind(this)
+
+      this.setState({
+        showPreview: false,
+        loading: true
+      })
+      this.props.uploadImage(file, this.props.pages[0]._id, 'image', {
+        id: this.props.id,
+        componentType: 'image',
+        fileName: file.name,
+        fileurl: '',
+        image_url: '',
+        type: file.type, // jpg, png, gif
+        size: file.size
+      }, this.props.handleImage, this.setLoading)
+    }
+  }
   render () {
+    console.log('Props from Groups', this.props)
     return (
       <div>
         <PageTile title={'Manage Groups'} />
@@ -48,7 +83,7 @@ class Groups extends Component {
                 <PortletHead title={'Groups'} buttonTitle={'New Group'} buttonAction={() => { this.setState({showModal: true}) }} />
                 <div className='m-portlet__body' />
                 <GroupSearch />
-                <GroupTable viewDetail={() => { this.props.history.push('/groupDetail') }} />
+                <GroupTable viewDetail={() => { this.props.history.push('/groupDetail') }} groups={this.props.groups} />
               </div>
             </div>
           </div>
@@ -60,13 +95,15 @@ class Groups extends Component {
 
 function mapStateToProps (state) {
   return {
-    message: state.testReducer.serverMessage
+    message: state.testReducer.serverMessage,
+    groups: state.groupReducer.groups
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    createGroup: createGroup
+    createGroup,
+    loadGroupsList
   }, dispatch)
 }
 
