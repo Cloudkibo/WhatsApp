@@ -20,6 +20,18 @@ exports.index = function (req, res) {
     })
 }
 
+exports.fetchMany = function (req, res) {
+  logger.serverLog(TAG, 'Hit the sendToWhatsapp endpoint')
+  Contacts.find({wa_id: {$in: req.body.ids}})
+    .exec()
+    .then(contacts => {
+      return res.status(200).json({ status: 'success', payload: contacts })
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', payload: err })
+    })
+}
+
 exports.uploadContacts = function (req, res) {
   logger.serverLog(TAG, 'Hit the sendToWhatsapp endpoint')
   let today = new Date()
@@ -69,13 +81,12 @@ exports.uploadContacts = function (req, res) {
             contact.status === 'valid' ? localPayload[index].wa_id = contact.wa_id : valid = true
             localPayload[index].status = contact.status
           })
-
           localPayload.forEach((item, index) => {
             Contacts.update({phone: item.phone}, item, {upsert: true})
               .exec()
               .then((savedObj) => {
                 // Only runs at last index
-                if (index === localPayload.length - 1) {
+                if (index === (localPayload.length - 1)) {
                   Contacts.find({phone: { $in: dockerPayload }})
                     .exec()
                     .then(payloadForClient => {
@@ -96,7 +107,7 @@ exports.uploadContacts = function (req, res) {
 }
 
 exports.create = function (req, res) {
-  logger.serverLog(TAG, 'Hit the create endpoint')
+  logger.serverLog(TAG, 'Hit the create endpoint' + JSON.stringify(req.body.contacts))
   Contacts.create(req.body.contacts)
     .then(contacts => {
       return res.status(200).json({ status: 'success', payload: contacts })
