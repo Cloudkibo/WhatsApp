@@ -9,6 +9,19 @@ export function showGroups (data) {
   }
 }
 
+export function uploadImage (fileData, groupId) {
+  return (dispatch) => {
+  // eslint-disable-next-line no-undef
+  fetch(`${API_URL}/v1/groups/${groupId}/icon`, {
+    method: 'post',
+    body: fileData,
+    // eslint-disable-next-line no-undef
+  }).then((res) => res.json()).then((res) => res).then(res => {
+    console.log('respone', res)
+  })
+}
+}
+
 export function loadGroupsList () {
   return (dispatch) => {
     callApi('v1/groups').then(res => dispatch(showGroups(res.payload)))
