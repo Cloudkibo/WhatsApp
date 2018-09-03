@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { getTestMessage } from './../redux/actions/test.action'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Button } from 'semantic-ui-react'
+import Main from './Main'
 import Header from './header.js'
 import Sidebar from './sidebar.js'
 
@@ -18,10 +18,7 @@ class App extends Component {
         <Header />
         <div className='m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body'>
           <Sidebar />
-          <p>
-            {this.props.message}
-            <Button loading primary>Click Here</Button>
-          </p>
+          <Main />
         </div>
       </div>
     )
