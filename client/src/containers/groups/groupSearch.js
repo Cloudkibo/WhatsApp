@@ -9,7 +9,10 @@ class GroupSearch extends Component {
     this.state = {
       isLoading: false,
       results: [],
-      value: ''
+      value: '',
+      bulkActions: [
+        {key: 'leave', value: 'Leave Group', text: 'Leave Group'}
+      ]
     }
   }
 
@@ -29,7 +32,7 @@ class GroupSearch extends Component {
           />
         </div>
         <div className='col-xl-4'>
-          <Select placeholder='Bulk Actions' options={[]} />
+          <Select placeholder='Bulk Actions' options={this.state.bulkActions} />
           <Button primary style={{marginLeft: 10 + 'px'}}> Execute </Button>
         </div>
 

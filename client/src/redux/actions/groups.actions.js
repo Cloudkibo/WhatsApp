@@ -1,17 +1,13 @@
-import * as ActionTypes from '../constants/constants'
+import * as groupDispatcher from '../dispatchers/groups.dispatchers'
 import callApi from '../../utility/api.caller.service'
 export const API_URL = '/api'
 
-export function showGroups (data) {
-  return {
-    type: ActionTypes.FETCH_GROUPS_LIST,
-    data
-  }
-}
+
 
 export function loadGroupsList () {
+  console.log('Loading Group List')
   return (dispatch) => {
-    callApi('v1/groups').then(res => dispatch(showGroups(res.payload)))
+    callApi('v1/groups').then(res => dispatch(groupDispatcher.showGroups(res.payload)))
   }
 }
 
