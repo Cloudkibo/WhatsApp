@@ -71,7 +71,7 @@ exports.GetGroupInformation = function (req, res) {
 
 exports.UpdateGroupInformation = function (req, res) {
   logger.serverLog(TAG, 'Hit the information of particular group')
-  Groups.findOne({groupdId: req.body.groupId}, (err, group) => {
+  Groups.findOne({groupId: req.body.groupId}, (err, group) => {
     if (err) {
       return logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
     }
