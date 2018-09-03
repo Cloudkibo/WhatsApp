@@ -23,7 +23,9 @@ const all = {
   // Mongo Options
   mongo: {
     options: {
-      useNewUrlParser: true
+      db: {
+        safe: true
+      }
     }
   }
 }

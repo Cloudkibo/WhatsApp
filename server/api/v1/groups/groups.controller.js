@@ -113,9 +113,9 @@ exports.CreateGroup = function (req, res) {
     const data = {
       title: req.body.title,
       groupId: groupId,
-      admins: [req.body.userId ? req.body.userId : 'userID'],
-      creator: req.body.userId ? req.body.userId : 'userID',
-      participants: [ req.body.userId ? req.body.userId : 'userID' ],
+      admins: [req.body.wa_id ? req.body.wa_id : 'userID'],
+      creator: req.body.wa_id ? req.body.wa_id : 'userID',
+      participants: [ req.body.wa_id ? req.body.wa_id : 'userID' ],
       createtime: createtime
     }
 
