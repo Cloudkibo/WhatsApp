@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Table, Button, Image, Popup } from 'semantic-ui-react'
+import { Table, Popup } from 'semantic-ui-react'
+import Avatar from 'react-avatar'
 
 class ContactTable extends Component {
   render () {
@@ -21,8 +22,12 @@ class ContactTable extends Component {
               this.props.contactsList
                 ? this.props.contactsList.map(contact => (
                   <Popup trigger={
-                    <Table.Row style={{cursor: 'pointer'}} key={contact._id} onClick={() => { this.props.onRowClick(contact._id) }}>
-                      <Table.Cell textAlign='center'> <Image style={{margin: 'auto'}} src='https://react.semantic-ui.com/images/wireframe/square-image.png' size='mini' circular /></Table.Cell>
+                    <Table.Row style={{cursor: 'pointer'}} key={contact._id}
+                      onClick={() => { this.props.onRowClick(contact._id) }}>
+
+                      <Table.Cell textAlign='center'> <Avatar name={contact.name}
+                        round style={{margin: 'auto'}} size='45' maxInitials='2' /></Table.Cell>
+
                       <Table.Cell>{contact.name}</Table.Cell>
                       <Table.Cell>{contact.phone}</Table.Cell>
                       <Table.Cell>{contact.status === 'valid' ? 'Yes' : 'No'}</Table.Cell>

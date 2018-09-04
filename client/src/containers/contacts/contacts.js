@@ -35,6 +35,7 @@ class Contacts extends Component {
   }
   onUpload = () => {
     if (this.state.selectedFiles[0]) {
+      // eslint-disable-next-line no-undef
       let data = new FormData()
       data.append('file', this.state.selectedFiles[0])
       data.append('name', 'file')
