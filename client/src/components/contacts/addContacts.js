@@ -25,10 +25,10 @@ class AddContacts extends Component {
         </div>
         <Modal.Actions>
           { this.props.buttonDisabled
-            ? <Button color='green' disabled onClick={() => this.props.onCreate()}>
+            ? <Button color='green' circular disabled onClick={() => this.props.onCreate()}>
               <Icon name='checkmark' /> Upload
             </Button>
-            : <Button color='green' onClick={() => this.props.onCreate()}>
+            : <Button color='green' circular onClick={() => this.props.onCreate()}>
               <Icon name='checkmark' /> Upload
             </Button>
           }

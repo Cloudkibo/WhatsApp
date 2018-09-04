@@ -13,7 +13,7 @@ class PortletHead extends Component {
           </div>
         </div>
         <div className='m-portlet__head-tools'>
-          <Button primary onClick={this.props.buttonAction}> {(this.props.buttonTitle) ? this.props.buttonTitle : ''} </Button>
+          <Button primary circular onClick={this.props.buttonAction}> {(this.props.buttonTitle) ? this.props.buttonTitle : ''} </Button>
         </div>
       </div>
 

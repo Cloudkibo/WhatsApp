@@ -25,7 +25,7 @@ class ContactTable extends Component {
                       <Table.Cell textAlign='center'> <Image style={{margin: 'auto'}} src='https://react.semantic-ui.com/images/wireframe/square-image.png' size='mini' circular /></Table.Cell>
                       <Table.Cell>{contact.name}</Table.Cell>
                       <Table.Cell>{contact.phone}</Table.Cell>
-                      <Table.Cell>{contact.status}</Table.Cell>
+                      <Table.Cell>{contact.status === 'valid' ? 'Yes' : 'No'}</Table.Cell>
                       <Table.Cell>{contact.isSubscribed ? 'Subscribed' : 'Not Subscribed'}</Table.Cell>
                     </Table.Row>
                   } content='Click to update contact information' inverted position='top center'
