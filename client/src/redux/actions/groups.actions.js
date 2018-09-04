@@ -12,6 +12,7 @@ export function uploadImage (fileData, groupId) {
     body: fileData,
     // eslint-disable-next-line no-undef
   }).then((res) => res.json()).then((res) => res).then(res => {
+    console.log('response from uploadImage', res)
     dispatch(getGroupInfo({groupId: groupId}))
   })
 }

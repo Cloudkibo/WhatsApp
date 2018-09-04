@@ -8,7 +8,6 @@ import PageTile from './../../components/pageTitle'
 import InfoHeader from './../../components/groups/infoHeader'
 import ParticipantList from './../../components/groups/participants'
 import CreateGroup from './../../components/groups/createGroup'
-import _ from 'lodash'
 
 class GroupDetail extends Component {
   constructor (props) {
@@ -67,7 +66,6 @@ class GroupDetail extends Component {
   onCreate (title) {
     console.log('title:', title)
     if (title === '') {
-      console.log('in if')
       return
     }
     this.handleClose()

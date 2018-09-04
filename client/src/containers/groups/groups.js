@@ -16,7 +16,8 @@ class Groups extends Component {
     super(props)
     this.state = {
       showModal: false,
-      title: ''
+      title: '',
+      error: false
     }
     this.onCreate = this.onCreate.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -38,9 +39,7 @@ class Groups extends Component {
     this.setState({ showModal: false })
   }
   onCreate (title) {
-    console.log('title:', title)
     if (title === '') {
-      console.log('in if')
       return
     }
     this.props.createGroup({title: title, wa_id: '1'})

@@ -22,7 +22,7 @@ class GroupSearch extends Component {
       <div className='row' style={{marginTop: -25 + 'px'}}>
         <div className='col-xl-8'>
           <Search
-            style={{ marginTop: 0 + 'px', padding: 5 + 'px' }}
+            style={{ marginTop: 0 + 'px', padding: 5 + 'px', width: '400px' }}
             loading={this.state.isLoading}
             onResultSelect={() => { console.log('Group Selected') }}
             onSearchChange={() => { console.log('Search Changed') }}
