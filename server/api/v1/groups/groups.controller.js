@@ -71,7 +71,7 @@ exports.GetGroupInformation = function (req, res) {
 
 exports.UpdateGroupInformation = function (req, res) {
   logger.serverLog(TAG, 'Hit the information of particular group')
-  Groups.findOne({groupdId: req.body.groupId}, (err, group) => {
+  Groups.findOne({groupId: req.body.groupId}, (err, group) => {
     if (err) {
       return logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
     }
@@ -269,7 +269,7 @@ exports.postIcon = function (req, res) {
             group.save(err => {
               err
                 ? res.status(500).json({ status: 'failed', description: err })
-                : res.status(200).json({ status: 'success' })
+                : res.status(200).json({ status: 'success', payload: group.iconURL })
             })
           })
           .catch(err => {

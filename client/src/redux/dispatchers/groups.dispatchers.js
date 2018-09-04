@@ -6,3 +6,15 @@ export function showGroups (data) {
     data
   }
 }
+export function showGroupsInfo (data) {
+  return {
+    type: ActionTypes.FETCH_GROUPS_INFO,
+    data
+  }
+}
+export function createdGroup (data) {
+  return {
+    type: ActionTypes.FETCH_CREATED_GROUP,
+    data
+  }
+}

@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { createGroup, loadGroupsList } from '../../redux/actions/groups.actions'
-import { Message } from 'semantic-ui-react'
+import { createGroup } from '../../redux/actions/groups.actions'
 
 import PageTile from './../../components/pageTitle'
 import HelpAlert from './../../components/themeComponents/helpAlert'
@@ -16,13 +15,24 @@ class Groups extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      showModal: false
+      showModal: false,
+      title: ''
     }
-    this._onChange = this._onChange.bind(this)
     this.onCreate = this.onCreate.bind(this)
     this.handleClose = this.handleClose.bind(this)
-
-    this.props.loadGroupsList()
+    this.goToInfo = this.goToInfo.bind(this)
+    this.updateTitle = this.updateTitle.bind(this)
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.createdGroup) {
+      this.props.history.push({
+        pathname: `/groupDetail`,
+        state: nextProps.createdGroup
+      })
+    }
+  }
+  updateTitle (e) {
+    this.setState({title: e.target.value})
   }
   handleClose () {
     this.setState({ showModal: false })
@@ -33,50 +43,22 @@ class Groups extends Component {
       console.log('in if')
       return
     }
-    this.handleClose()
-    this.props.createGroup({title: title})
+    this.props.createGroup({title: title, wa_id: '1'})
   }
-  _onChange (images) {
-    // Assuming only image
-    var file = this.refs.file.files[0]
-    if (file) {
-      if (file && file.type !== 'image/bmp' && file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
-        this.msg.error('Please select an image of type jpg, gif, bmp or png')
-        return
-      }
-      var reader = new FileReader()
-      reader.readAsDataURL(file)
-
-      reader.onloadend = function (e) {
-        this.setState({
-          imgSrc: [reader.result]
-        })
-      }.bind(this)
-
-      this.setState({
-        showPreview: false,
-        loading: true
-      })
-      this.props.uploadImage(file, this.props.pages[0]._id, 'image', {
-        id: this.props.id,
-        componentType: 'image',
-        fileName: file.name,
-        fileurl: '',
-        image_url: '',
-        type: file.type, // jpg, png, gif
-        size: file.size
-      }, this.props.handleImage, this.setLoading)
-    }
+  goToInfo () {
+    this.props.history.push({
+      pathname: `/groupDetail`,
+      state: '5b8d7031775a8c362af77153'
+    })
   }
   render () {
-    console.log('Props from Groups', this.props)
     return (
       <div>
         <PageTile title={'Manage Groups'} />
         <div className='m-content'>
           <HelpAlert message={'Here you can view the list of all the groups that you have joined.'} />
           {this.state.showModal &&
-            <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose} />
+            <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose} heading='Create Group' updateTitle={this.updateTitle} />
           }
           <div className='row'>
             <div className='col-xl-12'>
@@ -84,7 +66,7 @@ class Groups extends Component {
                 <PortletHead title={'Groups'} buttonTitle={'New Group'} buttonAction={() => { this.setState({showModal: true}) }} />
                 <div className='m-portlet__body' />
                 <GroupSearch />
-                <GroupTable viewDetail={() => { this.props.history.push('/groupDetail') }} groups={this.props.groups} />
+                <GroupTable viewDetail={this.goToInfo} />
               </div>
             </div>
           </div>
@@ -96,15 +78,13 @@ class Groups extends Component {
 
 function mapStateToProps (state) {
   return {
-    message: state.testReducer.serverMessage,
-    groups: state.groupReducer.groups
+    createdGroup: state.groupReducer.createdGroup
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    createGroup,
-    loadGroupsList
+    createGroup: createGroup
   }, dispatch)
 }
 
