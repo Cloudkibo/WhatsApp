@@ -14,7 +14,9 @@ class AddContacts extends Component {
         <div style={{ textAlign: 'center', margin: '20px' }}>
           <Modal.Content>
             <Modal.Description>
-              <Dropzone style={{height: 'auto', width: 'auto'}} onDrop={(files) => this.props.onDrop(files)}>
+              <Dropzone accept='text/csv, application/vnd.ms-excel'
+                style={{height: 'auto', width: 'auto'}} onDrop={(files) => this.props.onDrop(files)}>
+
                 <Button circular icon='upload' size='big' />
                 <p style={{ margin: '20px' }}>Click to upload</p>
               </Dropzone>

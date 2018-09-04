@@ -40,10 +40,15 @@ class Contacts extends Component {
     this.setState({ showModal: false, showUpdate: false })
   }
   onUpload () {
-    let data = new FormData()
-    data.append('file', this.state.selectedFiles[0])
-    data.append('name', 'file')
-    this.props.uploadFile(data, this.props.alert)
+    if (this.state.selectedFiles[0]) {
+      let data = new FormData()
+      data.append('file', this.state.selectedFiles[0])
+      data.append('name', 'file')
+      this.props.uploadFile(data, this.props.alert)
+    } else {
+      this.props.alert.show('Only CSV files supported.', {type: 'info'})
+    }
+    this.setState({ buttonDisabled: true })
     this.handleClose()
   }
 
@@ -65,6 +70,7 @@ class Contacts extends Component {
   onUpdate (updatedName) {
     if (updatedName !== '') {
       this.props.updateContact(this.state.selectedContact.phone, updatedName, this.props.alert)
+      this.setState({ buttonDisabled: true })
       this.handleClose()
     }
   }
