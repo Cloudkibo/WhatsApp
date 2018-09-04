@@ -40,7 +40,17 @@ exports.GetGroupInformation = function (req, res) {
 
     if (group) {
       // It means we have found the details in our db
-      res.status(200).json({ status: 'success', payload: group })
+      let payload = {
+        title: group.title,
+        groupId: group.groupId,
+        admins: group.admins,
+        creator: group.creator,
+        participants: group.participants,
+        inviteLink: group.inviteLink,
+        iconURL: `http://localhost:8000/api/v1/groups/${req.body.groupId}/icon`,
+        createtime: group.createtime
+      }
+      res.status(200).json({ status: 'success', payload: payload })
     } else {
       // We don't have details in our db. We need to fetch from Whatsapp docker.
       utility.getFromWhatsapp('/v1/groups/' + req.body.groupId, (err, wgroup) => {
@@ -71,7 +81,7 @@ exports.GetGroupInformation = function (req, res) {
 
 exports.UpdateGroupInformation = function (req, res) {
   logger.serverLog(TAG, 'Hit the information of particular group')
-  Groups.findOne({groupdId: req.body.groupId}, (err, group) => {
+  Groups.findOne({groupId: req.body.groupId}, (err, group) => {
     if (err) {
       return logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
     }
@@ -269,7 +279,7 @@ exports.postIcon = function (req, res) {
             group.save(err => {
               err
                 ? res.status(500).json({ status: 'failed', description: err })
-                : res.status(200).json({ status: 'success' })
+                : res.status(200).json({ status: 'success', payload: group.iconURL })
             })
           })
           .catch(err => {

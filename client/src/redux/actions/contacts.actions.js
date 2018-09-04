@@ -55,5 +55,6 @@ export function uploadFile (data, alert) {
         alert.show('File upload failed', {type: 'failed'})
       }
     })
+
   }
 }
