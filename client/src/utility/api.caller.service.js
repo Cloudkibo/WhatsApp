@@ -5,11 +5,7 @@ import _ from 'lodash'
 
 export const API_URL = '/api'
 
-export default function callApi (endpoint, method = 'get', body) {
-  let headers = {
-    'content-type': 'application/json'
-  }
-
+export default function callApi (endpoint, method = 'get', body, headers = {'content-type': 'application/json'}) {
   if (true) {
     headers = _.merge(headers, {
       // Authorization: `Bearer ${auth.getToken()}`

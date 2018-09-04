@@ -5,6 +5,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
 
 class Sidebar extends Component {
   constructor (props, context) {
@@ -41,10 +42,10 @@ class Sidebar extends Component {
   showContacts () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-        <a href='' className='m-menu__link m-menu__toggle'>
+        <Link to='/contacts' className='m-menu__link m-menu__toggle'>
           <i className='m-menu__link-icon flaticon-squares-4' title='Contacts' />
           <span className='m-menu__link-text'>Contacts</span>
-        </a>
+        </Link>
       </li>
     )
   }
@@ -52,10 +53,10 @@ class Sidebar extends Component {
   showGroups () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-        <a href='' className='m-menu__link m-menu__toggle'>
+        <Link to='/' className='m-menu__link m-menu__toggle'>
           <i className='m-menu__link-icon flaticon-squares-4' title='Groups' />
           <span className='m-menu__link-text'>Groups</span>
-        </a>
+        </Link>
       </li>
     )
   }

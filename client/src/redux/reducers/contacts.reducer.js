@@ -1,17 +1,10 @@
 import * as ActionTypes from '../constants/constants'
 
-let initialState = {
-}
-
-export function contactReducer (state = initialState, action) {
+export function contactsReducer (state = {}, action) {
   switch (action.type) {
-    case ActionTypes.FETCH_PARTICIPANTS_LIST:
+    case ActionTypes.FETCH_CONTACTS_LIST:
       return Object.assign({}, state, {
-        participants: action.data
-      })
-    case ActionTypes.FETCH_ADMINS_LIST:
-      return Object.assign({}, state, {
-        admins: action.data
+        contactsList: action.data
       })
 
     default:
