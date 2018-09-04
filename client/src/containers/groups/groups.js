@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { createGroup } from '../../redux/actions/groups.actions'
+import { createGroup, loadGroupsList } from '../../redux/actions/groups.actions'
 
 import PageTile from './../../components/pageTitle'
 import HelpAlert from './../../components/themeComponents/helpAlert'
@@ -19,6 +19,7 @@ class Groups extends Component {
       title: '',
       error: false
     }
+    props.loadGroupsList()
     this.onCreate = this.onCreate.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.goToInfo = this.goToInfo.bind(this)
@@ -44,10 +45,12 @@ class Groups extends Component {
     }
     this.props.createGroup({title: title, wa_id: '1'})
   }
-  goToInfo () {
+  goToInfo (groupId) {
     this.props.history.push({
       pathname: `/groupDetail`,
-      state: '5b8d7031775a8c362af77153'
+      state: {
+        groupId: '5b8d7031775a8c362af77153'
+      }
     })
   }
   render () {
@@ -65,7 +68,7 @@ class Groups extends Component {
                 <PortletHead title={'Groups'} buttonTitle={'New Group'} buttonAction={() => { this.setState({showModal: true}) }} />
                 <div className='m-portlet__body' />
                 <GroupSearch />
-                <GroupTable viewDetail={this.goToInfo} />
+                <GroupTable viewDetail={this.goToInfo} groups={this.props.groups} />
               </div>
             </div>
           </div>
@@ -77,13 +80,15 @@ class Groups extends Component {
 
 function mapStateToProps (state) {
   return {
-    createdGroup: state.groupReducer.createdGroup
+    createdGroup: state.groupReducer.createdGroup,
+    groups: state.groupReducer.groups
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    createGroup: createGroup
+    createGroup,
+    loadGroupsList
   }, dispatch)
 }
 

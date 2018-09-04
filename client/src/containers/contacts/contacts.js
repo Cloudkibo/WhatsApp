@@ -40,11 +40,9 @@ class Contacts extends Component {
     this.setState({ showModal: false, showUpdate: false })
   }
   onUpload () {
-    console.log(this.state.selectedFiles[0])
     let data = new FormData()
     data.append('file', this.state.selectedFiles[0])
     data.append('name', 'file')
-    console.log(data)
     this.props.uploadFile(data, this.props.alert)
     this.handleClose()
   }

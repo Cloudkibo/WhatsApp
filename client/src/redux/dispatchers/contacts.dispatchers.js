@@ -1,14 +1,8 @@
 import * as ActionTypes from '../constants/constants'
 
-export function showParticipants (data) {
+export function showContacts (data) {
   return {
-    type: ActionTypes.FETCH_PARTICIPANTS_LIST,
-    data
-  }
-}
-export function showAdmins (data) {
-  return {
-    type: ActionTypes.FETCH_ADMINS_LIST,
+    type: ActionTypes.FETCH_CONTACTS_LIST,
     data
   }
 }

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { filter, debounce, escapeRegExp } from 'lodash'
 import { bindActionCreators } from 'redux'
-import { Search, Dropdown, Grid, Segment, Header } from 'semantic-ui-react'
+import { Search, Dropdown, Grid } from 'semantic-ui-react'
 class ContactSearch extends Component {
   constructor (props) {
     super(props)
@@ -34,13 +34,7 @@ class ContactSearch extends Component {
       const re = new RegExp(escapeRegExp(this.state.value), 'i')
       const isMatch = result => re.test(result.name)
       let arr = filter(this.props.contacts, isMatch)
-      let payload = arr.map(item => {
-        return {
-          title: item.name,
-          description: item.phone
-        }
-      })
-
+      let payload = arr.map(item => ({ title: item.name, description: item.phone }))
       this.setState({ isLoading: false, results: payload, shownContacts: arr })
     }, 300)
   }

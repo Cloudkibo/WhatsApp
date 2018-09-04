@@ -27,7 +27,7 @@ class GroupTable extends Component {
                   <Table.Cell textAlign='center'>{item.title}</Table.Cell>
                   <Table.Cell textAlign='center'>{item.participants.length}</Table.Cell>
                   <Table.Cell textAlign='center'>{new Date(item.createtime).toDateString()}</Table.Cell>
-                  <Table.Cell textAlign='center'><Button onClick={this.props.viewDetail} primary size='mini'> View Details </Button></Table.Cell>
+                  <Table.Cell textAlign='center'><Button onClick={() => { this.props.viewDetail(item._id) }} primary size='mini'> View Details </Button></Table.Cell>
                 </Table.Row>
               })
             }

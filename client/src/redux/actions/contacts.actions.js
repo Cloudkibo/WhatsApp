@@ -1,18 +1,12 @@
-import * as ActionTypes from '../constants/constants'
+
+import * as contactDispatcher from '../dispatchers/contacts.dispatchers'
 import callApi from '../../utility/api.caller.service'
 export const API_URL = '/api'
-
-export function showContacts (data) {
-  return {
-    type: ActionTypes.FETCH_CONTACTS_LIST,
-    data
-  }
-}
 
 export function loadContactsList () {
   return (dispatch) => {
     callApi('v1/contacts')
-      .then(res => dispatch(showContacts(res.payload)))
+      .then(res => dispatch(contactDispatcher.showContacts(res.payload)))
   }
 }
 
@@ -55,6 +49,5 @@ export function uploadFile (data, alert) {
         alert.show('File upload failed', {type: 'failed'})
       }
     })
-
   }
 }

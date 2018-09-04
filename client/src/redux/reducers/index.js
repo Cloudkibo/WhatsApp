@@ -8,7 +8,7 @@ import { groupReducer } from './groups.reducer'
 // Make a app reducer
 const appReducer = combineReducers({testReducer,
   groupReducer,
-  contactReducer
+  contactsReducer
   })
 
 export default appReducer

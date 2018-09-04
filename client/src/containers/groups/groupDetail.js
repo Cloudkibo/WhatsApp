@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { uploadImage, getGroupInfo, getGroupIcon, updateGroup } from '../../redux/actions/groups.actions'
-import { getParticiapnts, getAdmins } from '../../redux/actions/contacts.actions'
+import { uploadImage, getGroupInfo, getGroupIcon, updateGroup, getParticiapnts, getAdmins } from '../../redux/actions/groups.actions'
 import PageTile from './../../components/pageTitle'
 import InfoHeader from './../../components/groups/infoHeader'
 import ParticipantList from './../../components/groups/participants'
@@ -65,9 +64,7 @@ class GroupDetail extends Component {
   }
   onCreate (title) {
     console.log('title:', title)
-    if (title === '') {
-      return
-    }
+    if (title === '') { return }
     this.handleClose()
     this.props.updateGroup({title: title, groupId: this.props.groupsInfo.groupId})
   }
@@ -115,8 +112,8 @@ class GroupDetail extends Component {
 function mapStateToProps (state) {
   return {
     groupsInfo: state.groupReducer.groupsInfo,
-    participants: state.contactReducer.participants,
-    admins: state.contactReducer.admins
+    participants: state.groupReducer.participants,
+    admins: state.groupReducer.admins
   }
 }
 

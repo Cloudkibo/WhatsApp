@@ -1,7 +1,10 @@
 import * as ActionTypes from '../constants/constants'
 
 let initialState = {
-  groups: []
+  groups: [],
+  participants: [],
+  admins: [],
+  groupsInfo: false
 }
 
 export function groupReducer (state = initialState, action) {
@@ -16,10 +19,18 @@ export function groupReducer (state = initialState, action) {
         groupsInfo: action.data
       })
     case ActionTypes.FETCH_CREATED_GROUP:
-      console.log('in here', action.data)
       return Object.assign({}, state, {
         createdGroup: action.data
       })
+    case ActionTypes.FETCH_PARTICIPANTS_LIST:
+      return Object.assign({}, state, {
+        participants: action.data
+      })
+    case ActionTypes.FETCH_ADMINS_LIST:
+      return Object.assign({}, state, {
+        admins: action.data
+      })
+
     default:
       return state
   }
