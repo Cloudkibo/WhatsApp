@@ -63,9 +63,15 @@ class Contacts extends Component {
   }
 
   onUpdate (updatedName) {
-    console.log(updatedName)
-    this.props.updateContact(this.state.selectedContact.phone, updatedName, this.props.alert)
-    this.handleClose()
+    if (updatedName !== '') {
+      this.props.updateContact(this.state.selectedContact.phone, updatedName, this.props.alert)
+      this.handleClose()
+    }
+  }
+
+  handleUpdate = (event) => {
+    if (event.target.value !== '') this.setState({ buttonDisabled: false })
+    else this.setState({ buttonDisabled: true })
   }
 
   render () {
@@ -79,7 +85,9 @@ class Contacts extends Component {
           }
           {
             this.state.showUpdate &&
-            <UpdateContact showModal={this.state.showUpdate} onUpdate={this.onUpdate} handleClose={this.handleClose} selectedContact={this.state.selectedContact} />
+            <UpdateContact showModal={this.state.showUpdate} onUpdate={this.onUpdate}
+              handleClose={this.handleClose} selectedContact={this.state.selectedContact}
+              buttonDisabled={this.state.buttonDisabled} handleUpdate={this.handleUpdate} />
           }
           <div className='row'>
             <div className='col-xl-12'>

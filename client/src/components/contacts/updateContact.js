@@ -13,11 +13,11 @@ class UpdateContact extends Component {
         <Modal.Content>
           <Modal.Description>
             <label>Contact Name:</label><br />
-            <input className='form-control' placeholder={this.props.selectedContact.name} ref='title' /><br /><br /><br />
+            <input className='form-control' onChange={this.props.handleUpdate} placeholder={this.props.selectedContact.name} ref='title' /><br /><br /><br />
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='green' onClick={() => this.props.onUpdate(this.refs.title.value)}>
+          <Button color='green' disabled={this.props.buttonDisabled} onClick={() => this.props.onUpdate(this.refs.title.value)}>
             <Icon name='checkmark' /> Update
           </Button>
         </Modal.Actions>
