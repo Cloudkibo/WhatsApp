@@ -49,7 +49,7 @@ class Groups extends Component {
     this.props.history.push({
       pathname: `/groupDetail`,
       state: {
-        groupId: '5b8d7031775a8c362af77153'
+        groupId: groupId
       }
     })
   }

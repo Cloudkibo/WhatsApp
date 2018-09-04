@@ -15,13 +15,13 @@ exports.index = function (req, res) {
   logger.serverLog(TAG, 'Hit the retrieve all groups')
   Groups.find({}, (err, groups) => {
     if (err) {
-      return logger.serverLog(TAG, `Internal Server error at Index: ${JSON.stringify(err)}`)
+      return logger.serverLog(TAG, `Internal Server error at Index: ${err}`)
     }
 
     // Using the utility method to fetch from whatsapp docker
     utility.getFromWhatsapp('/v1/groups/', (err, wgroups) => {
       if (err) {
-        return logger.serverLog(TAG, `Error from Whatsapp docker: ${JSON.stringify(err)}`)
+        return logger.serverLog(TAG, `Error from Whatsapp docker: ${err}`)
       }
 
       res.status(200).json({ status: 'success', payload: groups })
@@ -47,7 +47,7 @@ exports.GetGroupInformation = function (req, res) {
         creator: group.creator,
         participants: group.participants,
         inviteLink: group.inviteLink,
-        iconURL: `http://localhost:8000/api/v1/groups/${req.body.groupId}/icon`,
+        iconURL: group.iconURL,
         createtime: group.createtime
       }
       res.status(200).json({ status: 'success', payload: payload })
@@ -55,7 +55,8 @@ exports.GetGroupInformation = function (req, res) {
       // We don't have details in our db. We need to fetch from Whatsapp docker.
       utility.getFromWhatsapp('/v1/groups/' + req.body.groupId, (err, wgroup) => {
         if (err) {
-          return logger.serverLog(TAG, `Error from Whatsapp docker: ${JSON.stringify(err)}`)
+          // return logger.serverLog(TAG, `Error from Whatsapp docker: ${JSON.stringify(err)}`)
+          return logger.serverLog(TAG, `Error from Whatsapp docker: GroupInfo ${err}`)
         }
 
         // Save the wgroup in local db

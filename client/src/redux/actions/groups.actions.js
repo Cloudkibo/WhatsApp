@@ -46,6 +46,9 @@ export function getGroupInfo (data) {
           dispatch(groupDispatcher.showGroupsInfo(res.payload))
         }
       })
+      .catch((err) => {
+        console.log('failed response from getGroupInfo', err)
+      })
   }
 }
 
