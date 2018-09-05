@@ -11,12 +11,14 @@ import PortletHead from './../../components/themeComponents/portletHead'
 import GroupTable from './../../components/groups/groupTable'
 import GroupSearch from './groupSearch'
 import CreateGroup from './../../components/groups/createGroup'
+import InviteModal from './../../components/groups/inviteModal'
 
 class Groups extends Component {
   constructor (props) {
     super(props)
     this.state = {
       showModal: false,
+      displayInvite: false,
       title: '',
       error: false
     }
@@ -33,6 +35,9 @@ class Groups extends Component {
         state: nextProps.createdGroup
       })
     }
+    if (this.props.inviteLink !== nextProps.inviteLink) {
+      this.setState({displayInvite: true})
+    }
   }
   updateTitle (e) {
     this.setState({title: e.target.value})
@@ -44,7 +49,7 @@ class Groups extends Component {
     if (title === '') {
       return this.props.alert.show('Group title cannot be empty', {type: 'error'})
     }
-    this.props.createGroup({title: title, wa_id: '1'})
+    this.props.createGroup({title: title, wa_id: '5b8effb1b020ef26b62f955f'})
   }
   goToInfo (groupId) {
     this.props.history.push({
@@ -54,6 +59,9 @@ class Groups extends Component {
       }
     })
   }
+
+  closeInvite = () => { this.setState({displayInvite: false}) }
+
   render () {
     return (
       <div>
@@ -63,13 +71,16 @@ class Groups extends Component {
           {this.state.showModal &&
             <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose} heading='Create Group' updateTitle={this.updateTitle} />
           }
+          {this.state.displayInvite &&
+            <InviteModal showModal={this.state.displayInvite} handleClose={this.closeInvite} heading='Invite Link' inviteLink={this.props.inviteLink} />
+          }
           <div className='row'>
             <div className='col-xl-12'>
               <div className='m-portlet'>
                 <PortletHead title={'Groups'} buttonTitle={'New Group'} buttonAction={() => { this.setState({showModal: true}) }} />
                 <div className='m-portlet__body' />
-                <GroupSearch />
-                <GroupTable viewDetail={this.goToInfo} groups={this.props.groups} />
+                <GroupSearch groups={this.props.groups} />
+                <GroupTable viewDetail={this.goToInfo} groups={this.props.groups} getInvite={this.props.getGroupInvite} />
               </div>
             </div>
           </div>
@@ -82,14 +93,16 @@ class Groups extends Component {
 function mapStateToProps (state) {
   return {
     createdGroup: state.groupReducer.createdGroup,
-    groups: state.groupReducer.groups
+    groups: state.groupReducer.groups,
+    inviteLink: state.groupReducer.inviteLink
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     createGroup,
-    loadGroupsList
+    loadGroupsList,
+    getGroupInvite
   }, dispatch)
 }
 

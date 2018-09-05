@@ -142,7 +142,7 @@ exports.CreateGroup = function (req, res) {
 }
 
 exports.CreateGroupInvite = function (req, res) {
-  utility.getFromWhatsapp(`/v1/groups/${req.body.groupId}/invite`, (err, result) => {
+  utility.getFromWhatsapp(`/v1/groups/${req.params.groupId}/invite`, (err, result) => {
     if (err) {
       logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
       return res.status(500).json({ status: 'failed', description: err })
@@ -150,7 +150,7 @@ exports.CreateGroupInvite = function (req, res) {
 
     logger.serverLog(TAG, result.data.groups)
 
-    Groups.findOne({groupId: req.body.groupId})
+    Groups.findOne({groupId: req.params.groupId})
       .exec()
       .then(group => {
         group.invite = true

@@ -11,8 +11,6 @@ export function loadContactsList () {
 }
 
 export function updateContact (phone, updatedName, alert) {
-  console.log(phone + updatedName)
-  console.log(alert)
   return (dispatch) => {
     callApi('v1/contacts/update', 'post', {phone: phone, name: updatedName})
       .then(res => {
@@ -22,6 +20,21 @@ export function updateContact (phone, updatedName, alert) {
           alert.show('Contact Name Updated', {type: 'success'})
         } else {
           alert.show('Update Failed', {type: 'failed'})
+        }
+      })
+  }
+}
+
+export function deleteContact (phone, alert) {
+  return (dispatch) => {
+    callApi(`v1/contacts/${phone}`, 'delete')
+      .then(res => {
+        console.log('response from update contact', res)
+        if (res.status === 'success') {
+          dispatch(loadContactsList())
+          alert.show('Contact Deleted', {type: 'success'})
+        } else {
+          alert.show('Delete Failed', {type: 'failed'})
         }
       })
   }

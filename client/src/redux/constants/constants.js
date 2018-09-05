@@ -4,7 +4,7 @@ export const TEST = 'TEST'
 
 // Constants for groups
 export const FETCH_GROUPS_LIST = 'FETCH_GROUPS_LIST'
-
+export const GROUP_INVITE_LINK = 'GROUP_INVITE_LINK'
 
 // Constants for contacts
 export const FETCH_CONTACTS_LIST = 'FETCH_CONTACTS_LIST'

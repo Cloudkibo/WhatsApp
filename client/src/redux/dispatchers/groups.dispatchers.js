@@ -30,3 +30,9 @@ export function showAdmins (data) {
     data
   }
 }
+export function setInviteLink (data) {
+  return {
+    type: ActionTypes.GROUP_INVITE_LINK,
+    data
+  }
+}
