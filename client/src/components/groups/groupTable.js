@@ -24,7 +24,12 @@ class GroupTable extends Component {
               this.props.groups.map((item, index) => {
                 return <Table.Row style={{cursor: 'pointer'}} key={index}>
                   <Table.Cell textAlign='center'><Checkbox /></Table.Cell>
-                  <Table.Cell > <Image style={{height: '25px', width: '25px'}} src={(item.iconURL !== '') ? `/api/v1/groups/${item.groupId}/icon` : 'https://react.semantic-ui.com/images/wireframe/square-image.png'} size='mini' circular /></Table.Cell>
+                  <Table.Cell > <Image style={{height: '25px', width: '25px'}}
+                    src={(item.iconURL !== '')
+                      ? `/api/v1/groups/${item.groupId}/icon`
+                      : 'https://react.semantic-ui.com/images/wireframe/square-image.png'}
+                    size='mini' circular /></Table.Cell>
+
                   <Table.Cell textAlign='center'>{item.title}</Table.Cell>
                   <Table.Cell textAlign='center'>{item.participants.length}</Table.Cell>
                   <Table.Cell textAlign='center'>{new Date(item.createtime).toDateString()}</Table.Cell>

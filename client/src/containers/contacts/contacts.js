@@ -53,12 +53,10 @@ class Contacts extends Component {
 
   onRowClick = (id) => {
     let selectedContact = filter(this.props.contactsList, {_id: id})[0]
-    console.log(selectedContact)
     this.showUpdate(selectedContact)
   }
 
   showUpdate = (contact) => {
-    console.log('From show update method' + contact)
     this.setState({showUpdate: true, selectedContact: contact})
   }
 

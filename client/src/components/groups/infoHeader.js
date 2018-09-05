@@ -10,10 +10,13 @@ class InfoHeader extends Component {
           <div className='m-widget5__pic' style={{width: '110px', cursor: 'pointer'}}>
             <Reveal animated='fade' style={{opacity: '1'}} onClick={() => { this.refs.selectFile.click() }}>
               <Reveal.Content visible className='group-icon'>
-                <Image circular size='tiny' src={this.props.groupsInfo.iconURL && this.props.groupsInfo.iconURL !== '' ? `/api/v1/groups/${this.props.groupsInfo.groupId}/icon` : 'https://react.semantic-ui.com/images/wireframe/image.png'} style={{height: '100px', width: '100px'}} />
+                <Image circular size='tiny' src={this.props.groupsInfo.iconURL && this.props.groupsInfo.iconURL !== ''
+                  ? `/api/v1/groups/${this.props.groupsInfo.groupId}/icon`
+                  : 'https://react.semantic-ui.com/images/wireframe/image.png'} style={{height: '100px', width: '100px'}} />
               </Reveal.Content>
               <Reveal.Content hidden className='group-icon'>
-                <Image circular size='tiny' src='https://react.semantic-ui.com/images/wireframe/image.png' style={{height: '100px', width: '100px'}} />
+                <Image circular size='tiny' src='https://react.semantic-ui.com/images/wireframe/image.png'
+                  style={{height: '100px', width: '100px'}} />
               </Reveal.Content>
               <input type='file' accept='image/*' onChange={this.props.handleImage} ref='selectFile' style={{display: 'none'}} />
             </Reveal>
