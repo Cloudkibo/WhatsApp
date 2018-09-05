@@ -6,7 +6,7 @@ class ContactTable extends Component {
   render () {
     return (
 
-      <div style={{ padding: 10 + 'px' }}>
+      <div style={{ padding: '10px' }}>
         <Table striped selectable>
           <Table.Header>
             <Table.Row>

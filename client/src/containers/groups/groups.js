@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-// import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import { withAlert } from 'react-alert'
-import { createGroup, loadGroupsList, getGroupInvite } from '../../redux/actions/groups.actions'
+import * as GroupActions from '../../redux/actions/groups.actions'
 
 import PageTile from './../../components/pageTitle'
 import HelpAlert from './../../components/themeComponents/helpAlert'
@@ -23,35 +23,28 @@ class Groups extends Component {
       error: false
     }
     props.loadGroupsList()
-    this.onCreate = this.onCreate.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.goToInfo = this.goToInfo.bind(this)
-    this.updateTitle = this.updateTitle.bind(this)
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.createdGroup) {
-      this.props.history.push({
-        pathname: `/groupDetail`,
-        state: nextProps.createdGroup
-      })
+      this.props.history.push({ pathname: `/groupDetail`, state: nextProps.createdGroup })
     }
     if (this.props.inviteLink !== nextProps.inviteLink) {
       this.setState({displayInvite: true})
     }
   }
-  updateTitle (e) {
+  updateTitle = (e) => {
     this.setState({title: e.target.value})
   }
-  handleClose () {
+  handleClose = () => {
     this.setState({ showModal: false })
   }
-  onCreate (title) {
+  onCreate = (title) => {
     if (title === '') {
       return this.props.alert.show('Group title cannot be empty', {type: 'error'})
     }
     this.props.createGroup({title: title, wa_id: '5b8effb1b020ef26b62f955f'})
   }
-  goToInfo (groupId) {
+  goToInfo = (groupId) => {
     this.props.history.push({
       pathname: `/groupDetail`,
       state: {
@@ -69,10 +62,12 @@ class Groups extends Component {
         <div className='m-content'>
           <HelpAlert message={'Here you can view the list of all the groups that you have joined.'} />
           {this.state.showModal &&
-            <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose} heading='Create Group' updateTitle={this.updateTitle} />
+            <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose}
+              heading='Create Group' updateTitle={this.updateTitle} />
           }
           {this.state.displayInvite &&
-            <InviteModal showModal={this.state.displayInvite} handleClose={this.closeInvite} heading='Invite Link' inviteLink={this.props.inviteLink} />
+            <InviteModal showModal={this.state.displayInvite} handleClose={this.closeInvite} heading='Invite Link'
+              inviteLink={this.props.inviteLink} />
           }
           <div className='row'>
             <div className='col-xl-12'>
@@ -100,9 +95,9 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    createGroup,
-    loadGroupsList,
-    getGroupInvite
+    createGroup: GroupActions.createGroup,
+    loadGroupsList: GroupActions.loadGroupsList,
+    getGroupInvite: GroupActions.getGroupInvite
   }, dispatch)
 }
 

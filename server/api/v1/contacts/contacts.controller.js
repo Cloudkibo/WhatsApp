@@ -119,7 +119,7 @@ exports.create = function (req, res) {
 
 exports.update = function (req, res) {
   logger.serverLog(TAG, 'Hit the update contact endpoint')
-  Contacts.updateOne({phone: req.body.phone}, { $set: {name: req.body.name} })
+  Contacts.updateOne({ phone: req.params.phone }, { $set: {name: req.body.name} })
     .then(result => {
       return res.status(200).json({ status: 'success', payload: result })
     })
