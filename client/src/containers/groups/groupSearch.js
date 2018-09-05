@@ -12,7 +12,7 @@ class GroupSearch extends Component {
       results: [],
       value: '',
       bulkActions: [
-        {key: 'leave', value: 'Leave Group', text: 'Leave Group'}
+        {key: 'leave', value: 'leave_group', text: 'Leave Group'}
       ]
     }
   }
@@ -56,7 +56,8 @@ class GroupSearch extends Component {
         </div>
         <div className='col-xl-3'>
           <Dropdown button className='icon' floating labeled icon='setting'
-            text='Bulk Actions' options={this.state.bulkActions} style={{marginTop: '5px', marginLeft: '15px'}} />
+            text='Bulk Actions' options={this.state.bulkActions}
+            onChange={this.props.leaveGroup} style={{marginTop: '5px', marginLeft: '15px'}} />
         </div>
 
       </div>
