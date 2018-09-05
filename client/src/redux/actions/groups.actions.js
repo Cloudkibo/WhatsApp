@@ -78,6 +78,7 @@ export function updateGroup (data) {
 }
 
 export function getParticiapnts (data) {
+  console.log('Get Participant Data', data)
   return (dispatch) => {
     callApi('v1/contacts', 'post', data)
       .then(res => {
@@ -88,6 +89,7 @@ export function getParticiapnts (data) {
       })
   }
 }
+
 export function getAdmins (data) {
   return (dispatch) => {
     callApi('v1/contacts', 'post', data)
@@ -97,5 +99,12 @@ export function getAdmins (data) {
           dispatch(groupDispatcher.showAdmins(res.payload))
         }
       })
+  }
+}
+
+export function getGroupInvite (groupId) {
+  console.log('Group Invite Link')
+  return (dispatch) => {
+    callApi(`v1/groups/${groupId}/invite`).then(res => dispatch(groupDispatcher.setInviteLink(res.payload)))
   }
 }

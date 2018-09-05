@@ -18,8 +18,6 @@ class GroupDetail extends Component {
     }
     props.getGroupInfo({groupId: props.history.location.state.groupId})
     props.getGroupIcon(props.history.location.state.groupId)
-    props.getParticiapnts({ids: props.history.location.state.participants})
-    props.getAdmins({ids: props.history.location.state.admins})
     this._onChange = this._onChange.bind(this)
     this.showModal = this.showModal.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -35,6 +33,12 @@ class GroupDetail extends Component {
     if (nextProps.groupsInfo) {
       this.setState({title: nextProps.groupsInfo.title})
       //  this.props.getContacts({ids: nextProps.groupsInfo.participants})
+    }
+    if (nextProps.groupsInfo && nextProps.groupsInfo.participants !== this.props.groupsInfo.participants) {
+      this.props.getParticiapnts({ids: nextProps.groupsInfo.participants})
+    }
+    if (nextProps.groupsInfo && nextProps.groupsInfo.admins !== this.props.groupsInfo.admins) {
+      this.props.getAdmins({ids: nextProps.groupsInfo.admins})
     }
     if (nextProps.admins && nextProps.participants) {
       console.log('nextProps.admins', nextProps.admins)

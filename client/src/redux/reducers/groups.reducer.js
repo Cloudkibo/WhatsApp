@@ -4,7 +4,8 @@ let initialState = {
   groups: [],
   participants: [],
   admins: [],
-  groupsInfo: false
+  groupsInfo: false,
+  inviteLink: ''
 }
 
 export function groupReducer (state = initialState, action) {
@@ -29,6 +30,10 @@ export function groupReducer (state = initialState, action) {
     case ActionTypes.FETCH_ADMINS_LIST:
       return Object.assign({}, state, {
         admins: action.data
+      })
+    case ActionTypes.GROUP_INVITE_LINK:
+      return Object.assign({}, state, {
+        inviteLink: action.data
       })
 
     default:
