@@ -60,19 +60,19 @@ class ContactSearch extends Component {
             </Grid>
           </div>
           <div className='col-xl-6'>
-            <Dropdown style={{marginTop: '5px', marginRight: '25px'}} text='Filter by Subscription' icon='filter' floating labeled button className='icon'>
+            <Dropdown style={{marginTop: '5px', marginRight: '25px'}} text='Filter by Availability' icon='filter' floating labeled button className='icon'>
               <Dropdown.Menu>
-                <Dropdown.Header icon='tags' content='Filter By Subscription' />
-                <Dropdown.Item>Subscribed</Dropdown.Item>
-                <Dropdown.Item>Not Subscribed</Dropdown.Item>
+                <Dropdown.Header icon='tags' content='Filter By Availability' />
+                <Dropdown.Item onClick={() => { this.props.applyFilter('subscribed') }}>Subscribed</Dropdown.Item>
+                <Dropdown.Item onClick={() => { this.props.applyFilter('not-subscribed') }}>Not Subscribed</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
-            <Dropdown style={{marginTop: '5px'}} text='Filter by Availability ' icon='filter' floating labeled button className='icon'>
+            <Dropdown style={{marginTop: '5px'}} text='Filter by Subscription ' icon='filter' floating labeled button className='icon'>
               <Dropdown.Menu>
-                <Dropdown.Header icon='tags' content='Filter By Availability' />
-                <Dropdown.Item>On Whatsapp</Dropdown.Item>
-                <Dropdown.Item>Not On Whatsapp</Dropdown.Item>
+                <Dropdown.Header icon='tags' content='Filter By Subscription' />
+                <Dropdown.Item onClick={() => { this.props.applyFilter('onwhatsapp') }}>On Whatsapp</Dropdown.Item>
+                <Dropdown.Item onClick={() => { this.props.applyFilter('not-onwhatsapp') }}>Not On Whatsapp</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

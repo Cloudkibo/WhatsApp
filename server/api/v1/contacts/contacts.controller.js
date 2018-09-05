@@ -118,8 +118,19 @@ exports.create = function (req, res) {
 }
 
 exports.update = function (req, res) {
-  logger.serverLog(TAG, 'Hit the create endpoint')
+  logger.serverLog(TAG, 'Hit the update contact endpoint')
   Contacts.updateOne({phone: req.body.phone}, { $set: {name: req.body.name} })
+    .then(result => {
+      return res.status(200).json({ status: 'success', payload: result })
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', payload: err })
+    })
+}
+
+exports.delete = function (req, res) {
+  logger.serverLog(TAG, 'Hit the delete contact endpoint')
+  Contacts.deleteOne({phone: req.params.phone})
     .then(result => {
       return res.status(200).json({ status: 'success', payload: result })
     })
