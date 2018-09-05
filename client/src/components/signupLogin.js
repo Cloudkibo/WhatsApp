@@ -21,7 +21,7 @@ class Signup extends Component {
                       </div>
                       }
                     </div>
-                    <form onSubmit={(e) => this.props.onSubmit(e, this.refs.password.value, this.refs.rpassword ? this.refs.rpassword.value : null)} className='m-login__form m-form'>
+                    <form onSubmit={(e) => this.props.onSubmit(e, this.refs.password.value, this.refs.rpassword ? this.refs.rpassword.value : null, this.refs.companyName ? this.refs.companyName.value : null, this.refs.name.value ? this.refs.name.value : null, this.refs.phoneNumber.value)} className='m-login__form m-form'>
                       {this.props.type === 'Sign Up' &&
                       <div>
                         <div className='form-group m-form__group'>

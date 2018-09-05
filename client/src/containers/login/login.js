@@ -9,13 +9,8 @@ class login extends Component {
     super(props)
     this.state = {
     }
-    this.handlePwdChange = this.handlePwdChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
   }
-  handlePwdChange (event) {
-    console.log('in handlePwdChange', event.target.value)
-  }
-  onSubmit (event, password, rpassword) {
+  onSubmit = (event, password, rpassword) => {
     event.preventDefault()
     // if (password.length > 6 && password === rpassword) {
     //   let data = {}

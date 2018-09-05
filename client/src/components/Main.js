@@ -5,6 +5,7 @@ import Contacts from './../containers/contacts/contacts'
 import GroupDetail from './../containers/groups/groupDetail'
 import Signup from './../containers/signup/signup'
 import Login from './../containers/login/login'
+import Chat from './../containers/chat/chat'
 
 class Main extends Component {
   render () {
@@ -16,6 +17,7 @@ class Main extends Component {
         <Route exact path='/contacts' component={Contacts} />
         <Route exact path='/signup' component={Signup} />
         <Route exact path='/login' component={Login} />
+        <Route exact path='/chat' component={Chat} />
       </Switch>
 
     )

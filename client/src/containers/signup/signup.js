@@ -17,11 +17,8 @@ class signup extends Component {
       ismatch: false,
       pwdlength: true
     }
-    this.handlePwdChange = this.handlePwdChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-    this.equal = this.equal.bind(this)
   }
-  handlePwdChange (event) {
+  handlePwdChange = (event) => {
     this.setState({password: true})
     if (event.target.value.length <= 6) {
       this.setState({pwdlength: false})
@@ -68,7 +65,7 @@ class signup extends Component {
     this.setState({pwd_color: color})
     console.log('in handlePwdChange', event.target.value)
   }
-  onSubmit (event, password, rpassword, companyName, name, phoneNumber) {
+  onSubmit = (event, password, rpassword, companyName, name, phoneNumber) => {
     event.preventDefault()
     if (password.length > 6 && password === rpassword) {
       let data = {}
@@ -94,7 +91,7 @@ class signup extends Component {
       // this.props.signUp(data, this.msg)
     }
   }
-  equal (e, password) {
+  equal = (e, password) => {
     if (e.target.value === password) {
       this.setState({ismatch: true})
     } else {
