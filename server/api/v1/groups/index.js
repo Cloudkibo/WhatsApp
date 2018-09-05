@@ -12,7 +12,7 @@ router.get('/', controller.index)
 router.post('/GetGroupInformation', controller.GetGroupInformation)
 router.post('/UpdateGroupInformation', controller.UpdateGroupInformation)
 router.post('/CreateGroup', controller.CreateGroup)
-router.post('/CreateGroupInvite', controller.CreateGroupInvite)
+router.get('/:groupId/invite', controller.CreateGroupInvite)
 
 // A/c to REST Standard
 router.post('/:groupId/leave', controller.leave)
