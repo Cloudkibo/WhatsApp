@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { uploadImage, getGroupInfo, getGroupIcon, updateGroup, getParticiapnts, getAdmins } from '../../redux/actions/groups.actions'
+import { withAlert } from 'react-alert'
+
 import PageTile from './../../components/pageTitle'
 import InfoHeader from './../../components/groups/infoHeader'
 import ParticipantList from './../../components/groups/participants'
@@ -63,8 +65,9 @@ class GroupDetail extends Component {
     this.setState({ showModal: false })
   }
   onCreate (title) {
-    console.log('title:', title)
-    if (title === '') { return }
+    if (title === '') {
+      return this.props.alert.show('Group title cannot be empty', {type: 'error'})
+    }
     this.handleClose()
     this.props.updateGroup({title: title, groupId: this.props.groupsInfo.groupId})
   }
@@ -128,4 +131,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(GroupDetail))
