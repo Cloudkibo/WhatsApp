@@ -12,7 +12,8 @@ class CreateGroup extends Component {
         <Modal.Content>
           <Modal.Description>
             <label>Group Title:</label><br />
-            <input className='form-control' placeholder='Enter group title here...' ref='title' onChange={this.props.updateTitle} value={this.props.title} /><br /><br /><br />
+            <input className='form-control' placeholder='Enter group title here...' ref='title'
+              onChange={this.props.updateTitle} value={this.props.title} /><br /><br /><br />
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
