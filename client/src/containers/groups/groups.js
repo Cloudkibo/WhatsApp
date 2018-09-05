@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
+import { withAlert } from 'react-alert'
 import * as GroupActions from '../../redux/actions/groups.actions'
 
 import PageTile from './../../components/pageTitle'
@@ -38,7 +40,7 @@ class Groups extends Component {
   }
   onCreate = (title) => {
     if (title === '') {
-      return
+      return this.props.alert.show('Group title cannot be empty', {type: 'error'})
     }
     this.props.createGroup({title: title, wa_id: '5b8effb1b020ef26b62f955f'})
   }
@@ -99,4 +101,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Groups)
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(Groups))

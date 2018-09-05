@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Signup from './../../components/signup'
+import Signup from './../../components/signupLogin'
 var taiPasswordStrength = require('tai-password-strength')
 var strengthTester = new taiPasswordStrength.PasswordStrength()
 
@@ -15,14 +15,10 @@ class signup extends Component {
       pwdBar: 0,
       pwd_color: 'red',
       ismatch: false,
-      pwdlength: true,
-      error: false
+      pwdlength: true
     }
-    this.handlePwdChange = this.handlePwdChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-    this.equal = this.equal.bind(this)
   }
-  handlePwdChange (event) {
+  handlePwdChange = (event) => {
     this.setState({password: true})
     if (event.target.value.length <= 6) {
       this.setState({pwdlength: false})
@@ -69,33 +65,33 @@ class signup extends Component {
     this.setState({pwd_color: color})
     console.log('in handlePwdChange', event.target.value)
   }
-  onSubmit (event) {
-    this.setState({error: false})
+  onSubmit = (event, password, rpassword, companyName, name, phoneNumber) => {
     event.preventDefault()
-    if (this.refs.password.value.length > 6 && this.refs.password.value === this.refs.rpassword.value) {
+    if (password.length > 6 && password === rpassword) {
       let data = {}
-      if (this.state.account_type === 'team') {
-        data = {
-          name: this.refs.name.value.trim(),
-          email: this.refs.email.value.trim(),
-          domain: this.refs.domain.value.trim(),
-          password: this.refs.password.value.trim(),
-          company_name: this.refs.companyName.value.trim(),
-          uiMode: this.state.mode
-        }
-      } else {
-        data = {
-          name: this.refs.name.value.trim(),
-          email: this.refs.email.value.trim(),
-          password: this.refs.password.value.trim(),
-          uiMode: this.state.mode
-        }
-      }
-
-      this.props.signUp(data, this.msg)
+      console.log('in if', companyName, name, phoneNumber, password, rpassword)
+      // if (this.state.account_type === 'team') {
+      //   data = {
+      //     name: this.refs.name.value.trim(),
+      //     email: this.refs.email.value.trim(),
+      //     domain: this.refs.domain.value.trim(),
+      //     password: this.refs.password.value.trim(),
+      //     company_name: this.refs.companyName.value.trim(),
+      //     uiMode: this.state.mode
+      //   }
+      // } else {
+      //   data = {
+      //     name: this.refs.name.value.trim(),
+      //     email: this.refs.email.value.trim(),
+      //     password: this.refs.password.value.trim(),
+      //     uiMode: this.state.mode
+      //   }
+      // }
+      //
+      // this.props.signUp(data, this.msg)
     }
   }
-  equal (e, password) {
+  equal = (e, password) => {
     if (e.target.value === password) {
       this.setState({ismatch: true})
     } else {
@@ -104,7 +100,7 @@ class signup extends Component {
   }
   render () {
     return (
-      <Signup equal={this.equal} onSubmit={this.onSubmit} handlePwdChange={this.handlePwdChange}
+      <Signup type='Sign Up' equal={this.equal} onSubmit={this.onSubmit} handlePwdChange={this.handlePwdChange}
         password={this.state.password}
         strength={this.state.strength}
         pwdBar={this.state.pwdBar}

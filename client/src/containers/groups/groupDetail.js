@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { withAlert } from 'react-alert'
 import * as GroupActions from '../../redux/actions/groups.actions'
 import PageTile from './../../components/pageTitle'
 import InfoHeader from './../../components/groups/infoHeader'
@@ -46,11 +47,13 @@ class GroupDetail extends Component {
   handleClose = () => {
     this.setState({ showModal: false })
   }
+
   onCreate = (title) => {
-    if (title !== '') {
-      this.handleClose()
-      this.props.updateGroup({title: title, groupId: this.props.groupsInfo.groupId})
+    if (title === '') {
+      return this.props.alert.show('Group title cannot be empty', {type: 'error'})
     }
+    this.handleClose()
+    this.props.updateGroup({title: title, groupId: this.props.groupsInfo.groupId})
   }
   _onChange = (e) => {
     if (e.target.files.length > 0) {
@@ -114,4 +117,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(GroupDetail))
