@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import { withAlert } from 'react-alert'
+import * as _ from 'lodash'
 import * as GroupActions from '../../redux/actions/groups.actions'
 
 import PageTile from './../../components/pageTitle'
@@ -20,7 +21,8 @@ class Groups extends Component {
       showModal: false,
       displayInvite: false,
       title: '',
-      error: false
+      error: false,
+      selectedGroups: []
     }
     props.loadGroupsList()
   }
@@ -55,6 +57,22 @@ class Groups extends Component {
 
   closeInvite = () => { this.setState({displayInvite: false}) }
 
+  handleCheck = (event, groupId) => {
+    let temp = []
+    if (event.target.checked) {
+      temp = _.union(this.state.selectedGroups, [groupId])
+    } else {
+      temp = _.difference(this.state.selectedGroups, [groupId])
+    }
+    this.setState({selectedGroups: temp})
+  }
+
+  leaveGroup = (event, data) => {
+    if (data.value === 'leave_group') {
+      this.props.leaveManyGroups({groupIds: this.state.selectedGroups})
+    }
+  }
+
   render () {
     return (
       <div>
@@ -74,8 +92,9 @@ class Groups extends Component {
               <div className='m-portlet'>
                 <PortletHead title={'Groups'} buttonTitle={'New Group'} buttonAction={() => { this.setState({showModal: true}) }} />
                 <div className='m-portlet__body' />
-                <GroupSearch groups={this.props.groups} />
-                <GroupTable viewDetail={this.goToInfo} groups={this.props.groups} getInvite={this.props.getGroupInvite} />
+                <GroupSearch groups={this.props.groups} leaveGroup={this.leaveGroup} />
+                <GroupTable viewDetail={this.goToInfo} groups={this.props.groups}
+                  getInvite={this.props.getGroupInvite} handleCheck={this.handleCheck} />
               </div>
             </div>
           </div>
@@ -97,7 +116,8 @@ function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     createGroup: GroupActions.createGroup,
     loadGroupsList: GroupActions.loadGroupsList,
-    getGroupInvite: GroupActions.getGroupInvite
+    getGroupInvite: GroupActions.getGroupInvite,
+    leaveManyGroups: GroupActions.leaveManyGroups
   }, dispatch)
 }
 

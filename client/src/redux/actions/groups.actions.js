@@ -95,3 +95,14 @@ export function getGroupInvite (groupId) {
     callApi(`v1/groups/${groupId}/invite`).then(res => dispatch(groupDispatcher.setInviteLink(res.payload)))
   }
 }
+
+export function leaveManyGroups (data) {
+  return (dispatch) => {
+    callApi('v1/groups/leave', 'post', data)
+      .then(res => {
+        if (res.status === 'success') {
+          dispatch(loadGroupsList())
+        }
+      })
+  }
+}
