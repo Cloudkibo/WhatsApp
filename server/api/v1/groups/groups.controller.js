@@ -33,7 +33,7 @@ exports.index = function (req, res) {
 
 exports.GetGroupInformation = function (req, res) {
   logger.serverLog(TAG, 'Hit the information of particular group')
-  Groups.findOne({groupId: req.body.groupId}, (err, group) => {
+  Groups.findOne({groupId: req.params.groupId}, (err, group) => {
     if (err) {
       return logger.serverLog(TAG, `Internal Server error at GetGroupInformation: ${JSON.stringify(err)}`)
     }
@@ -53,7 +53,7 @@ exports.GetGroupInformation = function (req, res) {
       res.status(200).json({ status: 'success', payload: payload })
     } else {
       // We don't have details in our db. We need to fetch from Whatsapp docker.
-      utility.getFromWhatsapp('/v1/groups/' + req.body.groupId, (err, wgroup) => {
+      utility.getFromWhatsapp('/v1/groups/' + req.params.groupId, (err, wgroup) => {
         if (err) {
           // return logger.serverLog(TAG, `Error from Whatsapp docker: ${JSON.stringify(err)}`)
           return logger.serverLog(TAG, `Error from Whatsapp docker: GroupInfo ${err}`)
@@ -82,7 +82,7 @@ exports.GetGroupInformation = function (req, res) {
 
 exports.UpdateGroupInformation = function (req, res) {
   logger.serverLog(TAG, 'Hit the information of particular group')
-  Groups.findOne({groupId: req.body.groupId}, (err, group) => {
+  Groups.findOne({groupId: req.params.groupId}, (err, group) => {
     if (err) {
       return logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
     }
@@ -94,7 +94,7 @@ exports.UpdateGroupInformation = function (req, res) {
         'subject': req.body.title
       }
       // update group on whatsapp docker
-      utility.putToWhatsapp('/v1/groups/' + req.body.groupId, params, (err, result) => {
+      utility.putToWhatsapp('/v1/groups/' + req.params.groupId, params, (err, result) => {
         if (err) {
           return logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
         }

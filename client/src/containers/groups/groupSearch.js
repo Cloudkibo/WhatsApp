@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Search, Select, Button } from 'semantic-ui-react'
+import { Search, Dropdown } from 'semantic-ui-react'
 import _ from 'lodash'
 class GroupSearch extends Component {
   constructor (props) {
@@ -12,7 +12,7 @@ class GroupSearch extends Component {
       results: [],
       value: '',
       bulkActions: [
-        {key: 'leave', value: 'Leave Group', text: 'Leave Group'}
+        {key: 'leave', value: 'leave_group', text: 'Leave Group'}
       ]
     }
   }
@@ -35,20 +35,17 @@ class GroupSearch extends Component {
           : 'https://react.semantic-ui.com/images/wireframe/square-image.png'
       }))
 
-      this.setState({
-        isLoading: false,
-        results: _.filter(payload, isMatch)
-      })
+      this.setState({ isLoading: false, results: _.filter(payload, isMatch) })
     }, 300)
   }
 
   render () {
     return (
 
-      <div className='row' style={{marginTop: -25 + 'px'}}>
-        <div className='col-xl-8'>
+      <div className='row' style={{marginTop: '5px'}}>
+        <div className='col-xl-9'>
           <Search
-            style={{ marginTop: 0 + 'px', padding: 5 + 'px' }}
+            style={{ marginTop: '0px', padding: '5px', marginLeft: '25px' }}
             loading={this.state.isLoading}
             onResultSelect={() => { console.log('Group Selected') }}
             onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
@@ -57,9 +54,10 @@ class GroupSearch extends Component {
             placeholder='Search Groups'
           />
         </div>
-        <div className='col-xl-4'>
-          <Select placeholder='Bulk Actions' options={this.state.bulkActions} />
-          <Button primary style={{marginLeft: 10 + 'px'}}> Execute </Button>
+        <div className='col-xl-3'>
+          <Dropdown button className='icon' floating labeled icon='setting'
+            text='Bulk Actions' options={this.state.bulkActions}
+            onChange={this.props.leaveGroup} style={{marginTop: '5px', marginLeft: '15px'}} />
         </div>
 
       </div>

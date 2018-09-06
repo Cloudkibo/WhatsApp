@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-// import fetch from 'isomorphic-fetch'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { uploadImage, getGroupInfo, getGroupIcon, updateGroup, getParticiapnts, getAdmins } from '../../redux/actions/groups.actions'
+import { withAlert } from 'react-alert'
+import * as GroupActions from '../../redux/actions/groups.actions'
 import PageTile from './../../components/pageTitle'
 import InfoHeader from './../../components/groups/infoHeader'
 import ParticipantList from './../../components/groups/participants'
 import CreateGroup from './../../components/groups/createGroup'
+import * as _ from 'lodash'
 
 class GroupDetail extends Component {
   constructor (props) {
@@ -18,21 +19,13 @@ class GroupDetail extends Component {
     }
     props.getGroupInfo({groupId: props.history.location.state.groupId})
     props.getGroupIcon(props.history.location.state.groupId)
-    this._onChange = this._onChange.bind(this)
-    this.showModal = this.showModal.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.onCreate = this.onCreate.bind(this)
-    this.updateTitle = this.updateTitle.bind(this)
   }
-  updateTitle (e) {
-    console.log('e.target.value')
+  updateTitle = (e) => {
     this.setState({title: e.target.value})
   }
   componentWillReceiveProps (nextProps) {
-    console.log('nextProps', nextProps)
     if (nextProps.groupsInfo) {
       this.setState({title: nextProps.groupsInfo.title})
-      //  this.props.getContacts({ids: nextProps.groupsInfo.participants})
     }
     if (nextProps.groupsInfo && nextProps.groupsInfo.participants !== this.props.groupsInfo.participants) {
       this.props.getParticiapnts({ids: nextProps.groupsInfo.participants})
@@ -41,50 +34,39 @@ class GroupDetail extends Component {
       this.props.getAdmins({ids: nextProps.groupsInfo.admins})
     }
     if (nextProps.admins && nextProps.participants) {
-      console.log('nextProps.admins', nextProps.admins)
-      console.log('nextProps.participants', nextProps.participants)
-      let temp = []
-      for (let i = 0; i < nextProps.participants.length; i++) {
-        let data = {
-          name: nextProps.participants[i].name,
-          admin: false
-        }
-        for (let j = 0; j < nextProps.admins.length; j++) {
-          if (nextProps.participants[i].wa_id === nextProps.admins[j].wa_id) {
-            data.admin = true
-          }
-        }
-        temp.push(data)
-      }
-      console.log('data', temp)
+      let participants = _.differenceBy(nextProps.participants, nextProps.admins, 'wa_id')
+      participants = _.map(participants, (item) => ({name: item.name, wa_id: item.wa_id, admin: false}))
+      let admins = _.map(nextProps.admins, (item) => ({name: item.name, wa_id: item.wa_id, admin: true}))
+      let temp = admins.concat(participants)
       this.setState({participants: temp})
     }
   }
-  showModal (nextProps) {
+  showModal = (nextProps) => {
     this.setState({showModal: true})
   }
-  handleClose () {
+  handleClose = () => {
     this.setState({ showModal: false })
   }
-  onCreate (title) {
-    console.log('title:', title)
-    if (title === '') { return }
+
+  onCreate = (title) => {
+    if (title === '') {
+      return this.props.alert.show('Group title cannot be empty', {type: 'error'})
+    }
     this.handleClose()
     this.props.updateGroup({title: title, groupId: this.props.groupsInfo.groupId})
   }
-  _onChange (e) {
+  _onChange = (e) => {
     if (e.target.files.length > 0) {
-      var files = e.target.files
-      var file = e.target.files[files.length - 1]
-      var fileData = new FormData()
+      let files = e.target.files
+      let file = e.target.files[files.length - 1]
+      let fileData = new FormData()
       fileData.append('file', file)
       fileData.append('filename', file.name)
       fileData.append('filetype', file.type)
       fileData.append('filesize', file.size)
       fileData.append('componentType', this.state.componentType)
-      console.log('file', file)
       this.setState({uploadDescription: 'File is uploading..'})
-      this.props.uploadImage(fileData, this.props.history.location.state.groupId, this)
+      this.props.uploadImage(fileData, this.props.history.location.state.groupId)
     }
   }
   render () {
@@ -92,7 +74,8 @@ class GroupDetail extends Component {
       <div style={{width: 80 + 'vw'}}>
         <PageTile title={'Group Info'} />
         {this.state.showModal &&
-          <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose} heading='Edit Group Title' title={this.state.title} updateTitle={this.updateTitle} />
+          <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose}
+            heading='Edit Group Title' title={this.state.title} updateTitle={this.updateTitle} />
         }
         <div className='m-content'>
           <div className='row'>
@@ -125,13 +108,13 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    uploadImage: uploadImage,
-    getGroupInfo: getGroupInfo,
-    getGroupIcon: getGroupIcon,
-    updateGroup: updateGroup,
-    getParticiapnts: getParticiapnts,
-    getAdmins: getAdmins
+    uploadImage: GroupActions.uploadImage,
+    getGroupInfo: GroupActions.getGroupInfo,
+    getGroupIcon: GroupActions.getGroupIcon,
+    updateGroup: GroupActions.updateGroup,
+    getParticiapnts: GroupActions.getParticiapnts,
+    getAdmins: GroupActions.getAdmins
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(GroupDetail))

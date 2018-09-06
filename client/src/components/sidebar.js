@@ -75,10 +75,10 @@ class Sidebar extends Component {
   showMessages () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-        <a href='' className='m-menu__link m-menu__toggle'>
+        <Link to='/chat'className='m-menu__link m-menu__toggle'>
           <i className='m-menu__link-icon flaticon-squares-4' title='Messages' />
           <span className='m-menu__link-text'>Messages</span>
-        </a>
+        </Link>
       </li>
     )
   }
@@ -89,7 +89,7 @@ class Sidebar extends Component {
         <button className='m-aside-left-close  m-aside-left-close--skin-dark ' id='m_aside_left_close_btn'>
           <i className='la la-close' />
         </button>
-        <div id='m_aside_left' className='m-grid__item m-aside-left  m-aside-left--skin-dark' style={{height: 100 + 'vh'}}>
+        <div id='m_aside_left' className='m-grid__item m-aside-left  m-aside-left--skin-dark' style={{height: 100 + '%'}}>
           <div
             id='m_ver_menu'
             className='m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark m-scroller mCustomScrollbar _mCS_2 mCS-autoHide'

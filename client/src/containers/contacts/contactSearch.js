@@ -50,7 +50,7 @@ class ContactSearch extends Component {
                 <Search
                   style={{ marginTop: 0 + 'px', padding: 5 + 'px', marginLeft: '25px' }}
                   loading={this.state.isLoading}
-                  onResultSelect={()=>{this.handleResultSelect(this.state.shownContacts)}}
+                  onResultSelect={() => { this.handleResultSelect(this.state.shownContacts) }}
                   onSearchChange={debounce(this.handleSearchChange, 500, { leading: true })}
                   results={this.state.results}
                   value={this.state.value}
@@ -60,7 +60,9 @@ class ContactSearch extends Component {
             </Grid>
           </div>
           <div className='col-xl-6'>
-            <Dropdown style={{marginTop: '5px', marginRight: '25px'}} text='Filter by Availability' icon='filter' floating labeled button className='icon'>
+            <Dropdown style={{marginTop: '5px', marginRight: '25px'}} text='Filter by Availability'
+              icon='filter' floating labeled button className='icon'>
+
               <Dropdown.Menu>
                 <Dropdown.Header icon='tags' content='Filter By Availability' />
                 <Dropdown.Item onClick={() => { this.props.applyFilter('subscribed') }}>Subscribed</Dropdown.Item>
@@ -68,7 +70,9 @@ class ContactSearch extends Component {
               </Dropdown.Menu>
             </Dropdown>
 
-            <Dropdown style={{marginTop: '5px'}} text='Filter by Subscription ' icon='filter' floating labeled button className='icon'>
+            <Dropdown style={{marginTop: '5px'}} text='Filter by Subscription ' icon='filter'
+              floating labeled button className='icon'>
+
               <Dropdown.Menu>
                 <Dropdown.Header icon='tags' content='Filter By Subscription' />
                 <Dropdown.Item onClick={() => { this.props.applyFilter('onwhatsapp') }}>On Whatsapp</Dropdown.Item>

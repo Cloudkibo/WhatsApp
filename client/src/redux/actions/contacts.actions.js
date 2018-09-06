@@ -12,7 +12,7 @@ export function loadContactsList () {
 
 export function updateContact (phone, updatedName, alert) {
   return (dispatch) => {
-    callApi('v1/contacts/update', 'post', {phone: phone, name: updatedName})
+    callApi(`v1/contacts/${phone}`, 'put', {name: updatedName})
       .then(res => {
         console.log('response from update contact', res)
         if (res.status === 'success') {
@@ -49,7 +49,7 @@ export function uploadFile (data, alert) {
   return (dispatch) => {
     // we need to make separate request because we want the browser to make the headers for multiparty request ()
     // eslint-disable-next-line no-undef
-    fetch(`${API_URL}/v1/contacts/uploadContacts`, {
+    fetch(`${API_URL}/v1/contacts/upload`, {
       method: 'post',
       body: data
       // eslint-disable-next-line no-undef

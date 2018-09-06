@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
-import Signup from './../../components/signup'
+import { withAlert } from 'react-alert'
+import * as SignupActions from '../../redux/actions/signup.actions'
+import Signup from './../../components/signupLogin'
 var taiPasswordStrength = require('tai-password-strength')
 var strengthTester = new taiPasswordStrength.PasswordStrength()
 
@@ -15,14 +16,23 @@ class signup extends Component {
       pwdBar: 0,
       pwd_color: 'red',
       ismatch: false,
-      pwdlength: true,
-      error: false
+      pwdlength: true
     }
-    this.handlePwdChange = this.handlePwdChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-    this.equal = this.equal.bind(this)
   }
-  handlePwdChange (event) {
+  componentWillMount () {
+  document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
+  }
+
+  componentWillUnmount () {
+    document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-aside-left--fixed m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
+  }
+  componentWillReceiveProps (nextprops) {
+    this.setState({error: false})
+    if (nextprops.successSignup) {
+      this.props.history.push({pathname: '/'})
+    }
+  }
+  handlePwdChange = (event) => {
     this.setState({password: true})
     if (event.target.value.length <= 6) {
       this.setState({pwdlength: false})
@@ -67,35 +77,14 @@ class signup extends Component {
     this.setState({strength: text})
     this.setState({pwdBar: bar})
     this.setState({pwd_color: color})
-    console.log('in handlePwdChange', event.target.value)
   }
-  onSubmit (event) {
-    this.setState({error: false})
+  onSubmit = (event, password, rpassword, companyName, email, phoneNumber) => {
     event.preventDefault()
-    if (this.refs.password.value.length > 6 && this.refs.password.value === this.refs.rpassword.value) {
-      let data = {}
-      if (this.state.account_type === 'team') {
-        data = {
-          name: this.refs.name.value.trim(),
-          email: this.refs.email.value.trim(),
-          domain: this.refs.domain.value.trim(),
-          password: this.refs.password.value.trim(),
-          company_name: this.refs.companyName.value.trim(),
-          uiMode: this.state.mode
-        }
-      } else {
-        data = {
-          name: this.refs.name.value.trim(),
-          email: this.refs.email.value.trim(),
-          password: this.refs.password.value.trim(),
-          uiMode: this.state.mode
-        }
-      }
-
-      this.props.signUp(data, this.msg)
+    if (password.length > 6 && password === rpassword) {
+      this.props.signUp({companyName: companyName, email: email, phone: phoneNumber, password: password}, this.props.alert)
     }
   }
-  equal (e, password) {
+  equal = (e, password) => {
     if (e.target.value === password) {
       this.setState({ismatch: true})
     } else {
@@ -104,7 +93,7 @@ class signup extends Component {
   }
   render () {
     return (
-      <Signup equal={this.equal} onSubmit={this.onSubmit} handlePwdChange={this.handlePwdChange}
+      <Signup type='Sign Up' equal={this.equal} onSubmit={this.onSubmit} handlePwdChange={this.handlePwdChange}
         password={this.state.password}
         strength={this.state.strength}
         pwdBar={this.state.pwdBar}
@@ -117,13 +106,15 @@ class signup extends Component {
 
 function mapStateToProps (state) {
   return {
-
+    successSignup: (state.signupReducer.successSignup),
+    errorSignup: (state.signupReducer.errorSignup)
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
+    signUp: SignupActions.signUp
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(signup)
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(signup))
