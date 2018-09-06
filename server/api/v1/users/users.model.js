@@ -85,7 +85,6 @@ UserSchema.methods = {
    * @api public
    */
   authenticate: function (plainText) {
-    console.log(plainText)
     console.log(this.encryptPassword(plainText))
     return this.encryptPassword(plainText) === this.hashedPassword
   },
@@ -108,7 +107,6 @@ UserSchema.methods = {
    * @api public
    */
   encryptPassword: function (password) {
-    console.log(password, this.salt)
     if (!password || !this.salt) return ''
     var salt = Buffer.from(this.salt, 'base64')
     return crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('base64')
