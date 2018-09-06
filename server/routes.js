@@ -4,7 +4,8 @@ module.exports = function (app) {
   app.use('/api/v1/test', require('./api/v1/test'))
   app.use('/api/v1/groups', require('./api/v1/groups'))
   app.use('/api/v1/contacts', require('./api/v1/contacts'))
-  app.use('/api/v1/webhook', require('./api/v1/webhooks'))
+  app.use('/api/v1/users', require('./api/v1/users'))
+  app.use('/auth', require('./auth'))
   // auth middleware go here
 
   app.get('/', (req, res) => {

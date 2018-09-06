@@ -258,6 +258,7 @@ exports.postIcon = function (req, res) {
 
   fs.rename(req.files.file.path, dir + '/userfiles' + serverPath, (err) => {
     if (err) {
+      logger.serverLog(TAG, `Internal Server error at: ${JSON.stringify(err)}`)
       return res.status(500).json({
         status: 'failed',
         description: 'internal server error' + JSON.stringify(err)
@@ -329,15 +330,11 @@ exports.deleteIcon = function (req, res) {
 }
 
 exports.getIcon = function (req, res) {
+  logger.serverLog(TAG, `Hit the getIcon endpoint`)
   Groups.findOne({groupId: req.params.groupId})
     .exec()
     .then(group => {
-      if (group.iconURL === '') {
-        // Icon is not set. Send a default avatar
-        let dir = path.resolve(__dirname, '../../../../uploaded_files/')
-        res.sendFile(dir + '/groupAvatar.png')
-      } else {
-        // Icon is set
+      if (group.iconURL !== '') {
         res.sendFile(group.iconURL)
       }
     })
