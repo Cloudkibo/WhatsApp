@@ -15,7 +15,6 @@ class login extends Component {
   }
   onSubmit = (event, password, rpassword, companyName, email, phoneNumber) => {
     event.preventDefault()
-    console.log('isEmail', isEmail(email))
     if (isEmail(email)) {
       this.props.logIn({companyName: companyName, email: email, password: password}, this.props.alert)
     } else {
