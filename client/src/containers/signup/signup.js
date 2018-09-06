@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
+import { withAlert } from 'react-alert'
+import * as SignupActions from '../../redux/actions/signup.actions'
 import Signup from './../../components/signupLogin'
 var taiPasswordStrength = require('tai-password-strength')
 var strengthTester = new taiPasswordStrength.PasswordStrength()
@@ -16,6 +17,19 @@ class signup extends Component {
       pwd_color: 'red',
       ismatch: false,
       pwdlength: true
+    }
+  }
+  componentWillMount () {
+  document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
+  }
+
+  componentWillUnmount () {
+    document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-aside-left--fixed m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
+  }
+  componentWillReceiveProps (nextprops) {
+    this.setState({error: false})
+    if (nextprops.successSignup) {
+      this.props.history.push({pathname: '/'})
     }
   }
   handlePwdChange = (event) => {
@@ -65,11 +79,10 @@ class signup extends Component {
     this.setState({pwd_color: color})
     console.log('in handlePwdChange', event.target.value)
   }
-  onSubmit = (event, password, rpassword, companyName, name, phoneNumber) => {
+  onSubmit = (event, password, rpassword, companyName, email, phoneNumber) => {
     event.preventDefault()
     if (password.length > 6 && password === rpassword) {
-      let data = {}
-      console.log('in if', companyName, name, phoneNumber, password, rpassword)
+      console.log('in if', companyName, email, phoneNumber, password, rpassword)
       // if (this.state.account_type === 'team') {
       //   data = {
       //     name: this.refs.name.value.trim(),
@@ -88,7 +101,7 @@ class signup extends Component {
       //   }
       // }
       //
-      // this.props.signUp(data, this.msg)
+      this.props.signUp({companyName: companyName, email: email, phone: phoneNumber, password: password}, this.props.alert)
     }
   }
   equal = (e, password) => {
@@ -113,13 +126,15 @@ class signup extends Component {
 
 function mapStateToProps (state) {
   return {
-
+    successSignup: (state.signupReducer.successSignup),
+    errorSignup: (state.signupReducer.errorSignup)
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
+    signUp: SignupActions.signUp
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(signup)
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(signup))

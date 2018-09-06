@@ -18,13 +18,17 @@ class App extends Component {
     this.props.getTestMessage()
   }
   componentWillMount () {
-    console.log('location out')
-    this.props.history.listen(location => {
-      console.log('location', location.pathname)
-      if (location.pathname === '/signup' || location.pathname === '/login') {
-        this.setState({showSidebar: false})
+    if (window.location.pathname === '/signup' || window.location.pathname === '/login') {
+      this.setState({showSidebar: false})
+      /* eslint-disable */
+      if ($('#sidebarDiv')) {
+        $('#sidebarDiv').removeClass('hideSideBar')
       }
-    })
+      if ($('#headerDiv')) {
+        $('#headerDiv').removeClass('hideHeader')
+      }
+      /* eslint-enable */
+    }
   }
   render () {
     return (

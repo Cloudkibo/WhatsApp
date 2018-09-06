@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { isEmail } from '../../utility/utils'
+import { withAlert } from 'react-alert'
 
+import * as LoginActions from '../../redux/actions/login.actions'
 import Login from './../../components/signupLogin'
 
 class login extends Component {
@@ -10,31 +13,26 @@ class login extends Component {
     this.state = {
     }
   }
-  onSubmit = (event, password, rpassword) => {
+  onSubmit = (event, password, rpassword, companyName, email, phoneNumber) => {
     event.preventDefault()
-    // if (password.length > 6 && password === rpassword) {
-    //   let data = {}
-    //   console.log('in if')
-      // if (this.state.account_type === 'team') {
-      //   data = {
-      //     name: this.refs.name.value.trim(),
-      //     email: this.refs.email.value.trim(),
-      //     domain: this.refs.domain.value.trim(),
-      //     password: this.refs.password.value.trim(),
-      //     company_name: this.refs.companyName.value.trim(),
-      //     uiMode: this.state.mode
-      //   }
-      // } else {
-      //   data = {
-      //     name: this.refs.name.value.trim(),
-      //     email: this.refs.email.value.trim(),
-      //     password: this.refs.password.value.trim(),
-      //     uiMode: this.state.mode
-      //   }
-      // }
-      //
-      // this.props.signUp(data, this.msg)
-    // /}
+    console.log('isEmail', isEmail(email))
+    if (isEmail(email)) {
+      this.props.logIn({companyName: companyName, email: email, password: password}, this.props.alert)
+    } else {
+      this.props.logIn({companyName: companyName, phone: email, password: password}, this.props.alert)
+    }
+  }
+  componentWillMount () {
+  document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
+  }
+  componentWillReceiveProps (nextprops) {
+    if (nextprops.successMessage) {
+      this.props.history.push({pathname: '/'})
+    }
+  }
+
+  componentWillUnmount () {
+    document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-aside-left--fixed m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
   }
   render () {
     return (
@@ -45,13 +43,15 @@ class login extends Component {
 
 function mapStateToProps (state) {
   return {
-
+    errorMessage: (state.loginReducer.errorMessage),
+    successMessage: (state.loginReducer.successMessage)
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
+    logIn: LoginActions.logIn
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(login)
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert(login))

@@ -6,11 +6,30 @@ import GroupDetail from './../containers/groups/groupDetail'
 import Signup from './../containers/signup/signup'
 import Login from './../containers/login/login'
 import Chat from './../containers/chat/chat'
+import auth from './../utility/auth.service'
 
+function requireAuth (nextState, replace) {
+  console.log('nextState', nextState)
+  if (!auth.loggedIn()) {
+    replace({
+      pathname: '/',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
+function redirectAuthUsers (nextState, replace) {
+  console.log('redirectAuthUsers', nextState)
+  if (auth.loggedIn()) {
+    replace({
+      pathname: '/',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
 class Main extends Component {
   render () {
     return (
-
       <Switch>
         <Route exact path='/' component={Groups} />
         <Route exact path='/groupDetail' component={GroupDetail} />
