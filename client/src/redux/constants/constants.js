@@ -12,3 +12,11 @@ export const FETCH_ADMINS_LIST = 'FETCH_ADMINS_LIST'
 
 // Constants for contacts
 export const FETCH_CONTACTS_LIST = 'FETCH_CONTACTS_LIST'
+
+// Constants for login
+export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+
+// constants for sign up
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
+export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'

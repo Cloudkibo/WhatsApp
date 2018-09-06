@@ -21,20 +21,18 @@ class Signup extends Component {
                       </div>
                       }
                     </div>
-                    <form onSubmit={(e) => this.props.onSubmit(e, this.refs.password.value, this.refs.rpassword ? this.refs.rpassword.value : null, this.refs.companyName ? this.refs.companyName.value : null, this.refs.name.value ? this.refs.name.value : null, this.refs.phoneNumber.value)} className='m-login__form m-form'>
-                      {this.props.type === 'Sign Up' &&
-                      <div>
-                        <div className='form-group m-form__group'>
-                          <input className='form-control m-input' type='text' placeholder='Company Name' ref='companyName' required style={{ WebkitBoxShadow: 'none', boxShadow: 'none', height: '45px' }} />
-                        </div>
-                        <div className='form-group m-form__group'>
-                          <input className='form-control m-input' type='text' placeholder='Username' ref='name' required style={{ WebkitBoxShadow: 'none', boxShadow: 'none', height: '45px' }} />
-                        </div>
+                    <form onSubmit={(e) => this.props.onSubmit(e, this.refs.password ? this.refs.password.value : null, this.refs.rpassword ? this.refs.rpassword.value : null, this.refs.companyName ? this.refs.companyName.value : null, this.refs.email ? this.refs.email.value : null, this.refs.phoneNumber ? this.refs.phoneNumber.value : null)} className='m-login__form m-form'>
+                      <div className='form-group m-form__group'>
+                        <input className='form-control m-input' type='text' placeholder='Company Name' ref='companyName' required style={{ WebkitBoxShadow: 'none', boxShadow: 'none', height: '45px' }} />
                       </div>
-                      }
+                      <div className='form-group m-form__group'>
+                        <input className='form-control m-input' type={this.props.type === 'Sign Up' ? 'email' : 'text'} placeholder={this.props.type === 'Sign Up' ? 'Email Address' : 'Email Address or Phone Number'} ref='email' required style={{ WebkitBoxShadow: 'none', boxShadow: 'none', height: '45px' }} />
+                      </div>
+                      {this.props.type === 'Sign Up' &&
                       <div className='form-group m-form__group'>
                         <input className='form-control m-input' type='number' placeholder='Phone Number e.g. +44 7911 123456' ref='phoneNumber' required style={{ WebkitBoxShadow: 'none', boxShadow: 'none', height: '45px' }} />
                       </div>
+                      }
                       <div className='form-group m-form__group'>
                         <input className='form-control m-input' type='password' placeholder='Password' ref='password' required style={{ WebkitBoxShadow: 'none', boxShadow: 'none', height: '45px' }}
                           onChange={this.props.handlePwdChange} />
@@ -67,6 +65,12 @@ class Signup extends Component {
                       </div>
                     </form>
                   </div>
+                </div>
+              </div>
+              <div className='m-stack__item m-stack__item--center'>
+                <div className='m-login__account'>
+                  <span className='m-login__account-msg'>Don't have an account yet?</span>&nbsp;&nbsp;
+                  <a href='/signUp' id='m_login_signup' target='_blank' className='m-link m-link--focus m-login__account-link'>Sign Up</a>
                 </div>
               </div>
             </div>
