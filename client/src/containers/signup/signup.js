@@ -74,9 +74,7 @@ class signup extends Component {
         bar = 0
         color = 'red'
     }
-    this.setState({strength: text})
-    this.setState({pwdBar: bar})
-    this.setState({pwd_color: color})
+    this.setState({strength: text, pwdBar: bar, pwd_color: color})
   }
   onSubmit = (event, password, rpassword, companyName, email, phoneNumber) => {
     event.preventDefault()
