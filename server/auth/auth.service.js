@@ -4,7 +4,7 @@ const config = require('../config/environment')
 const jwt = require('jsonwebtoken')
 const expressJwt = require('express-jwt')
 const compose = require('composable-middleware')
-const Users = require('../api/user/users.model')
+const Users = require('../api/v1/users/users.model')
 const validateJwt = expressJwt({secret: config.secrets.session})
 
 const logger = require('../components/logger')
@@ -80,6 +80,7 @@ function setTokenCookie (req, res) {
   logger.serverLog(TAG, `Here is the signed token: ${token}`)
   res.cookie('token', token)
   res.redirect('/')
+  return res
 }
 
 exports.isAuthenticated = isAuthenticated

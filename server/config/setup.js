@@ -1,6 +1,6 @@
 const http = require('http')
 const logger = require('./../components/logger')
-
+const registerWebhooks = require('./../api/v1/webhooks/registerWebhooks')
 const TAG = 'config/setup.js'
 
 module.exports = function (app, config) {
@@ -11,6 +11,7 @@ module.exports = function (app, config) {
   require('./socketio').setup(socket)
 
   server.listen(config.port, () => {
+    registerWebhooks.registeryInit()
     logger.serverLog(TAG, `Whatsapp server STARTED on ${
       config.port} in ${config.env} mode`)
   })

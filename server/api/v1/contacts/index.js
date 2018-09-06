@@ -6,8 +6,10 @@ const router = express.Router()
 const controller = require('./contacts.controller')
 
 router.get('/', controller.index)
-router.post('/uploadContacts', multipartyMiddleware, controller.uploadContacts)
+router.post('/', controller.fetchMany)
+router.post('/upload', multipartyMiddleware, controller.uploadContacts)
 router.post('/create', controller.create)
-router.post('/update', controller.update)
+router.put('/:phone', controller.update)
+router.delete('/:phone', controller.delete)
 
 module.exports = router

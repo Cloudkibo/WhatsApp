@@ -1,13 +1,20 @@
 const express = require('express')
+const multiparty = require('connect-multiparty')
+const multipartyMiddleware = multiparty()
 
 const router = express.Router()
 
 const controller = require('./groups.controller')
 
 router.get('/', controller.index)
-router.post('/GetGroupInformation', controller.GetGroupInformation)
-router.post('/UpdateGroupInformation', controller.UpdateGroupInformation)
-router.post('/CreateGroup', controller.CreateGroup)
-router.post('/CreateGroupInvite', controller.CreateGroupInvite)
+router.get('/:groupId', controller.GetGroupInformation)
+router.put('/:groupId', controller.UpdateGroupInformation)
+router.post('/', controller.CreateGroup)
+router.get('/:groupId/invite', controller.CreateGroupInvite)
+router.post('/:groupId/leave', controller.leave)
+router.post('/leave', controller.leaveMany)
+router.post('/:groupId/icon', multipartyMiddleware, controller.postIcon)
+router.delete('/:groupId/icon', controller.deleteIcon)
+router.get('/:groupId/icon', controller.getIcon)
 
 module.exports = router
