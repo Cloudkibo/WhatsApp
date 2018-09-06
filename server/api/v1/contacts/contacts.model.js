@@ -7,6 +7,8 @@ let contactSchema = new Schema({
   isActive: String,
   status: String,
   wa_id: String,
+  customID: String,
+  customURL: String,
   isSubscribed: { type: Boolean, default: false },
   createtime: { type: Date, default: Date.now },
   updatetime: { type: Date }

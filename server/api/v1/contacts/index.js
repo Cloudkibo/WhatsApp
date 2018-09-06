@@ -10,6 +10,7 @@ router.post('/', controller.fetchMany)
 router.post('/upload', multipartyMiddleware, controller.uploadContacts)
 router.post('/create', controller.create)
 router.put('/:phone', controller.update)
+router.put('/:phone/custom', controller.updateCustom)
 router.delete('/:phone', controller.delete)
 
 module.exports = router
