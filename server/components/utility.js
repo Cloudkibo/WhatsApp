@@ -22,7 +22,17 @@ let header = {
 function getFromWhatsapp (endpoint, cb) {
   axios.get(config.docker_url + endpoint)
     .then(resp => {
-      cb(null, resp.data)
+      cb(null, resp)
+    })
+    .catch(err => {
+      cb(err, null)
+    })
+}
+
+function deleteFromWhatsapp (endpoint, cb) {
+  axios.delete(config.docker_url + endpoint)
+    .then(resp => {
+      cb(null, resp)
     })
     .catch(err => {
       cb(err, null)
@@ -32,7 +42,19 @@ function getFromWhatsapp (endpoint, cb) {
 function postToWhatsapp (endpoint, params, cb) {
   axios.post(config.docker_url + endpoint, params)
     .then(resp => {
-      cb(null, resp.data)
+      cb(null, resp)
+    })
+    .catch(err => {
+      cb(err, null)
+    })
+}
+
+function postToWhatsappHeaders (endpoint, params, headers, cb) {
+  axios.post(config.docker_url + endpoint, params, {
+    headers: headers
+  })
+    .then(resp => {
+      cb(null, resp)
     })
     .catch(err => {
       cb(err, null)
@@ -42,7 +64,7 @@ function postToWhatsapp (endpoint, params, cb) {
 function putToWhatsapp (endpoint, params, cb) {
   axios.put(config.docker_url + endpoint, params)
     .then(resp => {
-      cb(null, resp.data)
+      cb(null, resp)
     })
     .catch(err => {
       cb(err, null)
@@ -51,5 +73,7 @@ function putToWhatsapp (endpoint, params, cb) {
 
 exports.validateUrl = validateUrl
 exports.getFromWhatsapp = getFromWhatsapp
+exports.deleteFromWhatsapp = deleteFromWhatsapp
 exports.postToWhatsapp = postToWhatsapp
+exports.postToWhatsappHeaders = postToWhatsappHeaders
 exports.putToWhatsapp = putToWhatsapp

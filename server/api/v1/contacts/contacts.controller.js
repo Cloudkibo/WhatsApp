@@ -20,6 +20,18 @@ exports.index = function (req, res) {
     })
 }
 
+exports.fetchMany = function (req, res) {
+  logger.serverLog(TAG, 'Hit the sendToWhatsapp endpoint')
+  Contacts.find({wa_id: {$in: req.body.ids}})
+    .exec()
+    .then(contacts => {
+      return res.status(200).json({ status: 'success', payload: contacts })
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', payload: err })
+    })
+}
+
 exports.uploadContacts = function (req, res) {
   logger.serverLog(TAG, 'Hit the sendToWhatsapp endpoint')
   let today = new Date()
@@ -65,17 +77,16 @@ exports.uploadContacts = function (req, res) {
             return res.status(500).json({ status: 'failed at getting status from docker', payload: err })
           }
 
-          result.contacts.forEach((contact, index) => {
+          result.data.contacts.forEach((contact, index) => {
             contact.status === 'valid' ? localPayload[index].wa_id = contact.wa_id : valid = true
             localPayload[index].status = contact.status
           })
-
           localPayload.forEach((item, index) => {
             Contacts.update({phone: item.phone}, item, {upsert: true})
               .exec()
               .then((savedObj) => {
                 // Only runs at last index
-                if (index === localPayload.length - 1) {
+                if (index === (localPayload.length - 1)) {
                   Contacts.find({phone: { $in: dockerPayload }})
                     .exec()
                     .then(payloadForClient => {
@@ -96,7 +107,7 @@ exports.uploadContacts = function (req, res) {
 }
 
 exports.create = function (req, res) {
-  logger.serverLog(TAG, 'Hit the create endpoint')
+  logger.serverLog(TAG, 'Hit the create endpoint' + JSON.stringify(req.body.contacts))
   Contacts.create(req.body.contacts)
     .then(contacts => {
       return res.status(200).json({ status: 'success', payload: contacts })
@@ -107,8 +118,19 @@ exports.create = function (req, res) {
 }
 
 exports.update = function (req, res) {
-  logger.serverLog(TAG, 'Hit the create endpoint')
-  Contacts.updateOne({phone: req.body.phone}, { $set: {name: req.body.name} })
+  logger.serverLog(TAG, 'Hit the update contact endpoint')
+  Contacts.updateOne({ phone: req.params.phone }, { $set: {name: req.body.name} })
+    .then(result => {
+      return res.status(200).json({ status: 'success', payload: result })
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', payload: err })
+    })
+}
+
+exports.delete = function (req, res) {
+  logger.serverLog(TAG, 'Hit the delete contact endpoint')
+  Contacts.deleteOne({phone: req.params.phone})
     .then(result => {
       return res.status(200).json({ status: 'success', payload: result })
     })
