@@ -77,30 +77,10 @@ class signup extends Component {
     this.setState({strength: text})
     this.setState({pwdBar: bar})
     this.setState({pwd_color: color})
-    console.log('in handlePwdChange', event.target.value)
   }
   onSubmit = (event, password, rpassword, companyName, email, phoneNumber) => {
     event.preventDefault()
     if (password.length > 6 && password === rpassword) {
-      console.log('in if', companyName, email, phoneNumber, password, rpassword)
-      // if (this.state.account_type === 'team') {
-      //   data = {
-      //     name: this.refs.name.value.trim(),
-      //     email: this.refs.email.value.trim(),
-      //     domain: this.refs.domain.value.trim(),
-      //     password: this.refs.password.value.trim(),
-      //     company_name: this.refs.companyName.value.trim(),
-      //     uiMode: this.state.mode
-      //   }
-      // } else {
-      //   data = {
-      //     name: this.refs.name.value.trim(),
-      //     email: this.refs.email.value.trim(),
-      //     password: this.refs.password.value.trim(),
-      //     uiMode: this.state.mode
-      //   }
-      // }
-      //
       this.props.signUp({companyName: companyName, email: email, phone: phoneNumber, password: password}, this.props.alert)
     }
   }
