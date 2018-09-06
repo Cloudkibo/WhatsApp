@@ -73,17 +73,19 @@ class GroupDetail extends Component {
     this.props.updateGroup({title: title, groupId: this.props.groupsInfo.groupId})
   }
   _onChange (e) {
-    var files = e.target.files
-    var file = e.target.files[files.length - 1]
-    var fileData = new FormData()
-    fileData.append('file', file)
-    fileData.append('filename', file.name)
-    fileData.append('filetype', file.type)
-    fileData.append('filesize', file.size)
-    fileData.append('componentType', this.state.componentType)
-    console.log('file', file)
-    this.setState({uploadDescription: 'File is uploading..'})
-    this.props.uploadImage(fileData, this.props.history.location.state.groupId)
+    if (e.target.files.length > 0) {
+      var files = e.target.files
+      var file = e.target.files[files.length - 1]
+      var fileData = new FormData()
+      fileData.append('file', file)
+      fileData.append('filename', file.name)
+      fileData.append('filetype', file.type)
+      fileData.append('filesize', file.size)
+      fileData.append('componentType', this.state.componentType)
+      console.log('file', file)
+      this.setState({uploadDescription: 'File is uploading..'})
+      this.props.uploadImage(fileData, this.props.history.location.state.groupId, this)
+    }
   }
   render () {
     return (

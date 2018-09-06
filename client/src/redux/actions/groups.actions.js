@@ -9,9 +9,11 @@ export function uploadImage (fileData, groupId) {
       method: 'post',
       body: fileData
     // eslint-disable-next-line no-undef
-    }).then((res) => res.json()).then((res) => res).then(res => {
-      console.log('response from uploadImage', res)
-      dispatch(getGroupInfo({groupId: groupId}))
+    }).then((res) => res.json()).then(res => {
+      if (res.status === 'success') {
+        console.log('response from uploadImage', res)
+        dispatch(getGroupInfo({groupId: groupId}))
+      }
     })
   }
 }
