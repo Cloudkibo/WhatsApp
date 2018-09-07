@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { filter } from 'lodash'
 import { withAlert } from 'react-alert'
 import * as ContactActions from '../../redux/actions/contacts.actions'
-
+import { log } from './../../utility/socketio'
 import PageTile from './../../components/pageTitle'
 import HelpAlert from './../../components/themeComponents/helpAlert'
 import PortletHead from './../../components/themeComponents/portletHead'
@@ -27,6 +27,8 @@ class Contacts extends Component {
   }
 
   componentWillMount () {
+    log('Hello From Contacts', {data: 'data'})
+
     this.props.loadContactsList()
   }
 

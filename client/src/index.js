@@ -7,6 +7,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import history from './history'
+import { initiateSocket } from './utility/socketio'
 const store = configureStore()
 const rootElement = document.getElementById('root')
 
@@ -18,6 +19,8 @@ const options = {
   transition: 'scale',
   zIndex: 100
 }
+
+initiateSocket(store)
 
 class Root extends React.Component {
   render () {

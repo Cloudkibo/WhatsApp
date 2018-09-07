@@ -128,6 +128,20 @@ exports.update = function (req, res) {
     })
 }
 
+exports.updateCustom = function (req, res) {
+  logger.serverLog(TAG, 'Hit the update custom url contact endpoint')
+  Contacts.updateOne(
+    { phone: req.params.phone },
+    { $set: {customID: req.body.customID, customURL: req.body.customURL}
+    })
+    .then(result => {
+      return res.status(200).json({ status: 'success', payload: result })
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', payload: err })
+    })
+}
+
 exports.delete = function (req, res) {
   logger.serverLog(TAG, 'Hit the delete contact endpoint')
   Contacts.deleteOne({phone: req.params.phone})
