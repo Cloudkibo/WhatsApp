@@ -7,6 +7,7 @@ module.exports = function (app) {
   app.use('/api/v1/users', require('./api/v1/users'))
   app.use('/webhooks', require('./api/v1/webhooks'))
   app.use('/auth', require('./auth'))
+  app.use('/api/v1/webhook', require('./api/v1/webhooks'))
   // auth middleware go here
 
   app.get('/', (req, res) => {
