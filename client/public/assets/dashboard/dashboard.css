@@ -1,3 +1,7 @@
+.group-icon {
+  display: block !important;
+}
+
 .substring-dashboard {
   display: -webkit-box;
   overflow: hidden;
