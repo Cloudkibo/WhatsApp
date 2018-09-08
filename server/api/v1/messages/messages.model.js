@@ -1,7 +1,7 @@
 let mongoose = require('mongoose')
 let Schema = mongoose.Schema
 
-let messageSchema = new Schema({ 
+let messageSchema = new Schema({
   recepientType: String,
   to: String,
   type: String,
