@@ -92,7 +92,7 @@ export function getAdmins (data) {
 
 export function getGroupInvite (groupId) {
   return (dispatch) => {
-    callApi(`v1/groups/${groupId}/invite`).then(res => dispatch(groupDispatcher.setInviteLink(res.payload)))
+    return callApi(`v1/groups/${groupId}/invite`)
   }
 }
 

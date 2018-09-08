@@ -1,5 +1,6 @@
 const init = require('./initWebhooks')
 const Validator = require('jsonschema').Validator
+const _cloneDeep = require('lodash/cloneDeep')
 const validator = new Validator()
 const logger = require('./../../../components/logger')
 const TAG = '/server/api/v1/groups/groups.controller.js'
@@ -11,10 +12,9 @@ exports.index = function (req, res) {
 
 exports.webhook = function (req, res) {
   try {
-    logger.serverLog(TAG, `Payload Received on Webhook ${JSON.stringify(req.body)}`)
     init.getRegistry().map((entry) => {
       if (validator.validate(req.body, entry.schema).valid) {
-        entry.callback(JSON.parse(JSON.stringify(req.body)))
+        entry.callback(_cloneDeep(req.body))
       }
     })
     return res.status(200).json({})
