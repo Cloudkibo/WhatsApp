@@ -1,6 +1,7 @@
 
 module.exports = function (app) {
   // API middlewares go here
+  app.use('/api/v1/media', require('./api/v1/media'))
   app.use('/api/v1/test', require('./api/v1/test'))
   app.use('/api/v1/groups', require('./api/v1/groups'))
   app.use('/api/v1/contacts', require('./api/v1/contacts'))
