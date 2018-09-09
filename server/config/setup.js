@@ -8,13 +8,13 @@ module.exports = function (app, config) {
   // TODO: we will enable this while doing socket io
   const socket = require('socket.io').listen(server)
 
+  require('./socketio').setup(socket)
+
   server.listen(config.port, () => {
     registerWebhooks.registeryInit()
     logger.serverLog(TAG, `Whatsapp server STARTED on ${
       config.port} in ${config.env} mode`)
   })
-
-  require('./socketio').setup(socket)
 
   if (config.env === 'production') {
     console.log('KiboPush server STARTED on %s in %s mode', config.port, config.env)
