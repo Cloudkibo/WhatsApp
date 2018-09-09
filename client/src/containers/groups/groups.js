@@ -87,7 +87,7 @@ class Groups extends Component {
   }
   render () {
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <PageTile title={'Manage Groups'} />
         <div className='m-content'>
           <HelpAlert message={'Here you can view the list of all the groups that you have joined.'} />

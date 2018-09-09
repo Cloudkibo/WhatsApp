@@ -6,6 +6,7 @@
 
 const logger = require('./../components/logger')
 const TAG = 'config/socketio.js'
+let globalSocket
 
 // When the user disconnects.. perform this
 function onDisconnect (socket) {
@@ -32,6 +33,7 @@ function onConnect (socket) {
 }
 
 exports.setup = function (socketio) {
+  globalSocket = socketio
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
   //
@@ -62,4 +64,10 @@ exports.setup = function (socketio) {
     onConnect(socket)
     // logger.serverLog(TAG, `SOCKET ${socket.id} CONNECTED at ${socket.connectedAt}`)
   })
+}
+
+exports.sendToClient = function (data) {
+  logger.serverLog(TAG, `Sending ${data} payload to client using socket.io`)
+  // globalSocket.to(data.room_id).emit('[NAME]', data.payload)
+  globalSocket.emit('message', data)
 }

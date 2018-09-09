@@ -87,7 +87,7 @@ class Contacts extends Component {
 
   render () {
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <PageTile title={'Manage Contacts'} />
         <div className='m-content'>
           <HelpAlert message={'Here you can view the list of all the contacts that you have added.'} />
