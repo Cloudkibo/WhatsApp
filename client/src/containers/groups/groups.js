@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
 import { withAlert } from 'react-alert'
 import * as _ from 'lodash'
 import * as GroupActions from '../../redux/actions/groups.actions'
@@ -19,19 +18,18 @@ class Groups extends Component {
     super(props)
     this.state = {
       showModal: false,
-      displayInvite: false,
       title: '',
       error: false,
-      selectedGroups: []
+      selectedGroups: [],
+      inviteLink: false
     }
-    props.loadGroupsList()
+  }
+  componentDidMount () {
+    this.props.loadGroupsList()
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.createdGroup) {
       this.props.history.push({ pathname: `/groupDetail`, state: nextProps.createdGroup })
-    }
-    if (this.props.inviteLink !== nextProps.inviteLink) {
-      this.setState({displayInvite: true})
     }
   }
   updateTitle = (e) => {
@@ -55,7 +53,7 @@ class Groups extends Component {
     })
   }
 
-  closeInvite = () => { this.setState({displayInvite: false}) }
+  closeInvite = () => { this.setState({inviteLink: false}) }
 
   handleCheck = (event, groupId) => {
     let temp = []
@@ -73,20 +71,30 @@ class Groups extends Component {
     }
   }
 
+  groupInvite = (group) => {
+    if (group.invite) {
+      this.setState({ inviteLink: group.inviteLink })
+    } else {
+      this.props.getGroupInvite(group.groupId)
+        .then(res => {
+          this.setState({ inviteLink: res.payload })
+        })
+        .catch(err => {
+          this.props.alert.show('Unable to fetch invite link', {type: 'failed'})
+          console.log('Error', err)
+        })
+    }
+  }
   render () {
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <PageTile title={'Manage Groups'} />
         <div className='m-content'>
           <HelpAlert message={'Here you can view the list of all the groups that you have joined.'} />
-          {this.state.showModal &&
-            <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose}
-              heading='Create Group' updateTitle={this.updateTitle} />
-          }
-          {this.state.displayInvite &&
-            <InviteModal showModal={this.state.displayInvite} handleClose={this.closeInvite} heading='Invite Link'
-              inviteLink={this.props.inviteLink} />
-          }
+          <CreateGroup onCreate={this.onCreate} showModal={this.state.showModal} handleClose={this.handleClose}
+            heading='Create Group' updateTitle={this.updateTitle} />
+          <InviteModal showModal={this.state.inviteLink} handleClose={this.closeInvite} heading='Invite Link'
+            inviteLink={this.state.inviteLink} />
           <div className='row'>
             <div className='col-xl-12'>
               <div className='m-portlet'>
@@ -94,7 +102,7 @@ class Groups extends Component {
                 <div className='m-portlet__body' />
                 <GroupSearch groups={this.props.groups} leaveGroup={this.leaveGroup} />
                 <GroupTable viewDetail={this.goToInfo} groups={this.props.groups}
-                  getInvite={this.props.getGroupInvite} handleCheck={this.handleCheck} />
+                  getInvite={this.groupInvite} handleCheck={this.handleCheck} />
               </div>
             </div>
           </div>
@@ -107,8 +115,7 @@ class Groups extends Component {
 function mapStateToProps (state) {
   return {
     createdGroup: state.groupReducer.createdGroup,
-    groups: state.groupReducer.groups,
-    inviteLink: state.groupReducer.inviteLink
+    groups: state.groupReducer.groups
   }
 }
 
