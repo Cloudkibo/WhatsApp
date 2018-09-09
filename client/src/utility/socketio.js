@@ -21,7 +21,6 @@ socket.on('disconnect', () => {
 
 socket.on('message', (data) => {
   // Emitted event
-  console.log('message from server', data)
 })
 
 export function log (tag, data) {

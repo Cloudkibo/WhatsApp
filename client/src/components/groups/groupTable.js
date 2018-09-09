@@ -34,7 +34,7 @@ class GroupTable extends Component {
                   <Table.Cell textAlign='center'>{item.participants.length}</Table.Cell>
                   <Table.Cell textAlign='center'>{(item.groupLeft) ? 'Left Group' : 'Joined'}</Table.Cell>
                   <Table.Cell textAlign='center'>
-                    <Button primary circular size='mini' onClick={() => { this.props.getInvite(item) }}> Invite Link </Button>
+                    <Button primary circular size='mini' onClick={() => { this.props.getInvite(item.groupId) }}> Invite Link </Button>
                     <Button primary circular size='mini' onClick={() => { this.props.viewDetail(item.groupId) }}> View Details </Button>
                   </Table.Cell>
                 </Table.Row>

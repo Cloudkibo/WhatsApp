@@ -13,6 +13,10 @@ class Sidebar extends Component {
     this.state = {}
   }
 
+  componentDidMount () {}
+  componentWillMount () {}
+  componentWillReceiveProps (nextProps) {}
+
   showOperationalDashboard () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>

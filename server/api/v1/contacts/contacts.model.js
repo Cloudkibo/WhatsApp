@@ -2,7 +2,7 @@ let mongoose = require('mongoose')
 let Schema = mongoose.Schema
 
 let contactSchema = new Schema({
-  name: { type: String, default: '' },
+  name: String,
   phone: String,
   isActive: String,
   status: String,
