@@ -6,6 +6,7 @@ import App from './components/App'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
+import history from './history'
 import { initiateSocket } from './utility/socketio'
 const store = configureStore()
 const rootElement = document.getElementById('root')
@@ -26,7 +27,7 @@ class Root extends React.Component {
     return (
       <AlertProvider template={AlertTemplate} {...options}>
         <Provider store={store}>
-          <BrowserRouter>
+          <BrowserRouter history={history}>
             <Route component={App} />
           </BrowserRouter>
         </Provider>
