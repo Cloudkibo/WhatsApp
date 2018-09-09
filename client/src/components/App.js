@@ -11,33 +11,19 @@ class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      showSidebar: true
     }
   }
   componentDidMount () {
     this.props.getTestMessage()
   }
-  componentWillMount () {
-    if (window.location.pathname === '/signup' || window.location.pathname === '/login') {
-      this.setState({showSidebar: false})
-      /* eslint-disable */
-      if ($('#sidebarDiv')) {
-        $('#sidebarDiv').removeClass('hideSideBar')
-      }
-      if ($('#headerDiv')) {
-        $('#headerDiv').removeClass('hideHeader')
-      }
-      /* eslint-enable */
-    }
-  }
   render () {
     return (
       <div className='App'>
-        {this.state.showSidebar &&
+        {window.location.pathname !== '/signup' && window.location.pathname !== '/login' &&
         <Header />
         }
         <div className='m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body'>
-          {this.state.showSidebar &&
+          {window.location.pathname !== '/signup' && window.location.pathname !== '/login' &&
           <Sidebar />
           }
           <Main />
