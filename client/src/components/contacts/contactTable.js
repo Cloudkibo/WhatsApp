@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Popup } from 'semantic-ui-react'
+import { Table, Popup, Label } from 'semantic-ui-react'
 import Avatar from 'react-avatar'
 
 class ContactTable extends Component {
@@ -15,6 +15,8 @@ class ContactTable extends Component {
               <Table.HeaderCell>Number</Table.HeaderCell>
               <Table.HeaderCell>On Whatsapp</Table.HeaderCell>
               <Table.HeaderCell>Subscription Status</Table.HeaderCell>
+              <Table.HeaderCell>Custom TAG</Table.HeaderCell>
+              <Table.HeaderCell>Custom Link</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -32,6 +34,22 @@ class ContactTable extends Component {
                       <Table.Cell>{contact.phone}</Table.Cell>
                       <Table.Cell>{contact.status === 'valid' ? 'Yes' : 'No'}</Table.Cell>
                       <Table.Cell>{contact.isSubscribed ? 'Subscribed' : 'Not Subscribed'}</Table.Cell>
+                      <Table.Cell>
+                        <Label as='a' basic>
+                          {contact.customID ? contact.customID : 'N / A'}
+                        </Label>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Label as='a' basic>
+                          {
+                            contact.customURL
+                              ? <a href={contact.customURL} target='_blank'>
+                                {contact.customURL}
+                              </a>
+                              : 'N / A'
+                          }
+                        </Label>
+                      </Table.Cell>
                     </Table.Row>
                   } content='Click to update contact information' inverted position='top center'
                   />)
