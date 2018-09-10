@@ -27,12 +27,7 @@ class GroupDetail extends Component {
     if (nextProps.groupsInfo) {
       this.setState({title: nextProps.groupsInfo.title})
     }
-    if (nextProps.groupsInfo && nextProps.groupsInfo.participants !== this.props.groupsInfo.participants) {
-      this.props.getParticiapnts({ids: nextProps.groupsInfo.participants})
-    }
-    if (nextProps.groupsInfo && nextProps.groupsInfo.admins !== this.props.groupsInfo.admins) {
-      this.props.getAdmins({ids: nextProps.groupsInfo.admins})
-    }
+
     if (nextProps.admins && nextProps.participants) {
       let participants = _.differenceBy(nextProps.participants, nextProps.admins, 'wa_id')
       participants = _.map(participants, (item) => ({name: item.name, wa_id: item.wa_id, admin: false}))
@@ -40,6 +35,10 @@ class GroupDetail extends Component {
       let temp = admins.concat(participants)
       this.setState({participants: temp})
     }
+  }
+  componentDidMount () {
+    this.props.getParticiapnts({ids: this.props.groupsInfo.participants})
+    this.props.getAdmins({ids: this.props.groupsInfo.admins})
   }
   showModal = (nextProps) => {
     this.setState({showModal: true})
@@ -86,7 +85,7 @@ class GroupDetail extends Component {
                   <InfoHeader groupsInfo={this.props.groupsInfo} handleImage={this._onChange} showModal={this.showModal} />
                   }
                   {this.state.participants && this.state.participants.length > 0 &&
-                  <ParticipantList participants={this.state.participants} />
+                  <ParticipantList participants={this.state.participants} deleteParticipants={this.props.deleteParticipants} groupsInfo={this.props.groupsInfo} />
                   }
                 </div>
               </div>
@@ -113,7 +112,8 @@ function mapDispatchToProps (dispatch) {
     getGroupIcon: GroupActions.getGroupIcon,
     updateGroup: GroupActions.updateGroup,
     getParticiapnts: GroupActions.getParticiapnts,
-    getAdmins: GroupActions.getAdmins
+    getAdmins: GroupActions.getAdmins,
+    deleteParticipants: GroupActions.deleteParticipants
   }, dispatch)
 }
 
