@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withAlert } from 'react-alert'
 import * as _ from 'lodash'
 import * as GroupActions from '../../redux/actions/groups.actions'
-
+import { withRouter } from 'react-router-dom'
 import PageTile from './../../components/pageTitle'
 import HelpAlert from './../../components/themeComponents/helpAlert'
 import PortletHead from './../../components/themeComponents/portletHead'
@@ -128,4 +128,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAlert(Groups))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withAlert(Groups)))

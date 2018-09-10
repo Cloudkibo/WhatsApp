@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import {uploadMedia} from '../../redux/actions/media.actions'
+import {uploadMedia, deleteMedia} from '../../redux/actions/media.actions'
 import PageTile from './../../components/pageTitle'
 import Header from './../../components/chat/header'
 import SessionsList from './../../components/chat/sessionsList'
@@ -77,13 +77,15 @@ class Chat extends Component {
       })
     }
     if (res.status === 'success') {
-      this.setState({uploaded: true, uploadDescription: '', removeFileDescription: '', uploadedId: res.payload.mediaId, uploadedUrl: res.payload.url})
+      console.log('success payload', res.payload)
+      this.setState({uploaded: true, uploadDescription: '', removeFileDescription: '', uploadedId: res.payload.media[0].id})
     }
     console.log('res.payload', res.payload)
   }
 
   handleRemove = (res) => {
     if (res.status === 'success') {
+      console.log('reset file component')
       this.resetFileComponent()
     }
     if (res.status === 'failed') {
@@ -111,7 +113,7 @@ class Chat extends Component {
             </div>
             <div className='col-lg-8 col-md-8 col-sm-8' style={{padding: '0px', marginLeft: '-2px'}}>
               <div className='m-portlet'>
-                <Header name='anisha' lastSeen='Last seen today at 1:40 PM' onFileChange={this.onFileChange} />
+                <Header name='anisha' lastSeen='Last seen today at 1:40 PM' onFileChange={this.onFileChange} uploaded={this.state.uploaded} />
                 <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderRight: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)', padding: '0px'}} >
                   <Conversation />
                   <Chatbox />
@@ -138,7 +140,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    uploadMedia
+    uploadMedia,
+    deleteMedia
   }, dispatch)
 }
 

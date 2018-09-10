@@ -67,12 +67,12 @@ class Signup extends Component {
                   </div>
                 </div>
               </div>
+              {this.props.type === 'Sign In' &&
               <div className='m-stack__item m-stack__item--center'>
-                <div className='m-login__account'>
-                  <span className='m-login__account-msg'>Don't have an account yet?</span>&nbsp;&nbsp;
-                  <a href='/signUp' id='m_login_signup' target='_blank' className='m-link m-link--focus m-login__account-link'>Sign Up</a>
-                </div>
+                <span className='m-login__account-msg'>Don't have an account yet?</span>&nbsp;&nbsp;
+                <a href='/signup' id='m_login_signup' className='m-link m-link--focus m-login__account-link'>Sign Up</a>
               </div>
+              }
             </div>
           </div>
           <div className='m-grid__item m-grid__item--fluid m-grid m-grid--center m-grid--hor m-grid__item--order-tablet-and-mobile-1 m-login__content' style={{backgroundImage: "url('assets/app/media/img//bg/bg-4.jpg')"}}>

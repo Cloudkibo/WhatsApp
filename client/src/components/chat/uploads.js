@@ -23,11 +23,13 @@ class Uploads extends Component {
     return (
       <div>
         { this.props.uploaded
-          ? <div style={{wordWrap: 'break-word', overFlow: 'auto', minHeight: '50px'}}>
+          ? <div style={{wordWrap: 'break-word', overFlow: 'auto'}}>
             <span onClick={this.props.removeAttachment} style={{cursor: 'pointer', float: 'right'}} className='fa-stack'>
               <i style={{color: '#ccc'}} className='fa fa-times fa-stack-1x fa-inverse' />
             </span>
-            <div><i className='fa fa-file-text-o' /> {this.props.attachment.name}</div>
+            <div style={{fontSize: '1.2em', marginLeft: '15px', marginTop: '10px', marginBottom: '10px'}}>
+              <i className='fa fa-file-text-o' /> {this.props.attachment.name}
+            </div>
             <div style={{wordWrap: 'break-word', color: 'red', fontSize: 'small'}}>{this.props.removeFileDescription}</div>
           </div>
           : <div style={{wordWrap: 'break-word', color: 'red', fontSize: 'small'}}>{this.props.uploadDescription}</div>

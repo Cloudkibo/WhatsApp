@@ -1,6 +1,5 @@
 import * as ActionTypes from './../constants/constants'
 import callApi from './../../utility/api.caller.service'
-import * as mediaDispatcher from '../dispatchers/media.dispatchers'
 export const API_URL = '/api'
 
 export function uploadMedia (data, handleUpload) {
@@ -16,5 +15,14 @@ export function uploadMedia (data, handleUpload) {
       console.log('response from uploadMedia', res)
       handleUpload(res)
     })
+  }
+}
+
+export function deleteMedia (mediaId, handleRemove) {
+  return (dispatch) => {
+    callApi(`v1/media/${mediaId}`, 'delete')
+      .then(res => {
+        handleRemove(res)
+      })
   }
 }

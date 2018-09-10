@@ -34,7 +34,9 @@ exports.deleteMedia = function (req, res) {
         Media.deleteOne({mediaId: req.params.mediaId})
           .then(() => {
             fs.unlink(media.url, (err) => {
-              return res.status(500).json({status: 'failed: ' + err})
+              if (err) {
+                return res.status(500).json({status: 'failed: ' + err})
+              }
             })
             return res.status(200).json({status: 'success'})
           })
