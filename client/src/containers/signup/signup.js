@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withAlert } from 'react-alert'
+import { withRouter } from 'react-router-dom'
+
 import * as SignupActions from '../../redux/actions/signup.actions'
 import Signup from './../../components/signupLogin'
 var taiPasswordStrength = require('tai-password-strength')
@@ -115,4 +117,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAlert(signup))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withAlert(signup)))
