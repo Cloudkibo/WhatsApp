@@ -10,9 +10,9 @@ export function loadContactsList () {
   }
 }
 
-export function updateContact (phone, updatedName, alert) {
+export function updateContact (phone, updatedContact, alert) {
   return (dispatch) => {
-    callApi(`v1/contacts/${phone}`, 'put', {name: updatedName})
+    callApi(`v1/contacts/${phone}`, 'put', updatedContact)
       .then(res => {
         console.log('response from update contact', res)
         if (res.status === 'success') {

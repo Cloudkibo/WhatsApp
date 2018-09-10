@@ -62,12 +62,18 @@ class Contacts extends Component {
     this.setState({showUpdate: true, selectedContact: contact})
   }
 
-  onUpdate = (updatedName) => {
-    if (updatedName !== '') {
-      this.props.updateContact(this.state.selectedContact.phone, updatedName, this.props.alert)
-      this.setState({ buttonDisabled: true })
-      this.handleClose()
-    }
+  onUpdate = (updatedName, TAG, URL) => {
+    let payload = {}
+
+    // The names of payload fields should not be changed.
+
+    if (updatedName !== '') { payload.name = updatedName }
+    if (TAG !== '') { payload.customID = TAG }
+    if (URL !== '') { payload.customURL = URL }
+
+    this.props.updateContact(this.state.selectedContact.phone, payload, this.props.alert)
+    this.setState({ buttonDisabled: true })
+    this.handleClose()
   }
 
   onDelete = (phone) => {
@@ -75,8 +81,8 @@ class Contacts extends Component {
     this.handleClose()
   }
 
-  handleUpdate = (event) => {
-    if (event.target.value !== '') this.setState({ buttonDisabled: false })
+  handleUpdate = (name, TAG, URL) => {
+    if (name !== '' || TAG !== '' || URL !== '') this.setState({ buttonDisabled: false })
     else this.setState({ buttonDisabled: true })
   }
 
@@ -87,7 +93,7 @@ class Contacts extends Component {
 
   render () {
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <PageTile title={'Manage Contacts'} />
         <div className='m-content'>
           <HelpAlert message={'Here you can view the list of all the contacts that you have added.'} />
