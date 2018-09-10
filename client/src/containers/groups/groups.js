@@ -12,7 +12,6 @@ import GroupTable from './../../components/groups/groupTable'
 import GroupSearch from './groupSearch'
 import CreateGroup from './../../components/groups/createGroup'
 import InviteModal from './../../components/groups/inviteModal'
-import history from './../../history'
 
 class Groups extends Component {
   constructor (props) {
@@ -30,7 +29,7 @@ class Groups extends Component {
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.createdGroup) {
-      history.push({ pathname: `/groupDetail`, state: nextProps.createdGroup })
+      this.props.history.push({ pathname: `/groupDetail`, state: nextProps.createdGroup })
     }
   }
   updateTitle = (e) => {
