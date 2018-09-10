@@ -6,12 +6,23 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
+import Notifier from 'react-desktop-notification'
 
 class Sidebar extends Component {
   constructor (props, context) {
     super(props, context)
     this.state = {}
   }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.chats) {
+      Notifier.focus('KiboWhatsapp', 'You got a new message', 'http://locahost:3000/chat', '')
+    }
+  }
+
+  // componentDidMount () {
+  //   Notifier.focus('KiboWhatsapp', 'You got a new message', '/chat', '')
+  // }
 
   showOperationalDashboard () {
     return (
@@ -130,7 +141,9 @@ class Sidebar extends Component {
   }
 }
 function mapStateToProps (state) {
-  return {}
+  return {
+    chats: state.chatReducer.chats
+  }
 }
 
 function mapDispatchToProps (dispatch) {

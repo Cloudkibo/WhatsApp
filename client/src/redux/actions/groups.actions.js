@@ -106,3 +106,15 @@ export function leaveManyGroups (data) {
       })
   }
 }
+
+export function deleteParticipants (groupId, waIds) {
+  return (dispatch) => {
+    callApi(`v1/groups/${groupId}/participants`, 'delete', {wa_ids: waIds})
+      .then(res => {
+        if (res.status === 'success') {
+          // dispatch(getParticiapnts(res.payload))
+          console.log('Deleted Successfully')
+        }
+      })
+  }
+}

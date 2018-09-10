@@ -13,3 +13,7 @@ export function sendMessage (data) {
       })
   }
 }
+
+export function addNewTextMessage (dispatcher, data) {
+  dispatcher(chatDispatcher.newTextMessage(data))
+}
