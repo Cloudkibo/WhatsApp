@@ -80,7 +80,7 @@ function setTokenCookie (req, res) {
   logger.serverLog(TAG, `Here is the signed token: ${token}`)
   res.cookie('token', token)
   res.redirect('/')
-  return res
+  return token
 }
 
 exports.isAuthenticated = isAuthenticated
