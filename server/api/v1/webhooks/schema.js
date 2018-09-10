@@ -321,6 +321,138 @@ exports.voiceMessageSchema = {
   ]
 }
 
+exports.audioMessageSchema = {
+  '$schema': 'http://json-schema.org/draft-04/schema#',
+  'type': 'object',
+  'properties': {
+    'messages': {
+      'type': 'array',
+      'items': [
+        {
+          'type': 'object',
+          'properties': {
+            'from': {
+              'type': 'string'
+            },
+            'id': {
+              'type': 'string'
+            },
+            'timestamp': {
+              'type': 'string'
+            },
+            'type': {
+              'type': 'string'
+            },
+            'audio': {
+              'type': 'object',
+              'properties': {
+                'file': {
+                  'type': 'string'
+                },
+                'id': {
+                  'type': 'string'
+                },
+                'mime_type': {
+                  'type': 'string'
+                },
+                'sha256': {
+                  'type': 'string'
+                },
+                'caption': {
+                  'type': 'string'
+                }
+              },
+              'required': [
+                'file',
+                'id',
+                'mime_type',
+                'sha256',
+                'caption'
+              ]
+            }
+          },
+          'required': [
+            'from',
+            'id',
+            'timestamp',
+            'type',
+            'audio'
+          ]
+        }
+      ]
+    }
+  },
+  'required': [
+    'messages'
+  ]
+}
+
+exports.videoMessageSchema = {
+  '$schema': 'http://json-schema.org/draft-04/schema#',
+  'type': 'object',
+  'properties': {
+    'messages': {
+      'type': 'array',
+      'items': [
+        {
+          'type': 'object',
+          'properties': {
+            'from': {
+              'type': 'string'
+            },
+            'id': {
+              'type': 'string'
+            },
+            'timestamp': {
+              'type': 'string'
+            },
+            'type': {
+              'type': 'string'
+            },
+            'video': {
+              'type': 'object',
+              'properties': {
+                'file': {
+                  'type': 'string'
+                },
+                'id': {
+                  'type': 'string'
+                },
+                'mime_type': {
+                  'type': 'string'
+                },
+                'sha256': {
+                  'type': 'string'
+                },
+                'caption': {
+                  'type': 'string'
+                }
+              },
+              'required': [
+                'file',
+                'id',
+                'mime_type',
+                'sha256',
+                'caption'
+              ]
+            }
+          },
+          'required': [
+            'from',
+            'id',
+            'timestamp',
+            'type',
+            'video'
+          ]
+        }
+      ]
+    }
+  },
+  'required': [
+    'messages'
+  ]
+}
+
 exports.groupNotificationsSchema = {
   '$schema': 'http://json-schema.org/draft-04/schema#',
   'type': 'object',
