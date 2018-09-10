@@ -20,3 +20,6 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 // constants for sign up
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
+
+// Constants for user
+export const FETCH_USER_DETAILS = 'FETCH_USER_DETAILS'

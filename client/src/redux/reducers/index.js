@@ -6,13 +6,15 @@ import { contactsReducer } from './contacts.reducer'
 import { groupReducer } from './groups.reducer'
 import { loginReducer } from './login.reducer'
 import { signupReducer } from './signup.reducer'
+import { userReducer } from './user.reducer'
 
 // Make a app reducer
 const appReducer = combineReducers({testReducer,
   groupReducer,
   contactsReducer,
   loginReducer,
-  signupReducer
-  })
+  signupReducer,
+  userReducer
+})
 
 export default appReducer
