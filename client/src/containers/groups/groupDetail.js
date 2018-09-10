@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withAlert } from 'react-alert'
+import { withRouter } from 'react-router-dom'
 import * as GroupActions from '../../redux/actions/groups.actions'
 import PageTile from './../../components/pageTitle'
 import InfoHeader from './../../components/groups/infoHeader'
@@ -117,4 +118,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAlert(GroupDetail))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withAlert(GroupDetail)))
