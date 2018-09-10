@@ -22,7 +22,7 @@ class signup extends Component {
     }
   }
   componentWillMount () {
-  document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
+    document.getElementsByTagName('body')[0].className = 'm-page--fluid m--skin- m-content--skin-light2 m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default'
   }
 
   componentWillUnmount () {
@@ -31,7 +31,7 @@ class signup extends Component {
   componentWillReceiveProps (nextprops) {
     this.setState({error: false})
     if (nextprops.successSignup) {
-      this.props.history.push({pathname: '/'})
+      this.context.history.push({pathname: '/'})
     }
   }
   handlePwdChange = (event) => {
