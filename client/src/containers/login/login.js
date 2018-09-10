@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { isEmail } from '../../utility/utils'
 import { withAlert } from 'react-alert'
+import { withRouter } from 'react-router-dom'
 
 import * as LoginActions from '../../redux/actions/login.actions'
 import Login from './../../components/signupLogin'
@@ -53,4 +54,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAlert(login))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withAlert(login)))

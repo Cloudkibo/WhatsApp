@@ -92,7 +92,7 @@ export function getAdmins (data) {
 
 export function getGroupInvite (groupId) {
   return (dispatch) => {
-    callApi(`v1/groups/${groupId}/invite`).then(res => dispatch(groupDispatcher.setInviteLink(res.payload)))
+    return callApi(`v1/groups/${groupId}/invite`)
   }
 }
 
@@ -102,6 +102,18 @@ export function leaveManyGroups (data) {
       .then(res => {
         if (res.status === 'success') {
           dispatch(loadGroupsList())
+        }
+      })
+  }
+}
+
+export function deleteParticipants (groupId, waIds) {
+  return (dispatch) => {
+    callApi(`v1/groups/${groupId}/participants`, 'delete', {wa_ids: waIds})
+      .then(res => {
+        if (res.status === 'success') {
+          // dispatch(getParticiapnts(res.payload))
+          console.log('Deleted Successfully')
         }
       })
   }

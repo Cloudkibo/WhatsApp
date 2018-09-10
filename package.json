@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Cloudkibo/WhatsApp#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "composable-middleware": "^0.3.0",
     "compression": "^1.7.3",
@@ -32,6 +33,7 @@
     "cookie-parser": "^1.4.3",
     "csv-parser": "^1.12.1",
     "debug": "^2.6.8",
+    "emoji-mart": "^2.8.1",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
@@ -48,6 +50,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pino": "^5.1.0",
+    "react-player": "^1.6.4",
     "request": "^2.88.0",
     "serve-favicon": "^2.5.0",
     "socket.io": "^2.1.1",

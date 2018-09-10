@@ -117,9 +117,11 @@ exports.create = function (req, res) {
     })
 }
 
+// @TODO ADD Json Validation Schema
+
 exports.update = function (req, res) {
   logger.serverLog(TAG, 'Hit the update contact endpoint')
-  Contacts.updateOne({ phone: req.params.phone }, { $set: {name: req.body.name} })
+  Contacts.updateOne({ phone: req.params.phone }, req.body)
     .then(result => {
       return res.status(200).json({ status: 'success', payload: result })
     })
