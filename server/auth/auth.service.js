@@ -27,6 +27,7 @@ function isAuthenticated () {
     })
     // Attach user to request
     .use((req, res, next) => {
+      console.log('in isAuthenticated ')
       Users.findOne({fbId: req.user._id}, (err, user) => {
         if (err) {
           return res.status(500)
@@ -79,7 +80,7 @@ function setTokenCookie (req, res) {
   const token = signToken(req.user.fbId)
   logger.serverLog(TAG, `Here is the signed token: ${token}`)
   res.cookie('token', token)
-  // res.redirect('/')
+  return res.redirect('/')
 }
 
 exports.isAuthenticated = isAuthenticated

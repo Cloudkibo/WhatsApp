@@ -4,7 +4,6 @@ import * as loginDispatcher from '../dispatchers/login.dispatchers'
 export const API_URL = '/api'
 
 export function logIn (data, alert) {
-  console.log('data in login', data)
   let headers1 = {
     'content-type': 'application/json'
   }
