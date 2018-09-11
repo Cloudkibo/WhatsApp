@@ -13,7 +13,6 @@ exports.create = function (req, res) {
   }
 
   message[req.body.type] = req.body.messagePayload
-  console.log('message', message)
   utility.postToWhatsapp(`/v1/messages`, message, (err, result) => {
     if (err) {
       console.log('error from whatsapp')
@@ -24,7 +23,7 @@ exports.create = function (req, res) {
       to: req.body.to,
       previewUrl: req.body.previewUrl,
       from: req.user.wa_id,
-      messageId: result.messages[0].id,
+      messageId: result.data.messages[0].id,
       timestamp: Date.now(),
       type: req.body.type,
       status: 'pending',
