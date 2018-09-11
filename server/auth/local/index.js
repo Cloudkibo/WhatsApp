@@ -8,7 +8,6 @@ var router = express.Router()
 
 router.post('/', function (req, res, next) {
   if (req.body.email) {
-    console.log('in login', req.body.email)
     passport.authenticate('email-local', function (err, user, info) {
       var error = err || info
       if (error) return res.status(501).json({status: 'failed', description: 'Internal Server Error', error: '' + JSON.stringify(error)})

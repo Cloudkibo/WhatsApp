@@ -27,7 +27,6 @@ function isAuthenticated () {
     })
     // Attach user to request
     .use((req, res, next) => {
-      console.log('in isAuthenticated ')
       Users.findOne({fbId: req.user._id}, (err, user) => {
         if (err) {
           return res.status(500)
