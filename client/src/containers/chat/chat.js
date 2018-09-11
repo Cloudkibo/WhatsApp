@@ -129,7 +129,7 @@ class Chat extends Component {
             <div className='col-lg-8 col-md-8 col-sm-8' style={{padding: '0px', marginLeft: '-2px'}}>
               <div className='m-portlet'>
                 {(this.state.selectedSession !== '') && <div>
-                  <Header name={this.state.selectedSession} lastSeen='Last seen today at 1:40 PM' />
+                  <Header name={this.state.selectedSession} onFileChange={this.onFileChange} lastSeen='Last seen today at 1:40 PM' />
                   <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderRight: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)', padding: '0px'}} >
                     <Conversation chats={this.state.selectedChats} />
                     <Chatbox />
