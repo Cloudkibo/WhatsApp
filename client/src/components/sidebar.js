@@ -112,10 +112,10 @@ class Sidebar extends Component {
                   {this.showMedia()}
                   {this.showMessages()}
                   <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-                    <a href='' className='m-menu__link m-menu__toggle'>
+                    <Link to='settings' className='m-menu__link m-menu__toggle'>
                       <i className='m-menu__link-icon flaticon-cogwheel' title='Settings' />
                       <span className='m-menu__link-text'>Settings</span>
-                    </a>
+                    </Link>
                   </li>
                   <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
                     <a href='http://kibopush.com/user-guide/' target='_blank' className='m-menu__link m-menu__toggle'>
