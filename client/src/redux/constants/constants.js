@@ -20,3 +20,5 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 // constants for sign up
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
+
+export const NEW_TEXT_MESSAGE_RECEIVED = 'NEW_TEXT_MESSAGE_RECEIVED'

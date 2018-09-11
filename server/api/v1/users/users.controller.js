@@ -48,7 +48,7 @@ exports.create = function (req, res, next) {
   }
   contactValidationRequest.contacts.push(req.body.phone)
 
-  utility.postToWhatsapp('v1/contacts/create', contactCreationRequest, (creationErr, creationResult) => {
+  utility.postToWhatsapp('/v1/contacts/create', contactCreationRequest, (creationErr, creationResult) => {
     if (creationErr) {
       logger.serverLog(TAG, `Unable to create contact: ${creationErr}`)
       return res.status(500).json({ status: 'failed', description: '' + creationErr })
@@ -71,8 +71,9 @@ exports.create = function (req, res, next) {
             description: 'User already exists'
           })
         }
+        // console.log(validationResult.data)
         let accountData = new Users({
-          wa_id: validationResult.contacts[0].wa_id,
+          wa_id: validationResult.data.contacts[0].wa_id,
           companyName: req.body.companyName,
           email: req.body.email,
           phone: req.body.phone,

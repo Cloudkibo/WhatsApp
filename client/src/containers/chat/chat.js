@@ -10,6 +10,7 @@ import SessionSearch from './sessionSearch'
 import Chatbox from './chatbox'
 import Conversation from './../../components/chat/conversation'
 import Uploads from './../../components/chat/uploads'
+const _find = require('lodash/find')
 
 class Chat extends Component {
   constructor (props) {
@@ -21,7 +22,10 @@ class Chat extends Component {
       attachmentType: '',
       removeFileDescription: '',
       uploadedId: '',
-      uploadedUrl: ''
+      uploadedUrl: '',
+      selectedChats: [],
+      selectedSession: ''
+    }
     }
   }
 
@@ -99,6 +103,17 @@ class Chat extends Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.chats && this.state.selectedSession !== '') {
+      let newSession = _find(nextProps.chats, {sessionIdentifier: this.state.selectedSession})
+      this.selectSession(newSession)
+    }
+  }
+
+  selectSession = (session) => {
+    this.setState({selectedChats: session.messages, selectedSession: session.sessionIdentifier})
+  }
+
   render () {
     return (
       <div className='m-grid__item m-grid__item--fluid m-wrapper'>
@@ -108,11 +123,13 @@ class Chat extends Component {
             <div className='col-lg-4 col-md-4 col-sm-4' style={{padding: '0px'}}>
               <div className='m-portlet'>
                 <SessionSearch />
-                <SessionsList />
+                <SessionsList chats={this.props.chats} selectSession={this.selectSession} />
               </div>
             </div>
+
             <div className='col-lg-8 col-md-8 col-sm-8' style={{padding: '0px', marginLeft: '-2px'}}>
               <div className='m-portlet'>
+<<<<<<< HEAD
                 <Header name='anisha' lastSeen='Last seen today at 1:40 PM' onFileChange={this.onFileChange} uploaded={this.state.uploaded} />
                 <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderRight: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)', padding: '0px'}} >
                   <Conversation />
@@ -122,9 +139,19 @@ class Chat extends Component {
                     attachment={this.state.attachment}
                     removeFileDescription={this.state.removeFileDescription}
                     uploadDescription={this.state.uploadDescription} />
+=======
+                {(this.state.selectedSession !== '') && <div>
+                  <Header name={this.state.selectedSession} lastSeen='Last seen today at 1:40 PM' />
+                  <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderRight: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)', padding: '0px'}} >
+                    <Conversation chats={this.state.selectedChats} />
+                    <Chatbox />
+                  </div>
+>>>>>>> fdc21036a630816dc01928288303a996c7e7507b
                 </div>
+                }
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -133,8 +160,9 @@ class Chat extends Component {
 }
 
 function mapStateToProps (state) {
+  console.log('State of Chat Reducer', state.chatReducer)
   return {
-
+    chats: state.chatReducer.chats
   }
 }
 
