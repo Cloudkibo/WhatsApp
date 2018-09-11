@@ -82,7 +82,7 @@ class Header extends Component {
                                   {this.props.user ? this.props.user.companyName : 'Username'}
                                 </span>
                                 <span className='m-card-user__email'>
-                                  {this.props.user && (this.props.user.email ? this.props.user.email : 'Username@cloudkibo.com')}
+                                  {this.props.user && this.props.user.email ? this.props.user.email : 'Username@cloudkibo.com'}
                                 </span>
                               </div>
                             </div>
