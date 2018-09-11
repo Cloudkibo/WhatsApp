@@ -23,3 +23,6 @@ export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
 
 // Constants for user
 export const FETCH_USER_DETAILS = 'FETCH_USER_DETAILS'
+
+export const NEW_TEXT_MESSAGE_RECEIVED = 'NEW_TEXT_MESSAGE_RECEIVED'
+

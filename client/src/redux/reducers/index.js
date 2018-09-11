@@ -7,6 +7,7 @@ import { groupReducer } from './groups.reducer'
 import { loginReducer } from './login.reducer'
 import { signupReducer } from './signup.reducer'
 import { userReducer } from './user.reducer'
+import { chatReducer } from './chat.reducer'
 
 // Make a app reducer
 const appReducer = combineReducers({testReducer,
@@ -14,7 +15,8 @@ const appReducer = combineReducers({testReducer,
   contactsReducer,
   loginReducer,
   signupReducer,
-  userReducer
+  userReducer,
+  chatReducer
 })
 
 export default appReducer
