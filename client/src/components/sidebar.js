@@ -38,10 +38,10 @@ class Sidebar extends Component {
   showDashboard () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-        <a href='' className='m-menu__link m-menu__toggle'>
+        <Link to='/' className='m-menu__link m-menu__toggle'>
           <i className='m-menu__link-icon flaticon-squares-4' title='Dashboard' />
           <span className='m-menu__link-text'>Dashboard</span>
-        </a>
+        </Link>
       </li>
     )
   }
@@ -60,7 +60,7 @@ class Sidebar extends Component {
   showGroups () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-        <Link to='/' className='m-menu__link m-menu__toggle'>
+        <Link to='/groups' className='m-menu__link m-menu__toggle'>
           <i className='m-menu__link-icon flaticon-squares-4' title='Groups' />
           <span className='m-menu__link-text'>Groups</span>
         </Link>

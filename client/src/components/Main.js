@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import Dashboard from './../containers/dashboard/dashboard'
 import Groups from './../containers/groups/groups'
 import Contacts from './../containers/contacts/contacts'
 import GroupDetail from './../containers/groups/groupDetail'
@@ -18,7 +19,8 @@ class Main extends Component {
   render () {
     return (
       <Switch>
-        <Route exact path='/' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Groups />))} />
+        <Route exact path='/' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Dashboard />))} />
+        <Route exact path='/groups' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Groups />))} />
         <Route exact path='/groupDetail' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<GroupDetail />))} />
         <Route exact path='/contacts' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Contacts />))} />
         <Route exact path='/signup' render={() => (auth.loggedIn() ? (<Redirect to='/' />) : (<Signup />))} />
