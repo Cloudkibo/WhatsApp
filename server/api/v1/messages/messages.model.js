@@ -4,9 +4,19 @@ let Schema = mongoose.Schema
 let messageSchema = new Schema({
   recipientType: String,
   to: String,
+  previewUrl: { type: Boolean, default: false },
+  from: String,
+  messageId: String,
+  timestamp: String,
   type: String,
-  messageBody: Schema.Types.Mixed,
-  previewUrl: { type: Boolean, default: false }
+  context: Schema.Types.Mixed,
+  groupId: String,
+  status: {
+    type: String,
+    enum: ['pending', 'sent', 'delivered', 'read', 'failed']
+  },
+  messagePayload: Schema.Types.Mixed,
+  createdAt: { type: Date, default: Date.now() }
 })
 
 module.exports = mongoose.model('messages', messageSchema)
