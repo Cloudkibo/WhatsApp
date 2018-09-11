@@ -26,7 +26,6 @@ class Chat extends Component {
       selectedChats: [],
       selectedSession: ''
     }
-    }
   }
 
   onFileChange = (e) => {
@@ -129,24 +128,17 @@ class Chat extends Component {
 
             <div className='col-lg-8 col-md-8 col-sm-8' style={{padding: '0px', marginLeft: '-2px'}}>
               <div className='m-portlet'>
-<<<<<<< HEAD
-                <Header name='anisha' lastSeen='Last seen today at 1:40 PM' onFileChange={this.onFileChange} uploaded={this.state.uploaded} />
-                <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderRight: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)', padding: '0px'}} >
-                  <Conversation />
-                  <Chatbox />
-                  <Uploads uploaded={this.state.uploaded}
-                    removeAttachment={this.removeAttachment}
-                    attachment={this.state.attachment}
-                    removeFileDescription={this.state.removeFileDescription}
-                    uploadDescription={this.state.uploadDescription} />
-=======
                 {(this.state.selectedSession !== '') && <div>
                   <Header name={this.state.selectedSession} lastSeen='Last seen today at 1:40 PM' />
                   <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderRight: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)', padding: '0px'}} >
                     <Conversation chats={this.state.selectedChats} />
                     <Chatbox />
+                    <Uploads uploaded={this.state.uploaded}
+                      removeAttachment={this.removeAttachment}
+                      attachment={this.state.attachment}
+                      removeFileDescription={this.state.removeFileDescription}
+                      uploadDescription={this.state.uploadDescription} />
                   </div>
->>>>>>> fdc21036a630816dc01928288303a996c7e7507b
                 </div>
                 }
               </div>
