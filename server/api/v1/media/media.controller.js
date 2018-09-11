@@ -109,7 +109,7 @@ exports.uploadMedia = function (req, res) {
             return res.status(500).json({ status: 'failed', description: err })
           }
           logger.serverLog(TAG, `result: ${JSON.stringify(result)}`)
-          if (body.statusCode === 200) {
+          if (body.statusCode === 201) {
             result = JSON.parse(result)
             createMediaObject(result.media[0].id, req.files.file.type, mediaFile)
               .then(() => {
