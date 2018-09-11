@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import fetch from 'isomorphic-fetch'
-import 'emoji-mart/css/emoji-mart.css'
+// import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -11,6 +11,10 @@ class Chatbox extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      uploaded: false,
+      uploadDescription: '',
+      attachment: [],
+      removeFileDescription: '',
       message: ''
     }
   }
@@ -52,6 +56,16 @@ class Chatbox extends Component {
             <i className='fa fa-microphone' style={{cursor: 'pointer', fontSize: '30px', paddingTop: '16px', paddingLeft: '10px', color: 'rgb(123, 126, 138)'}} />
           </div>
         </div>
+        { this.state.uploaded
+          ? <div style={{wordWrap: 'break-word', overFlow: 'auto', minHeight: '50px'}}>
+            <span onClick={this.removeAttachment} style={{cursor: 'pointer', float: 'right'}} className='fa-stack'>
+              <i style={{color: '#ccc'}} className='fa fa-times fa-stack-1x fa-inverse' />
+            </span>
+            <div><i className='fa fa-file-text-o' /> {this.state.attachment.name}</div>
+            <div style={{wordWrap: 'break-word', color: 'red', fontSize: 'small'}}>{this.state.removeFileDescription}</div>
+          </div>
+          : <div style={{wordWrap: 'break-word', color: 'red', fontSize: 'small'}}>{this.state.uploadDescription}</div>
+        }
       </div>
     )
   }

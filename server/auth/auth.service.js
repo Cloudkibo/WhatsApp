@@ -79,8 +79,7 @@ function setTokenCookie (req, res) {
   const token = signToken(req.user.fbId)
   logger.serverLog(TAG, `Here is the signed token: ${token}`)
   res.cookie('token', token)
-  res.redirect('/')
-  return res
+  // res.redirect('/')
 }
 
 exports.isAuthenticated = isAuthenticated

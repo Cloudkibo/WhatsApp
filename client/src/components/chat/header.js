@@ -24,7 +24,10 @@ class Header extends Component {
               <i className='flaticon flaticon-search' />
             </li>
             <li className='nav-item m-tabs__item' style={{width: '30px', color: '#7b7e8a', cursor: 'pointer'}}>
-              <i className='flaticon flaticon-attachment' />
+              <i className='flaticon flaticon-attachment' onClick={() => { this.refs.selectFile.click() }}>
+                <input type='file' style={{display: 'none'}} accept='image/*,audio/*,document/*'
+                  ref='selectFile' value='' onChange={this.props.onFileChange} onError={this.props.onFilesError} />
+              </i>
             </li>
             <li className='nav-item m-tabs__item' style={{width: '20px', color: '#7b7e8a', marginTop: '3px', cursor: 'pointer'}}>
               <i className='fa fa-ellipsis-v' />
