@@ -1,16 +1,13 @@
 import fetch from 'isomorphic-fetch'
 import _ from 'lodash'
-// import auth from './auth.service'
-// import { browserHistory } from 'react-router'
+import auth from './auth.service'
 
 export const API_URL = '/api'
 
 export default function callApi (endpoint, method = 'get', body, headers = {'content-type': 'application/json'}) {
-  if (true) {
-    headers = _.merge(headers, {
-      // Authorization: `Bearer ${auth.getToken()}`
-    })
-  }
+  headers = _.merge(headers, {
+    Authorization: `Bearer ${auth.getToken()}`
+  })
   return fetch(`${API_URL}/${endpoint}`, {
     headers,
     method,

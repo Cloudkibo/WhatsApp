@@ -5,7 +5,7 @@ let initialState = {
 
 export function userReducer (state = initialState, action) {
   switch (action.type) {
-    case ActionTypes.FETCH_CONTACTS_LIST:
+    case ActionTypes.FETCH_USER_DETAILS:
       return Object.assign({}, state, {
         user: action.data
       })
