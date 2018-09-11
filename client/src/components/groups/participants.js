@@ -20,9 +20,10 @@ class ParticipantList extends Component {
                   </span>
                   }
                 </h4>
+                <p>{participant.phone}</p>
               </div>
               <div className='m-widget5__stats1' style={{width: '200px'}}>
-                <center style={{cursor: 'pointer', marginTop: '-10px'}}>
+                <center style={{cursor: 'pointer', marginTop: '-10px'}} onClick={() => { this.props.handleAdmin(participant) }}>
                   <span className='m-widget5__number'>
                     <i className={participant.admin ? 'fa fa-times-circle' : 'fa fa-user-secret'} style={{fontSize: '1.5rem'}} />
                   </span>

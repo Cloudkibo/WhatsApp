@@ -27,11 +27,6 @@ class Groups extends Component {
   componentDidMount () {
     this.props.loadGroupsList()
   }
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.createdGroup) {
-      this.props.history.push({ pathname: `/groupDetail`, state: nextProps.createdGroup })
-    }
-  }
   updateTitle = (e) => {
     this.setState({title: e.target.value})
   }
@@ -42,7 +37,8 @@ class Groups extends Component {
     if (title === '') {
       return this.props.alert.show('Group title cannot be empty', {type: 'error'})
     }
-    this.props.createGroup({title: title, wa_id: '5b8effb1b020ef26b62f955f'})
+    this.props.createGroup({title: title})
+    this.setState({showModal: false})
   }
   goToInfo = (groupId) => {
     this.props.history.push({

@@ -13,7 +13,7 @@ export function groupReducer (state = initialState, action) {
     case ActionTypes.FETCH_GROUPS_LIST:
       return Object.assign({}, state, {
         groups: action.data,
-        createdGroup: ''
+
       })
     case ActionTypes.FETCH_GROUPS_INFO:
       return Object.assign({}, state, {
@@ -21,9 +21,10 @@ export function groupReducer (state = initialState, action) {
       })
     case ActionTypes.FETCH_CREATED_GROUP:
       return Object.assign({}, state, {
-        createdGroup: action.data
+        groups: [...state.groups, action.data]
       })
     case ActionTypes.FETCH_PARTICIPANTS_LIST:
+      console.log('Get Particpant Details From Ids', action.data)
       return Object.assign({}, state, {
         participants: action.data
       })
