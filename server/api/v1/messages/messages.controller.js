@@ -6,35 +6,29 @@ const TAG = '/server/api/v1/groups/messages.controller.js'
 exports.create = function (req, res) {
   logger.serverLog(TAG, 'Hit the create message')
   let message = {
-    recepientType: req.body.recipient_type ? req.body.recipient_type : null,
+    recipientType: req.body.recipient_type ? req.body.recipient_type : null,
     to: req.body.to,
     type: req.body.type ? req.body.type : null,
-    previewUrl: req.body.preview_url ? req.body.preview_url : false,
-    messageBody: req.body.text ? req.body.text : req.body.hsm ? req.body.hsm : req.body.audio ? req.body.audio
-      : req.body.document ? req.body.document : req.body.image ? req.body.image : null
+    previewUrl: req.body.previewUrl ? req.body.previewUrl : false
   }
 
-  if ((!req.body.type || req.body.type === 'text') && !req.body.text) {
-    return res.status(201).json({ status: 'failed', payload: 'Parameters are missing' })
-  }
-  if ((req.body.type && req.body.type === 'hsm' && !req.body.hsm) || (req.body.hsm && !req.body.type)) {
-    return res.status(201).json({ status: 'failed', payload: 'Parameters are missing' })
-  }
-  if ((req.body.type && req.body.type === 'audio' && !req.body.audio) || (req.body.audio && !req.body.type)) {
-    return res.status(201).json({ status: 'failed', payload: 'Parameters are missing' })
-  }
-  if ((req.body.type && req.body.type === 'document' && !req.body.document) || (req.body.document && !req.body.type)) {
-    return res.status(201).json({ status: 'failed', payload: 'Parameters are missing' })
-  }
-  if ((req.body.type && req.body.type === 'image' && !req.body.image) || (req.body.image && !req.body.type)) {
-    return res.status(201).json({ status: 'failed', payload: 'Parameters are missing' })
-  }
-
+  message[req.body.type] = req.body.messagePayload
   utility.postToWhatsapp(`/v1/messages`, message, (err, result) => {
     if (err) {
-      return res.status(500).json({ status: 'failed', payload: err })
+      console.log('error from whatsapp')
+      return res.status(500).json({ status: 'failed', payload: '' + err })
     }
-    Messages.create(message)
+    Messages.create({
+      recipientType: req.body.recipientType,
+      to: req.body.to,
+      previewUrl: req.body.previewUrl,
+      from: req.user.wa_id,
+      messageId: result.data.messages[0].id,
+      timestamp: Date.now(),
+      type: req.body.type,
+      status: 'pending',
+      messagePayload: req.body.messagePayload
+    })
       .then(result => {
         let resp = []
         resp.push({id: result._id})

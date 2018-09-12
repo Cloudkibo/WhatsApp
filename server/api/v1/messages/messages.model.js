@@ -13,7 +13,7 @@ let messageSchema = new Schema({
   groupId: String,
   status: {
     type: String,
-    enum: ['sent', 'delivered', 'read', 'failed']
+    enum: ['pending', 'sent', 'delivered', 'read', 'failed']
   },
   messagePayload: Schema.Types.Mixed,
   createdAt: { type: Date, default: Date.now() }

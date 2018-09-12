@@ -58,37 +58,50 @@ exports.create = function (req, res, next) {
         logger.serverLog(TAG, `Invalid WhatsApp Number: ${validationErr}`)
         return res.status(500).json({ status: 'failed', description: '' + validationErr })
       }
-      Users.findOne({email: req.body.email}, (err, user) => {
+      Users.findOne({email: req.body.email}, (err, user1) => {
         if (err) {
           return res.status(500).json({
             status: 'failed',
             description: 'internal server error' + err
           })
         }
-        if (user) {
+        if (user1) {
           return res.status(422).json({
             status: 'failed',
-            description: 'User already exists'
+            description: 'User email already exists'
           })
         }
-        // console.log(validationResult.data)
-        let accountData = new Users({
-          wa_id: validationResult.data.contacts[0].wa_id,
-          companyName: req.body.companyName,
-          email: req.body.email,
-          phone: req.body.phone,
-          password: req.body.password
-        })
-
-        accountData.save(function (err, user) {
+        Users.findOne({phone: req.body.phone}, (err, user2) => {
           if (err) {
             return res.status(500).json({
               status: 'failed',
               description: 'internal server error' + err
             })
           }
-          req.user = user
-          return auth.setTokenCookie(req, res)
+          if (user2) {
+            return res.status(422).json({
+              status: 'failed',
+              description: 'User phone number already exists'
+            })
+          }
+          let accountData = new Users({
+            wa_id: validationResult.data.contacts[0].wa_id,
+            companyName: req.body.companyName,
+            email: req.body.email,
+            phone: req.body.phone,
+            password: req.body.password
+          })
+
+          accountData.save(function (err, user) {
+            if (err) {
+              return res.status(500).json({
+                status: 'failed',
+                description: 'internal server error' + err
+              })
+            }
+            req.user = user
+            return auth.setTokenCookie(req, res)
+          })
         })
       })
     })
