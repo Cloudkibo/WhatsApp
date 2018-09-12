@@ -17,3 +17,27 @@ export function sendMessage (data) {
 export function addNewTextMessage (dispatcher, data) {
   dispatcher(chatDispatcher.newTextMessage(data))
 }
+
+export function addNewLocationMessage (dispatcher, data) {
+  dispatcher(chatDispatcher.newLocationMessage(data))
+}
+
+export function addNewImageMessage (dispatcher, data) {
+  dispatcher(chatDispatcher.newImageMessage(data))
+}
+
+export function addNewVideoMessage (dispatcher, data) {
+  dispatcher(chatDispatcher.newVideoMessage(data))
+}
+
+export function addNewVoiceMessage (dispatcher, data) {
+  dispatcher(chatDispatcher.newVoiceMessage(data))
+}
+
+export function addNewAudioMessage (dispatcher, data) {
+  dispatcher(chatDispatcher.newAudioMessage(data))
+}
+
+export function addNewDocumentMessage (dispatcher, data) {
+  dispatcher(chatDispatcher.newDocumentMessage(data))
+}

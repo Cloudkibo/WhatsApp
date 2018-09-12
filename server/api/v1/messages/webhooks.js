@@ -11,30 +11,40 @@ exports.handleTextMessage = (payload) => {
 
 exports.handleImageMessage = (payload) => {
   logger.serverLog(TAG, `Image Message Handled ${JSON.stringify(payload)}`)
+  let message = payload.messages[0] ? payload.messages[0] : null
+  messageUtility.getMediaFromDocker(message.image.id, message.type)
   const savedMessage = messageUtility.saveMessage(payload)
   helper.sendToClient(savedMessage)
 }
 
 exports.handleAudioMessage = (payload) => {
   logger.serverLog(TAG, `Audio Message Handled ${JSON.stringify(payload)}`)
+  let message = payload.messages[0] ? payload.messages[0] : null
+  messageUtility.getMediaFromDocker(message.audio.id, message.type)
   const savedMessage = messageUtility.saveMessage(payload)
   helper.sendToClient(savedMessage)
 }
 
 exports.handleVideoMessage = (payload) => {
   logger.serverLog(TAG, `Video Message Handled ${JSON.stringify(payload)}`)
+  let message = payload.messages[0] ? payload.messages[0] : null
+  messageUtility.getMediaFromDocker(message.video.id, message.type)
   const savedMessage = messageUtility.saveMessage(payload)
   helper.sendToClient(savedMessage)
 }
 
 exports.handleDocumentMessage = (payload) => {
   logger.serverLog(TAG, `Document Message Handled ${JSON.stringify(payload)}`)
+  let message = payload.messages[0] ? payload.messages[0] : null
+  messageUtility.getMediaFromDocker(message.document.id, message.type)
   const savedMessage = messageUtility.saveMessage(payload)
   helper.sendToClient(savedMessage)
 }
 
 exports.handleVoiceMessage = (payload) => {
   logger.serverLog(TAG, `Voice Message Handled ${JSON.stringify(payload)}`)
+  let message = payload.messages[0] ? payload.messages[0] : null
+  messageUtility.getMediaFromDocker(message.voice.id, message.type)
   const savedMessage = messageUtility.saveMessage(payload)
   helper.sendToClient(savedMessage)
 }
