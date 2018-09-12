@@ -14,7 +14,12 @@ exports.getMedia = function (req, res) {
   logger.serverLog(TAG, 'Hit the endpoint for Get Media')
   Media.findOne({mediaId: req.params.mediaId})
     .then(result => {
-      res.sendFile(result.url)
+      if (result.mediaType === 'document') {
+        // res.setHeader('application/octet-stream')
+        return res.download(result.url)
+      } else {
+        return res.sendFile(result.url)
+      }
     })
     .catch(err => {
       logger.serverLog(TAG, `Inernal Server Error ${err}`)

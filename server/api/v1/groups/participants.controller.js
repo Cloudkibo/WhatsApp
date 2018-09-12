@@ -4,7 +4,7 @@ const Contacts = require('./../contacts/contacts.model')
 const utility = require('./../../../components/utility')
 const _difference = require('lodash/difference')
 const _includes = require('lodash/includes')
-const _union = require('lodash/union')
+const _unionBy = require('lodash/unionBy')
 const TAG = '/server/api/v1/groups/particpants.controller.js'
 
 exports.deleteParticipants = function (req, res) {
@@ -20,6 +20,7 @@ exports.deleteParticipants = function (req, res) {
     .exec()
     .then(group => {
       group.participants = _difference(group.participants, newParticipants)
+      group.admins = _difference(group.admins, newParticipants)
       group.save(function (err) {
         if (err) {
           logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
@@ -44,14 +45,14 @@ exports.fetchMany = function (req, res) {
       logger.serverLog(TAG, `Before Contacts ${JSON.stringify(contacts)}`)
       if (found) {
         let obj = {
-          createtime: '2018-09-11T13:01:13.327Z',
+          createtime: req.user.createtime,
           isSubscribed: false,
           name: req.user.companyName,
           phone: req.user.phone,
           status: 'valid',
           wa_id: req.user.wa_id
         }
-        contacts.push(obj)
+        contacts = _unionBy([obj], contacts, 'wa_id')
       }
       logger.serverLog(TAG, `After Contacts ${JSON.stringify(contacts)}`)
       return res.status(200).json({ status: 'success', payload: contacts })
