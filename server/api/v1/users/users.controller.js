@@ -100,11 +100,7 @@ exports.create = function (req, res, next) {
               })
             }
             req.user = user
-            auth.setTokenCookie(req, res)
-            return res.status(200).json({
-              status: 'success',
-              payload: accountData
-            })
+            return auth.setTokenCookie(req, res)
           })
         })
       })

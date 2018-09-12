@@ -71,9 +71,20 @@ function putToWhatsapp (endpoint, params, cb) {
     })
 }
 
+function patchToWhatsapp (endpoint, params, cb) {
+  axios.patch(config.docker_url + endpoint, params)
+    .then(resp => {
+      cb(null, resp)
+    })
+    .catch(err => {
+      cb(err, null)
+    })
+}
+
 exports.validateUrl = validateUrl
 exports.getFromWhatsapp = getFromWhatsapp
 exports.deleteFromWhatsapp = deleteFromWhatsapp
 exports.postToWhatsapp = postToWhatsapp
 exports.postToWhatsappHeaders = postToWhatsappHeaders
 exports.putToWhatsapp = putToWhatsapp
+exports.patchToWhatsapp = patchToWhatsapp

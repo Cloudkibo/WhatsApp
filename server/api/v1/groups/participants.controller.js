@@ -1,7 +1,10 @@
 const logger = require('./../../../components/logger')
 const Groups = require('./groups.model')
+const Contacts = require('./../contacts/contacts.model')
 const utility = require('./../../../components/utility')
 const _difference = require('lodash/difference')
+const _includes = require('lodash/includes')
+const _unionBy = require('lodash/unionBy')
 const TAG = '/server/api/v1/groups/particpants.controller.js'
 
 exports.deleteParticipants = function (req, res) {
@@ -17,6 +20,7 @@ exports.deleteParticipants = function (req, res) {
     .exec()
     .then(group => {
       group.participants = _difference(group.participants, newParticipants)
+      group.admins = _difference(group.admins, newParticipants)
       group.save(function (err) {
         if (err) {
           logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
@@ -28,5 +32,32 @@ exports.deleteParticipants = function (req, res) {
     .catch(err => {
       logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
       return res.status(500).json({ status: 'failed', err: err })
+    })
+}
+
+exports.fetchMany = function (req, res) {
+  logger.serverLog(TAG, 'Hit the participant fetch many endpoint')
+  Contacts.find({wa_id: {$in: req.body.ids}})
+    .exec()
+    .then(contacts => {
+      let found = _includes(req.body.ids, req.user.wa_id)
+      logger.serverLog(TAG, `User ${JSON.stringify(req.user)} Found ${found} ${JSON.stringify(req.body.ids)}`)
+      logger.serverLog(TAG, `Before Contacts ${JSON.stringify(contacts)}`)
+      if (found) {
+        let obj = {
+          createtime: req.user.createtime,
+          isSubscribed: false,
+          name: req.user.companyName,
+          phone: req.user.phone,
+          status: 'valid',
+          wa_id: req.user.wa_id
+        }
+        contacts = _unionBy([obj], contacts, 'wa_id')
+      }
+      logger.serverLog(TAG, `After Contacts ${JSON.stringify(contacts)}`)
+      return res.status(200).json({ status: 'success', payload: contacts })
+    })
+    .catch(err => {
+      return res.status(500).json({ status: 'failed', payload: err })
     })
 }
