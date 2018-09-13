@@ -13,9 +13,9 @@ class Location extends Component {
           </div>
         }
         <div className='m-messenger__message-body'>
-          <div className='m-messenger__message-arrow' />
-          <div className='m-messenger__message-content'>
-            <div className='m-messenger__message-text'>
+          <div className='m-messenger__message-arrow' style={{color: '#F4F4F8'}} />
+          <div className='m-messenger__message-content' style={{background: '#F4F4F8'}}>
+            <div className='m-messenger__message-text' style={{color: '#7D7C86'}}>
               <table style={{border: '1px solid #ccc', borderRadius: '15px', borderCollapse: 'separate', padding: '5px'}}>
                 <tbody>
                   <tr><td>

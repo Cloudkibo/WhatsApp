@@ -102,7 +102,13 @@ exports.uploadMedia = function (req, res) {
       })
       .catch((err) => res.status(500).json({status: 'failed', description: `Error: ${JSON.stringify(err)}`}))
   } else {
-    validateFile(req.files.file, res)
+    const validated = validateFile(req.files.file, res)
+    if (!validated) {
+      return res.status(400).json({
+        status: 'failed',
+        description: 'unsupported file type: ' + req.files.file.type
+      })
+    }
     saveMediaFile(req.files.file)
       .then((mediaFile) => {
         console.log(mediaFile)
@@ -133,12 +139,10 @@ exports.uploadMedia = function (req, res) {
 function validateFile (file, res) {
   console.log('validating ' + file.type)
   console.log(file.type.startsWith('image'))
-  if (!file.type.startsWith('image') && !file.type.startsWith('audio') && !file.type.startsWith('document')) {
-    return res.status(400).json({
-      status: 'failed',
-      description: 'unsupported file type: ' + file.type
-    })
+  if (!file.type.startsWith('image') && !file.type.startsWith('audio') && !file.type.startsWith('application/pdf')) {
+    return false
   }
+  return true
 }
 
 function saveMediaFile (file) {

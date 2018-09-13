@@ -12,6 +12,12 @@ class Header extends Component {
           <div className='m-portlet__head-title'>
             <h3 className='m-portlet__head-text'>
               {this.props.name}
+              <input
+                style={{display: 'none'}}
+                ref={fileInput => { this.fileInput = fileInput }}
+                type='file'
+                onChange={this.props.onFileChange}
+              />
               <br />
               <span style={{fontSize: 'small', fontWeight: 'lighter'}}>
                 {this.props.lastSeen}
@@ -27,10 +33,9 @@ class Header extends Component {
             <li className='nav-item m-tabs__item'>
               <Dropdown text='Attachment' icon='attach' floating labeled button className='icon'>
                 <Dropdown.Menu>
-                  <Dropdown.Item icon='image' text='Image' />
-                  <Dropdown.Item icon='file' text='Document' />
-                  <Dropdown.Item icon='speaker' text='Audio' />
-                  <Dropdown.Item icon='video' text='Video' />
+                  <Dropdown.Item icon='image' text='Image' onClick={() => { this.fileInput.click() }} />
+                  <Dropdown.Item icon='file' text='Document' onClick={() => { this.fileInput.click() }} />
+                  <Dropdown.Item icon='speaker' text='Audio' onClick={() => { this.fileInput.click() }} />
                 </Dropdown.Menu>
               </Dropdown>
             </li>

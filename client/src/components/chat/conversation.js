@@ -6,7 +6,7 @@ import ImageItem from './image'
 import File from './file'
 class Conversation extends Component {
   getChatComponent = (message) => {
-    const classType = (message.from) ? 'in' : 'out'
+    const classType = (message.to) ? 'out' : 'in'
     if (message.type === 'text') {
       return <Text class={classType} text={message.messagePayload.body} />
     }

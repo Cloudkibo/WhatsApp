@@ -18,6 +18,35 @@ export function sendMessage (data) {
   }
 }
 
+export function sendImageMessage (data) {
+  return (dispatch) => {
+    callApi(`v1/messages`, 'post', data)
+      .then(res => {
+        console.log('response from send message', res)
+        if (res.messages) {
+          const messageId = res.messages.pop()
+          data.messageId = messageId.id
+          data.timestamp = new Date()
+          dispatch(chatDispatcher.newImageMessage(data))
+        }
+      })
+      .catch(err => console.log('Failed to send the message', err))
+  }
+}
+
+export function fetchChats () {
+  return (dispatch) => {
+    callApi(`v1/messages`)
+      .then(res => {
+        console.log('response from fetch chats', res)
+        if (res.status === 'success' && res.payload) {
+          dispatch(chatDispatcher.manageSessions(res.payload))
+        }
+      })
+      .catch(err => console.log('Failed to fetch the chats', err))
+  }
+}
+
 export function addNewTextMessage (dispatcher, data) {
   dispatcher(chatDispatcher.newTextMessage(data))
 }
