@@ -2,7 +2,7 @@ const logger = require('./../../../components/logger')
 const Groups = require('./groups.model')
 const utility = require('./../../../components/utility')
 const config = require('./../../../config/environment')
-
+const GroupUtility = require('./groups.utility')
 const path = require('path')
 const crypto = require('crypto')
 const fs = require('fs')
@@ -124,20 +124,21 @@ exports.CreateGroup = function (req, res) {
     const data = {
       title: req.body.title,
       groupId: groupId,
-      admins: [req.user.wa_id],
       creator: req.user.wa_id,
       participants: [req.user.wa_id],
       createtime: createtime
     }
 
     let newGroup = new Groups(data)
-    newGroup.save(function (err, result) {
-      if (err) {
-        return res.status(500).json({ status: 'failed', description: err })
-      } else {
+    newGroup.save()
+      .then(result => {
+        GroupUtility.createParticipant(req.user.wa_id, req.user.phone, groupId, req.user.companyName, true)
         return res.status(200).json({ status: 'success', payload: newGroup })
-      }
-    })
+      })
+      .catch(err => {
+        logger.serverLog(TAG, `Internal Server error at creating group: ${util.inspect(err)}`)
+        res.status(500).json({ status: 'failed', description: err })
+      })
   })
 }
 

@@ -2,11 +2,12 @@ const _includes = require('lodash/includes')
 const logger = require('./../../../components/logger')
 const TAG = '/server/api/v1/groups/webhooks.js'
 const Groups = require('./groups.model')
-const Contact = require('./../contacts/contacts.model')
 const helper = require('./../../../config/socketio')
 const utility = require('./../../../components/utility')
 const util = require('util')
 const _union = require('lodash/union')
+const GroupUtility = require('./groups.utility')
+const Contact = require('./../contacts/contacts.model')
 
 exports.handleGroupNotifications = (payload) => {
   logger.serverLog(TAG, `Group Notification Handled ${JSON.stringify(payload)}`)
@@ -38,8 +39,18 @@ const getWhatsappIdFromDocker = (phone, groupId) => {
       .filter(item => item.status === 'valid')
       .map(item => item.wa_id)
     if (data.length === 0) { return logger.serverLog(TAG, `Phone Number Not Valid`) }
-    addToGroupParticipants(groupId, data)
-    createContact(data[0], phone)
+    const waId = data[0]
+    addToGroupParticipants(groupId, [waId])
+    Contact.findOne({phone: phone})
+      .exec()
+      .then(result => {
+        if (result) {
+          GroupUtility.createParticipant(waId, phone, groupId, result.name)
+        } else {
+          GroupUtility.createParticipant(waId, phone, groupId)
+        }
+      })
+      .catch(err => logger.serverLog(TAG, `failed to add new participant ${err}`))
   })
 }
 
@@ -57,22 +68,6 @@ const addToGroupParticipants = (groupId, waIds) => {
         }
         logger.serverLog(TAG, `Added a new participant to the group`)
       })
-    })
-    .catch(err => {
-      logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
-    })
-}
-
-const createContact = (waId, phone) => {
-  const contact = {
-    phone: phone,
-    status: 'valid',
-    wa_id: waId
-  }
-  Contact.findOneAndUpdate({phone: phone, wa_id: waId}, contact, {upsert: true})
-    .exec()
-    .then((result) => {
-      logger.serverLog(TAG, `Added Contact Successfully`)
     })
     .catch(err => {
       logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)

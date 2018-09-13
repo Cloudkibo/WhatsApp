@@ -1,9 +1,9 @@
 import * as ActionTypes from '../constants/constants'
+import * as GroupMutator from './../mutators/group.mutator'
 
 let initialState = {
   groups: [],
-  participants: [],
-  admins: [],
+  participants: [], // Particpants of currently active group
   groupsInfo: false,
   inviteLink: ''
 }
@@ -12,7 +12,7 @@ export function groupReducer (state = initialState, action) {
   switch (action.type) {
     case ActionTypes.FETCH_GROUPS_LIST:
       return Object.assign({}, state, {
-        groups: action.data,
+        groups: action.data
 
       })
     case ActionTypes.FETCH_GROUPS_INFO:
@@ -28,13 +28,21 @@ export function groupReducer (state = initialState, action) {
       return Object.assign({}, state, {
         participants: action.data
       })
-    case ActionTypes.FETCH_ADMINS_LIST:
-      return Object.assign({}, state, {
-        admins: action.data
-      })
     case ActionTypes.GROUP_INVITE_LINK:
       return Object.assign({}, state, {
         inviteLink: action.data
+      })
+    case ActionTypes.UPDATE_GROUP_ADMIN:
+      return Object.assign({}, state, {
+        participants: GroupMutator.makeAdmin(state, action.data)
+      })
+    case ActionTypes.DEMOTE_GROUP_ADMIN:
+      return Object.assign({}, state, {
+        participants: GroupMutator.deleteAdmin(state, action.data)
+      })
+    case ActionTypes.DELETE_GROUP_PARTICIPANTS:
+      return Object.assign({}, state, {
+        participants: GroupMutator.deleteParticipant(state, action.data)
       })
 
     default:
