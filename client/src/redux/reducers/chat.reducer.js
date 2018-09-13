@@ -10,7 +10,7 @@ export function chatReducer (state = initialState, action) {
       return Object.assign({}, state, {
         serverMessage: action.message
       })
-    case ActionTypes.NEW_TEXT_MESSAGE_RECEIVED:
+    case ActionTypes.NEW_TEXT_MESSAGE:
       return Object.assign({}, state, {
         chats: ChatMutator.addTextMessage(state, action.payload)
       })

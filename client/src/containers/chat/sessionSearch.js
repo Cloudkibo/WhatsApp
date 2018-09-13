@@ -18,10 +18,10 @@ class SessionSearch extends Component {
 
   render () {
     return (
-      <div className='m-portlet__head' style={{background: '#ebedf2', border: '1px solid #909090'}}>
+      <div className='m-portlet__head' style={{background: '#ebedf2'}}>
         <Search
           input={{ fluid: true }}
-          loading={true}
+          loading
           placeholder='Search or start a new chat...'
           style={{marginTop: '14px'}}
         />
