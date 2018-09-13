@@ -14,7 +14,12 @@ exports.getMedia = function (req, res) {
   logger.serverLog(TAG, 'Hit the endpoint for Get Media')
   Media.findOne({mediaId: req.params.mediaId})
     .then(result => {
-      res.sendFile(result.url)
+      if (result.mediaType === 'document') {
+        // res.setHeader('application/octet-stream')
+        return res.download(result.url)
+      } else {
+        return res.sendFile(result.url)
+      }
     })
     .catch(err => {
       logger.serverLog(TAG, `Inernal Server Error ${err}`)
@@ -34,7 +39,9 @@ exports.deleteMedia = function (req, res) {
         Media.deleteOne({mediaId: req.params.mediaId})
           .then(() => {
             fs.unlink(media.url, (err) => {
-              return res.status(500).json({status: 'failed: ' + err})
+              if (err) {
+                return res.status(500).json({status: 'failed: ' + err})
+              }
             })
             return res.status(200).json({status: 'success'})
           })
@@ -53,12 +60,12 @@ exports.deleteMedia = function (req, res) {
 exports.uploadMedia = function (req, res) {
   logger.serverLog(TAG, `Hit the endpoint for upload Media`)
 
-  if (req.files.file.size === 0) {
-    return res.status(400).json({
-      status: 'failed',
-      description: 'No file submitted'
-    })
-  }
+  // if (req.files.file.size === 0) {
+  //   return res.status(400).json({
+  //     status: 'failed',
+  //     description: 'No file submitted'
+  //   })
+  // }
 
   if (Array.isArray(req.files.file)) {
     let requests = req.files.file.map((file, i) => {
@@ -81,11 +88,11 @@ exports.uploadMedia = function (req, res) {
           if (body.statusCode === 200) {
             result = JSON.parse(result)
             let mediaCreationRequests = req.files.file.map((file, i) => {
-              return createMediaObject(result.media[i].id, file.type, mediaFiles[i])
+              return createMediaObject(result.media[i].id, file.type, mediaFiles[i], req.user.wa_id)
             })
             Promise.all(mediaCreationRequests)
               .then(() => {
-                return res.status(200).json({ status: 'success' })
+                return res.status(200).json({ payload: result, status: 'success' })
               })
               .catch((err) => res.status(500).json({status: 'failed', description: `Error: ${JSON.stringify(err)}`}))
           } else {
@@ -107,13 +114,13 @@ exports.uploadMedia = function (req, res) {
             return res.status(500).json({ status: 'failed', description: err })
           }
           logger.serverLog(TAG, `result: ${JSON.stringify(result)}`)
-          if (body.statusCode === 200) {
+          if (body.statusCode === 201) {
             result = JSON.parse(result)
-            createMediaObject(result.media[0].id, req.files.file.type, mediaFile)
+            createMediaObject(result.media[0].id, req.files.file.type, mediaFile, req.user.wa_id)
               .then(() => {
-                return res.status(200).json({ status: 'success' })
+                return res.status(200).json({ payload: result, status: 'success' })
               })
-              .catch((err) => res.status(500).json({status: 'failed', description: `Error: ${JSON.stringify(err)}`}))
+              .catch((err) => res.status(500).json({status: 'failed', description: `Error: ${err}`}))
           } else {
             return res.status(body.statusCode).json({ status: 'failed' })
           }
@@ -158,11 +165,12 @@ function saveMediaFile (file) {
   })
 }
 
-function createMediaObject (mediaId, mediaType, url) {
+function createMediaObject (mediaId, mediaType, url, uploadedBy) {
   let newMedia = {
     mediaId,
     mediaType,
-    url
+    url,
+    uploadedBy
   }
   return new Promise((resolve, reject) => {
     Media.create(newMedia)

@@ -31,7 +31,7 @@ class signup extends Component {
   componentWillReceiveProps (nextprops) {
     this.setState({error: false})
     if (nextprops.successSignup) {
-      this.context.history.push({pathname: '/'})
+      this.props.history.push({pathname: '/'})
     }
   }
   handlePwdChange = (event) => {

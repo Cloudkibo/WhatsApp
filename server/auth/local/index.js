@@ -13,7 +13,7 @@ router.post('/', function (req, res, next) {
       if (error) return res.status(501).json({status: 'failed', description: 'Internal Server Error', error: '' + JSON.stringify(error)})
       if (!user) return res.json(404).json({message: 'User Not Found'})
       req.user = user
-      auth.setTokenCookie(req, res)
+      return auth.setTokenCookie(req, res)
     })(req, res, next)
   } else if (req.body.phone) {
     passport.authenticate('phone-local', function (err, user, info) {
@@ -21,7 +21,7 @@ router.post('/', function (req, res, next) {
       if (error) return res.status(501).json({status: 'failed', description: 'Internal Server Error'})
       if (!user) return res.json(404).json({message: 'User Not Found'})
       req.user = user
-      auth.setTokenCookie(req, res)
+      return auth.setTokenCookie(req, res)
     })(req, res, next)
   }
 })

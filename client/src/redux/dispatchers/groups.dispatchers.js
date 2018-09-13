@@ -19,6 +19,7 @@ export function createdGroup (data) {
   }
 }
 export function showParticipants (data) {
+  console.log('Get Particpant Details From Ids', data)
   return {
     type: ActionTypes.FETCH_PARTICIPANTS_LIST,
     data

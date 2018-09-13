@@ -25,7 +25,7 @@ class GroupTable extends Component {
                 return <Table.Row style={{cursor: 'pointer'}} key={index}>
                   <Table.Cell textAlign='center'><input type='checkbox' onChange={(e) => { this.props.handleCheck(e, item.groupId) }} /></Table.Cell>
                   <Table.Cell > <Image style={{height: '25px', width: '25px'}}
-                    src={(item.iconURL !== '')
+                    src={(item.iconURL && item.iconURL !== '')
                       ? `/api/v1/groups/${item.groupId}/icon`
                       : 'https://react.semantic-ui.com/images/wireframe/square-image.png'}
                     size='mini' circular /></Table.Cell>

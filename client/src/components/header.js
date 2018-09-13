@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import auth from './../utility/auth.service'
 
 class Header extends Component {
   constructor (props, context) {
@@ -55,16 +56,17 @@ class Header extends Component {
                     <li className='m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light' data-dropdown-toggle='click'>
                       <a href='#' className='m-nav__link m-dropdown__toggle'>
                         <span className='m-topbar__userpic'>
-                          <div style={{display: 'inline-block', marginRight: '5px'}}>
+                          {/* <div style={{display: 'inline-block', marginRight: '5px'}}>
                             <img src={'icons/users.jpg'} className='m--img-rounded m--marginless m--img-centered' alt='' />
                           </div>
+                          */}
                           <div style={{display: 'inline-block', height: '41px'}}>
-                            <span className='m-nav__link-text' style={{lineHeight: '41px', verticalAlign: 'middle', textAlign: 'center'}}>Username <i className='fa fa-chevron-down' />
+                            <span className='m-nav__link-text' style={{lineHeight: '41px', verticalAlign: 'middle', textAlign: 'center'}}>{this.props.user ? this.props.user.companyName : 'Username'} <i className='fa fa-chevron-down' />
                             </span>
                           </div>
                         </span>
                         <span className='m-topbar__username m--hide'>
-                          Username
+                          {this.props.user ? this.props.user.companyName : 'Username'}
                         </span>
                       </a>
                       <div className='m-dropdown__wrapper'>
@@ -77,10 +79,10 @@ class Header extends Component {
                               </div>
                               <div className='m-card-user__details'>
                                 <span className='m-card-user__name m--font-weight-500'>
-                                  Username
+                                  {this.props.user ? this.props.user.companyName : 'Username'}
                                 </span>
                                 <span className='m-card-user__email'>
-                                  username@cloudkibo.com
+                                  {this.props.user && this.props.user.email ? this.props.user.email : 'Username@cloudkibo.com'}
                                 </span>
                               </div>
                             </div>
@@ -112,7 +114,7 @@ class Header extends Component {
                                 </li>
                                 <li className='m-nav__separator m-nav__separator--fit' />
                                 <li className='m-nav__item'>
-                                  <a href='/' className='btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder'>
+                                  <a onClick={() => { auth.logout() }} href='/' className='btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder'>
                                     Logout
                                   </a>
                                 </li>
@@ -137,7 +139,9 @@ class Header extends Component {
 }
 
 function mapStateToProps (state) {
-  return {}
+  return {
+    user: state.userReducer.user
+  }
 }
 
 function mapDispatchToProps (dispatch) {

@@ -6,12 +6,23 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
+import Notifier from 'react-desktop-notification'
 
 class Sidebar extends Component {
   constructor (props, context) {
     super(props, context)
     this.state = {}
   }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.chats) {
+      Notifier.focus('KiboWhatsapp', 'You got a new message', 'http://locahost:3000/chat', '')
+    }
+  }
+
+  // componentDidMount () {
+  //   Notifier.focus('KiboWhatsapp', 'You got a new message', '/chat', '')
+  // }
 
   showOperationalDashboard () {
     return (
@@ -27,10 +38,10 @@ class Sidebar extends Component {
   showDashboard () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-        <a href='' className='m-menu__link m-menu__toggle'>
+        <Link to='/' className='m-menu__link m-menu__toggle'>
           <i className='m-menu__link-icon flaticon-squares-4' title='Dashboard' />
           <span className='m-menu__link-text'>Dashboard</span>
-        </a>
+        </Link>
       </li>
     )
   }
@@ -49,7 +60,7 @@ class Sidebar extends Component {
   showGroups () {
     return (
       <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-        <Link to='/' className='m-menu__link m-menu__toggle'>
+        <Link to='/groups' className='m-menu__link m-menu__toggle'>
           <i className='m-menu__link-icon flaticon-squares-4' title='Groups' />
           <span className='m-menu__link-text'>Groups</span>
         </Link>
@@ -101,10 +112,10 @@ class Sidebar extends Component {
                   {this.showMedia()}
                   {this.showMessages()}
                   <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
-                    <a href='' className='m-menu__link m-menu__toggle'>
+                    <Link to='settings' className='m-menu__link m-menu__toggle'>
                       <i className='m-menu__link-icon flaticon-cogwheel' title='Settings' />
                       <span className='m-menu__link-text'>Settings</span>
-                    </a>
+                    </Link>
                   </li>
                   <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
                     <a href='http://kibopush.com/user-guide/' target='_blank' className='m-menu__link m-menu__toggle'>
@@ -130,7 +141,9 @@ class Sidebar extends Component {
   }
 }
 function mapStateToProps (state) {
-  return {}
+  return {
+    chats: state.chatReducer.chats
+  }
 }
 
 function mapDispatchToProps (dispatch) {

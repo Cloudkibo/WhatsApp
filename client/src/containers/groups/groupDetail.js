@@ -16,30 +16,28 @@ class GroupDetail extends Component {
     this.state = {
       showModal: false,
       title: '',
-      participants: []
+      participants: [],
+      selectedGroup: false
     }
-    props.getGroupInfo({groupId: props.history.location.state.groupId})
     props.getGroupIcon(props.history.location.state.groupId)
   }
   updateTitle = (e) => {
     this.setState({title: e.target.value})
   }
   componentWillReceiveProps (nextProps) {
-    if (nextProps.groupsInfo) {
-      this.setState({title: nextProps.groupsInfo.title})
-    }
-
-    if (nextProps.admins && nextProps.participants) {
-      let participants = _.differenceBy(nextProps.participants, nextProps.admins, 'wa_id')
-      participants = _.map(participants, (item) => ({name: item.name, wa_id: item.wa_id, admin: false}))
-      let admins = _.map(nextProps.admins, (item) => ({name: item.name, wa_id: item.wa_id, admin: true}))
-      let temp = admins.concat(participants)
+    if (nextProps.participants) {
+      let temp = _.map(nextProps.participants, (item) => ({
+        ...item,
+        admin: _.includes(this.state.selectedGroup.admins, item.wa_id)
+      }))
       this.setState({participants: temp})
     }
   }
   componentDidMount () {
-    this.props.getParticiapnts({ids: this.props.groupsInfo.participants})
-    this.props.getAdmins({ids: this.props.groupsInfo.admins})
+    let selectedGroup = this.props.groups.filter(item => item.groupId === this.props.history.location.state.groupId)[0]
+    this.setState({selectedGroup, title: selectedGroup.title})
+    this.props.getParticiapnts(selectedGroup.groupId, {ids: selectedGroup.participants})
+    this.props.getAdmins({ids: selectedGroup.participants})
   }
   showModal = (nextProps) => {
     this.setState({showModal: true})
@@ -53,7 +51,7 @@ class GroupDetail extends Component {
       return this.props.alert.show('Group title cannot be empty', {type: 'error'})
     }
     this.handleClose()
-    this.props.updateGroup({title: title, groupId: this.props.groupsInfo.groupId})
+    this.props.updateGroup({title: title, groupId: this.state.selectedGroup.groupId})
   }
   _onChange = (e) => {
     if (e.target.files.length > 0) {
@@ -69,6 +67,11 @@ class GroupDetail extends Component {
       this.props.uploadImage(fileData, this.props.history.location.state.groupId)
     }
   }
+
+  handleAdmin = (particpant) => {
+    console.log('Participant', particpant.wa_id, particpant.admin)
+  }
+
   render () {
     return (
       <div style={{width: 80 + 'vw'}}>
@@ -82,11 +85,11 @@ class GroupDetail extends Component {
             <div className='col-xl-12'>
               <div className='m-portlet'>
                 <div className='m-portlet__body'>
-                  {this.props.groupsInfo &&
-                  <InfoHeader groupsInfo={this.props.groupsInfo} handleImage={this._onChange} showModal={this.showModal} />
+                  {this.state.selectedGroup &&
+                  <InfoHeader groupsInfo={this.state.selectedGroup} handleImage={this._onChange} showModal={this.showModal} />
                   }
                   {this.state.participants && this.state.participants.length > 0 &&
-                  <ParticipantList participants={this.state.participants} deleteParticipants={this.props.deleteParticipants} groupsInfo={this.props.groupsInfo} />
+                  <ParticipantList participants={this.state.participants} deleteParticipants={this.props.deleteParticipants} handleAdmin={this.handleAdmin} groupsInfo={this.state.selectedGroup} />
                   }
                 </div>
               </div>
@@ -99,17 +102,19 @@ class GroupDetail extends Component {
 }
 
 function mapStateToProps (state) {
+  console.log('Redux State', state)
   return {
     groupsInfo: state.groupReducer.groupsInfo,
+    groups: state.groupReducer.groups,
     participants: state.groupReducer.participants,
-    admins: state.groupReducer.admins
+    admins: state.groupReducer.admins,
+    user: state.userReducer.user
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     uploadImage: GroupActions.uploadImage,
-    getGroupInfo: GroupActions.getGroupInfo,
     getGroupIcon: GroupActions.getGroupIcon,
     updateGroup: GroupActions.updateGroup,
     getParticiapnts: GroupActions.getParticiapnts,

@@ -39,47 +39,71 @@ exports.create = function (req, res, next) {
       .json({status: 'failed', description: 'Parameters are missing'})
   }
 
-  let contactsRequest = {
+  let contactCreationRequest = {
+    phone: req.body.phone
+  }
+
+  let contactValidationRequest = {
     contacts: []
   }
-  contactsRequest.contacts.push(req.body.phone)
+  contactValidationRequest.contacts.push(req.body.phone)
 
-  utility.postToWhatsapp('/v1/contacts', contactsRequest, (err, result) => {
-    if (err) {
-      logger.serverLog(TAG, `Invalid WhatsApp Number: ${err}`)
-      return res.status(500).json({ status: 'failed', description: '' + err })
+  utility.postToWhatsapp('/v1/contacts/create', contactCreationRequest, (creationErr, creationResult) => {
+    if (creationErr) {
+      logger.serverLog(TAG, `Unable to create contact: ${creationErr}`)
+      return res.status(500).json({ status: 'failed', description: '' + creationErr })
     }
-  })
-
-  Users.findOne({email: req.body.email}, (err, user) => {
-    if (err) {
-      return res.status(500).json({
-        status: 'failed',
-        description: 'internal server error' + err
-      })
-    }
-    if (user) {
-      return res.status(422).json({
-        status: 'failed',
-        description: 'User already exists'
-      })
-    }
-    let accountData = new Users({
-      companyName: req.body.companyName,
-      email: req.body.email,
-      phone: req.body.phone,
-      password: req.body.password
-    })
-
-    accountData.save(function (err, user) {
-      if (err) {
-        return res.status(500).json({
-          status: 'failed',
-          description: 'internal server error' + err
-        })
+    utility.postToWhatsapp('/v1/contacts', contactValidationRequest, (validationErr, validationResult) => {
+      if (validationErr) {
+        logger.serverLog(TAG, `Invalid WhatsApp Number: ${validationErr}`)
+        return res.status(500).json({ status: 'failed', description: '' + validationErr })
       }
-      req.user = user
-      return auth.setTokenCookie(req, res)
+      Users.findOne({email: req.body.email}, (err, user1) => {
+        if (err) {
+          return res.status(500).json({
+            status: 'failed',
+            description: 'internal server error' + err
+          })
+        }
+        if (user1) {
+          return res.status(422).json({
+            status: 'failed',
+            description: 'User email already exists'
+          })
+        }
+        Users.findOne({phone: req.body.phone}, (err, user2) => {
+          if (err) {
+            return res.status(500).json({
+              status: 'failed',
+              description: 'internal server error' + err
+            })
+          }
+          if (user2) {
+            return res.status(422).json({
+              status: 'failed',
+              description: 'User phone number already exists'
+            })
+          }
+          let accountData = new Users({
+            wa_id: validationResult.data.contacts[0].wa_id,
+            companyName: req.body.companyName,
+            email: req.body.email,
+            phone: req.body.phone,
+            password: req.body.password
+          })
+
+          accountData.save(function (err, user) {
+            if (err) {
+              return res.status(500).json({
+                status: 'failed',
+                description: 'internal server error' + err
+              })
+            }
+            req.user = user
+            return auth.setTokenCookie(req, res)
+          })
+        })
+      })
     })
   })
 }

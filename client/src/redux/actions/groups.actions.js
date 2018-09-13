@@ -26,6 +26,7 @@ export function createGroup (data) {
     callApi('v1/groups', 'post', data)
       .then(res => {
         if (res.status === 'success') {
+          console.log('New Group Created', res.payload)
           dispatch(groupDispatcher.createdGroup(res.payload))
         }
       })
@@ -68,11 +69,13 @@ export function updateGroup (data) {
   }
 }
 
-export function getParticiapnts (data) {
+export function getParticiapnts (groupId, data) {
+  console.log('Get Particpant Details From Ids', data)
   return (dispatch) => {
-    callApi('v1/contacts', 'post', data)
+    callApi(`v1/groups/${groupId}/participants`, 'post', data)
       .then(res => {
         if (res.status === 'success') {
+          console.log('Get Particpant Details From Ids', res.payload)
           dispatch(groupDispatcher.showParticipants(res.payload))
         }
       })
