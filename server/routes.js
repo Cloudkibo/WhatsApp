@@ -8,6 +8,7 @@ module.exports = function (app) {
   app.use('/api/v1/contacts', require('./api/v1/contacts'))
   app.use('/api/v1/users', require('./api/v1/users'))
   app.use('/api/v1/webhooks', require('./api/v1/webhooks'))
+  app.use('/api/v1/analytics', require('./api/v1/analytics'))
   app.use('/auth', require('./auth'))
   // auth middleware go here
 

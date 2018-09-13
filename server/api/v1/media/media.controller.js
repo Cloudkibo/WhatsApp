@@ -88,7 +88,7 @@ exports.uploadMedia = function (req, res) {
           if (body.statusCode === 200) {
             result = JSON.parse(result)
             let mediaCreationRequests = req.files.file.map((file, i) => {
-              return createMediaObject(result.media[i].id, file.type, mediaFiles[i])
+              return createMediaObject(result.media[i].id, file.type, mediaFiles[i], req.user.wa_id)
             })
             Promise.all(mediaCreationRequests)
               .then(() => {
@@ -116,7 +116,7 @@ exports.uploadMedia = function (req, res) {
           logger.serverLog(TAG, `result: ${JSON.stringify(result)}`)
           if (body.statusCode === 201) {
             result = JSON.parse(result)
-            createMediaObject(result.media[0].id, req.files.file.type, mediaFile)
+            createMediaObject(result.media[0].id, req.files.file.type, mediaFile, req.user.wa_id)
               .then(() => {
                 return res.status(200).json({ payload: result, status: 'success' })
               })
@@ -165,11 +165,12 @@ function saveMediaFile (file) {
   })
 }
 
-function createMediaObject (mediaId, mediaType, url) {
+function createMediaObject (mediaId, mediaType, url, uploadedBy) {
   let newMedia = {
     mediaId,
     mediaType,
-    url
+    url,
+    uploadedBy
   }
   return new Promise((resolve, reject) => {
     Media.create(newMedia)
