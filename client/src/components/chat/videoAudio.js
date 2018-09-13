@@ -11,8 +11,8 @@ class VideoAudio extends Component {
           </div>
         }
         <div className='m-messenger__message-body'>
-          <div className='m-messenger__message-arrow' />
-          <div className='m-messenger__message-content'>
+          <div className='m-messenger__message-arrow' style={{color: '#F4F4F8'}} />
+          <div className='m-messenger__message-content' style={{background: '#F4F4F8'}}>
             <div className='m-messenger__message-text'>
               <ReactPlayer url={this.props.url} controls width='512px' height={this.props.type === 'video' ? '288px' : '50px'} />
             </div>

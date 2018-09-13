@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
+import * as ChatActions from '../../redux/actions/chat.actions'
 import {uploadMedia, deleteMedia} from '../../redux/actions/media.actions'
 import PageTile from './../../components/pageTitle'
 import Header from './../../components/chat/header'
@@ -22,7 +22,7 @@ class Chat extends Component {
       attachment: [],
       attachmentType: '',
       removeFileDescription: '',
-      uploadedId: '',
+      uploadedId: false,
       uploadedUrl: '',
       selectedChats: [],
       selectedSession: ''
@@ -41,7 +41,7 @@ class Chat extends Component {
       })
       if (file.type === 'text/javascript' || file.type === 'text/exe') {
         this.msg.error('Cannot add js or exe files. Please select another file')
-      } else if (file.size > 25000000) {
+      } else if (file.size > 16000000) {
         this.msg.error('Files greater than 25MB not allowed')
       } else {
         let fileData = new FormData()
@@ -50,6 +50,7 @@ class Chat extends Component {
         fileData.append('filetype', file.type)
         fileData.append('filesize', file.size)
         console.log('file', file)
+        console.log('file', fileData)
         this.setState({uploadDescription: 'File is uploading...'})
         this.props.uploadMedia(fileData, this.handleUpload)
       }
@@ -61,13 +62,14 @@ class Chat extends Component {
       attachmentType: '',
       uploaded: false,
       uploadDescription: '',
-      uploadedId: '',
+      uploadedId: false,
       uploadedUrl: '',
       removeFileDescription: ''
     })
   }
 
   handleUpload = (res) => {
+    console.log('Response from file upload', res)
     if (res.status === 'failed') {
       this.setState({
         uploaded: false,
@@ -75,7 +77,7 @@ class Chat extends Component {
         uploadDescription: res.description,
         attachmentType: '',
         componentType: '',
-        uploadedId: '',
+        uploadedId: false,
         uploadedUrl: '',
         removeFileDescription: ''
       })
@@ -129,17 +131,28 @@ class Chat extends Component {
 
             <div className='col-lg-8 col-md-8 col-sm-8' style={{padding: '0px', marginLeft: '-2px'}}>
               <div className='m-portlet' style={{height: '100%'}}>
-                {(this.state.selectedSession !== '' || this.state) && <div style={{height: '100%'}}>
-                  <Header name={this.state.selectedSession} onFileChange={this.onFileChange} lastSeen='Last seen today at 1:40 PM' />
+                {(this.state.selectedSession !== '') && <div style={{height: '100%'}}>
+                  <Header name={this.state.selectedSession} onFileChange={this.onFileChange}
+                    lastSeen='Last seen today at 1:40 PM' />
                   <div className='m-portlet__body' style={{padding: '0px', height: '100%'}} >
-                    <Preview show />
-                    {/* <Conversation chats={this.state.selectedChats} /> */}
-                    {/* <Chatbox sessionId={this.state.selectedSession} />
-                    <Uploads uploaded={this.state.uploaded}
-                      removeAttachment={this.removeAttachment}
-                      attachment={this.state.attachment}
-                      removeFileDescription={this.state.removeFileDescription}
-                      uploadDescription={this.state.uploadDescription} /> */}
+                    {
+                      (this.state.uploadedId)
+                        ? <Preview onClosePreview={this.resetFileComponent} uploadedId={this.state.uploadedId}
+                          attachmentType={this.state.attachmentType}
+                          sessionId={this.state.selectedSession}
+                          sendMessage={this.props.sendImageMessage}
+                          removeAttachment={this.removeAttachment}
+                        />
+                        : <span>
+                          <Conversation chats={this.state.selectedChats} />
+                          <Chatbox sessionId={this.state.selectedSession} />
+                          <Uploads uploaded={this.state.uploaded}
+                            removeAttachment={this.removeAttachment}
+                            attachment={this.state.attachment}
+                            removeFileDescription={this.state.removeFileDescription}
+                            uploadDescription={this.state.uploadDescription} />
+                        </span>
+                    }
                   </div>
                 </div>
                 }
@@ -162,6 +175,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
+    sendImageMessage: ChatActions.sendImageMessage,
     uploadMedia,
     deleteMedia
   }, dispatch)

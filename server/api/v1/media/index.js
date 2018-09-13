@@ -8,7 +8,7 @@ const auth = require('../../../auth/auth.service')
 
 router.post('/', auth.isAuthenticated(), multipartyMiddleware, controller.uploadMedia)
 
-router.get('/:mediaId', auth.isAuthenticated(), controller.getMedia)
+router.get('/:mediaId', controller.getMedia)
 
 router.delete('/:mediaId', auth.isAuthenticated(), controller.deleteMedia)
 

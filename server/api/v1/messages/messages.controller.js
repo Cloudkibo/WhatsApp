@@ -13,6 +13,7 @@ exports.create = function (req, res) {
   }
 
   message[req.body.type] = req.body.messagePayload
+  logger.serverLog(TAG, `Hit the create message ${JSON.stringify(message)}`)
   utility.postToWhatsapp(`/v1/messages`, message, (err, result) => {
     if (err) {
       console.log('error from whatsapp')
