@@ -3,7 +3,7 @@ const Messages = require('./messages.model')
 const utility = require('./../../../components/utility')
 const TAG = '/server/api/v1/groups/messages.controller.js'
 
-exports.create = function (req, res) {
+exports.create = (req, res) => {
   logger.serverLog(TAG, 'Hit the create message')
   let message = {
     recipientType: req.body.recipient_type ? req.body.recipient_type : null,
@@ -23,7 +23,6 @@ exports.create = function (req, res) {
       recipientType: req.body.recipientType,
       to: req.body.to,
       previewUrl: req.body.previewUrl,
-      from: req.user.wa_id,
       messageId: result.data.messages[0].id,
       timestamp: Date.now(),
       type: req.body.type,
@@ -40,4 +39,12 @@ exports.create = function (req, res) {
         return res.status(500).json({ status: 'failed', payload: err })
       })
   })
+}
+
+exports.getMessages = (req, res) => {
+  logger.serverLog(TAG, 'Hit the fetch chat messages')
+  Messages.find({})
+    .exec()
+    .then(result => res.status(200).json({ status: 'success', payload: result }))
+    .catch(err => res.status(500).json({ status: 'failed', error: err }))
 }

@@ -13,7 +13,7 @@ class ImageItem extends Component {
         <div className='m-messenger__message-body'>
           <div className='m-messenger__message-arrow' style={{color: '#F4F4F8'}} />
           <div className='m-messenger__message-content' style={{background: '#F4F4F8'}}>
-            <div className='m-messenger__message-text'>
+            <div className='m-messenger__message-text' style={{color: '#7D7C86'}}>
               {this.props.text}
               <Image src={this.props.src} size='medium' />
             </div>

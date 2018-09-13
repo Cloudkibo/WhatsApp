@@ -48,3 +48,10 @@ export function newDocumentMessage (data) {
     payload: data
   }
 }
+
+export function manageSessions (data) {
+  return {
+    type: ActionTypes.FETCH_SESSIONS,
+    payload: data
+  }
+}

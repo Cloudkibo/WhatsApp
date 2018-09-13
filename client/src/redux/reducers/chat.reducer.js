@@ -38,6 +38,10 @@ export function chatReducer (state = initialState, action) {
       return Object.assign({}, state, {
         chats: ChatMutator.addVideoMessage(state, action.payload)
       })
+    case ActionTypes.FETCH_SESSIONS:
+      return Object.assign({}, state, {
+        chats: ChatMutator.manageSessions(state, action.payload)
+      })
 
     default:
       return state

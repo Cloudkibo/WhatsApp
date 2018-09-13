@@ -12,7 +12,7 @@ class File extends Component {
         <div className='m-messenger__message-body'>
           <div className='m-messenger__message-arrow' style={{color: '#F4F4F8'}} />
           <div className='m-messenger__message-content' style={{background: '#F4F4F8'}}>
-            <div className='m-messenger__message-text'>
+            <div className='m-messenger__message-text' style={{color: '#7D7C86'}}>
               <a href={this.props.link} target='_blank'>
                 <h6 style={{marginTop: '10px'}}><i className='fa fa-file-text-o' /><strong> {this.props.fileName}</strong></h6>
               </a>

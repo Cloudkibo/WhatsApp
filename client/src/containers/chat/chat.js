@@ -112,6 +112,10 @@ class Chat extends Component {
     }
   }
 
+  componentDidMount () {
+    this.props.fetchChats() 
+  }
+
   selectSession = (session) => {
     this.setState({selectedChats: session.messages, selectedSession: session.sessionIdentifier})
   }
@@ -176,6 +180,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     sendImageMessage: ChatActions.sendImageMessage,
+    fetchChats: ChatActions.fetchChats,
     uploadMedia,
     deleteMedia
   }, dispatch)
