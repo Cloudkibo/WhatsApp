@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Popup } from 'semantic-ui-react'
 import * as ChatActions from '../../redux/actions/chat.actions'
+import * as ChatUtility from './chat.utility'
 
 class Chatbox extends Component {
   constructor (props) {
@@ -19,10 +20,10 @@ class Chatbox extends Component {
     }
   }
   onEnter = (e) => {
+    console.log('Enter Key Pressed', e.key)
     if (e.key === 'Enter') {
-      this.props.sendMessage({recepientType: '', to: '', type: '', messageBody: this.state.message})
+      this.props.sendMessage(ChatUtility.getMessagePayload(this.props.sessionId, 'text', this.state.message))
       this.setState({message: ''})
-      this.textInput.focus()
     }
   }
   onMessageChange = (e) => {
@@ -50,7 +51,8 @@ class Chatbox extends Component {
             />
           </div>
           <div className='col-md-10' style={{padding: '0px'}}>
-            <textarea autoFocus ref={(input) => { this.textInput = input }} className='form-control m-input' rows='2' placeholder='Type a Message...' style={{borderRadius: '30px', marginTop: '8px'}} onKeyPress={this.onEnter} value={this.state.message} onChange={this.onMessageChange} />
+            <input autoFocus ref={(input) => { this.textInput = input }} className='form-control m-input' placeholder='Type a Message...'
+              style={{marginTop: '8px', verticalAlign: 'center', height: '100%'}} value={this.state.message} onKeyPress={this.onEnter} onChange={this.onMessageChange} />
           </div>
           <div className='col-md-1' style={{padding: '0px'}}>
             <i className='fa fa-microphone' style={{cursor: 'pointer', fontSize: '30px', paddingTop: '16px', paddingLeft: '10px', color: 'rgb(123, 126, 138)'}} />

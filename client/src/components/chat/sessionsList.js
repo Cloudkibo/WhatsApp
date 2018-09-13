@@ -16,7 +16,7 @@ class SessionsList extends Component {
 
   render () {
     return (
-      <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)'}}>
+      <div className='m-portlet__body' style={{height: '100%'}}>
         <List selection animated divided size='large' style={{height: '515px', overflowY: 'scroll'}}>
           { (this.props.chats) && this.props.chats.map((item) => {
             return (

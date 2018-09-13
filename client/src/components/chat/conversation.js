@@ -6,27 +6,27 @@ import ImageItem from './image'
 import File from './file'
 class Conversation extends Component {
   getChatComponent = (message) => {
-    console.log('Message in Convo', message)
+    const classType = (message.from) ? 'in' : 'out'
     if (message.type === 'text') {
-      return <Text class='in' text={message.messagePayload.body} />
+      return <Text class={classType} text={message.messagePayload.body} />
     }
     if (message.type === 'location') {
-      return <Location class='in' location={message.messagePayload} />
+      return <Location class={classType} location={message.messagePayload} />
     }
     if (message.type === 'image') {
-      return <ImageItem class='in' src={`/api/v1/media/${message.messagePayload.id}`} text={message.messagePayload.caption} />
+      return <ImageItem class={classType} src={`/api/v1/media/${message.messagePayload.id}`} text={message.messagePayload.caption} />
     }
     if (message.type === 'video') {
-      return <VideoAudio class='in' url={`/api/v1/media/${message.messagePayload.id}`} type='video' />
+      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='video' />
     }
     if (message.type === 'audio') {
-      return <VideoAudio class='in' url={`/api/v1/media/${message.messagePayload.id}`} type='audio' />
+      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='audio' />
     }
     if (message.type === 'voice') {
-      return <VideoAudio class='in' url={`/api/v1/media/${message.messagePayload.id}`} type='audio' />
+      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='audio' />
     }
     if (message.type === 'document') {
-      return <File class='in' link={`/api/v1/media/${message.messagePayload.id}`} fileName={message.messagePayload.caption} />
+      return <File class={classType} link={`/api/v1/media/${message.messagePayload.id}`} fileName={message.messagePayload.caption} />
     }
     /**
      * <VideoAudio class='out' url='https://www.youtube.com/watch?v=ysz5S6PUM-U' type='video' />

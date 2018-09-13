@@ -9,6 +9,7 @@ import SessionsList from './../../components/chat/sessionsList'
 import SessionSearch from './sessionSearch'
 import Chatbox from './chatbox'
 import Conversation from './../../components/chat/conversation'
+import Preview from './../../components/chat/preview'
 import Uploads from './../../components/chat/uploads'
 const _find = require('lodash/find')
 
@@ -120,24 +121,25 @@ class Chat extends Component {
         <div className='m-content'>
           <div className='row'>
             <div className='col-lg-4 col-md-4 col-sm-4' style={{padding: '0px'}}>
-              <div className='m-portlet'>
+              <div className='m-portlet' style={{height: '100%'}}>
                 <SessionSearch />
                 <SessionsList chats={this.props.chats} selectSession={this.selectSession} />
               </div>
             </div>
 
             <div className='col-lg-8 col-md-8 col-sm-8' style={{padding: '0px', marginLeft: '-2px'}}>
-              <div className='m-portlet'>
-                {(this.state.selectedSession !== '') && <div>
+              <div className='m-portlet' style={{height: '100%'}}>
+                {(this.state.selectedSession !== '' || this.state) && <div style={{height: '100%'}}>
                   <Header name={this.state.selectedSession} onFileChange={this.onFileChange} lastSeen='Last seen today at 1:40 PM' />
-                  <div className='m-portlet__body' style={{borderLeft: '1px solid rgb(144, 144, 144)', borderRight: '1px solid rgb(144, 144, 144)', borderBottom: '1px solid rgb(144, 144, 144)', padding: '0px'}} >
-                    <Conversation chats={this.state.selectedChats} />
-                    <Chatbox />
+                  <div className='m-portlet__body' style={{padding: '0px', height: '100%'}} >
+                    <Preview show />
+                    {/* <Conversation chats={this.state.selectedChats} /> */}
+                    {/* <Chatbox sessionId={this.state.selectedSession} />
                     <Uploads uploaded={this.state.uploaded}
                       removeAttachment={this.removeAttachment}
                       attachment={this.state.attachment}
                       removeFileDescription={this.state.removeFileDescription}
-                      uploadDescription={this.state.uploadDescription} />
+                      uploadDescription={this.state.uploadDescription} /> */}
                   </div>
                 </div>
                 }
