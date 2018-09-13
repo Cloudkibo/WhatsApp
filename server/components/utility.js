@@ -39,6 +39,17 @@ function deleteFromWhatsapp (endpoint, cb) {
     })
 }
 
+function deleteFromWhatsappWithData (endpoint, params, cb) {
+  logger.serverLog(TAG, `Params in deleteFroWhatsappWithData ${JSON.stringify(params)}`)
+  axios.delete(config.docker_url + endpoint, {data: params})
+    .then(resp => {
+      cb(null, resp)
+    })
+    .catch(err => {
+      cb(err, null)
+    })
+}
+
 function postToWhatsapp (endpoint, params, cb) {
   axios.post(config.docker_url + endpoint, params)
     .then(resp => {
@@ -88,3 +99,4 @@ exports.postToWhatsapp = postToWhatsapp
 exports.postToWhatsappHeaders = postToWhatsappHeaders
 exports.putToWhatsapp = putToWhatsapp
 exports.patchToWhatsapp = patchToWhatsapp
+exports.deleteFromWhatsappWithData = deleteFromWhatsappWithData

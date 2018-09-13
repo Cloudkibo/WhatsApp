@@ -4,7 +4,6 @@ let Schema = mongoose.Schema
 let groupSchema = new Schema({
   title: String,
   groupId: String,
-  admins: [String],
   creator: String,
   participants: [String],
   inviteLink: String,

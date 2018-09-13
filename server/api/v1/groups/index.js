@@ -21,7 +21,7 @@ router.delete('/:groupId/icon', auth.isAuthenticated(), controller.deleteIcon)
 router.get('/:groupId/icon', controller.getIcon)
 router.delete('/:groupId/participants', auth.isAuthenticated(), participants.deleteParticipants)
 router.post('/:groupId/participants', auth.isAuthenticated(), participants.fetchMany)
-router.patch('/:groupId/admins', auth.isAuthenticated(), admins.addAdmin)
+router.put('/:groupId/admins', auth.isAuthenticated(), admins.addAdmin)
 router.delete('/:groupId/admins', auth.isAuthenticated(), admins.deleteAdmin)
 
 module.exports = router
