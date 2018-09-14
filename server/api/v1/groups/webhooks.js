@@ -26,7 +26,7 @@ const participantJoined = (payload) => {
   // Add in contacts
 
   // Send Notification to Client
-  helper.sendToClient(payload)
+  helper.sendToClient({type: 'system', payload: payload.messages[0]})
 }
 
 const getWhatsappIdFromDocker = (phone, groupId) => {

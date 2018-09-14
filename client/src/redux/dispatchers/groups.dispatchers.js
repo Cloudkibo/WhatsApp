@@ -49,3 +49,9 @@ export function deleteParticipants (data) {
     data
   }
 }
+export function newParticipant (data) {
+  return {
+    type: ActionTypes.ADD_GROUP_PARTICIPANTS,
+    data
+  }
+}

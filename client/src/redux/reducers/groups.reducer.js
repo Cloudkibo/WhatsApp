@@ -44,6 +44,10 @@ export function groupReducer (state = initialState, action) {
       return Object.assign({}, state, {
         participants: GroupMutator.deleteParticipant(state, action.data)
       })
+    case ActionTypes.ADD_GROUP_PARTICIPANTS:
+      return Object.assign({}, state, {
+        groups: GroupMutator.addParticipantCount(state, action.data)
+      })
 
     default:
       return state
