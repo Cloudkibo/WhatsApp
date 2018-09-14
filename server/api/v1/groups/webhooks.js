@@ -21,15 +21,15 @@ const participantJoined = (payload) => {
   const phone = message.from
   const groupId = message.group_id
   // @TODO: Fetch wa_id
-  getWhatsappIdFromDocker(phone, groupId)
+  getWhatsappIdFromDocker(phone, groupId, payload)
   // Add in group participant
   // Add in contacts
 
   // Send Notification to Client
-  helper.sendToClient(payload)
+  // Moving to getWhatsapp ID function
 }
 
-const getWhatsappIdFromDocker = (phone, groupId) => {
+const getWhatsappIdFromDocker = (phone, groupId, payload) => {
   utility.postToWhatsapp('/v1/contacts', {contacts: [phone]}, (err, result) => {
     if (err) {
       return logger.serverLog(TAG, `failed at getting status from docker ${err}`)
@@ -46,6 +46,10 @@ const getWhatsappIdFromDocker = (phone, groupId) => {
       .then(result => {
         if (result) {
           GroupUtility.createParticipant(waId, phone, groupId, result.name)
+          // Sending push to client
+          payload = payload.message[0]
+          payload.wa_id = waId
+          helper.sendToClient({type: 'system', payload: payload})
         } else {
           GroupUtility.createParticipant(waId, phone, groupId)
         }

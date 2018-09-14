@@ -136,3 +136,8 @@ export function deleteAdmin (groupId, waIds) {
       })
   }
 }
+
+export function addNewParticipant (dispatcher, data) {
+  dispatcher(groupDispatcher.newParticipant(data))
+  // We need to update the participant array as well
+}
