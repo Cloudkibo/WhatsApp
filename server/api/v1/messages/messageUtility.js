@@ -28,6 +28,19 @@ exports.saveMessage = (payload) => {
   return message
 }
 
+exports.updateMessageStatus = (payload) => {
+  const data = payload.statuses.pop()
+  Message.updateOne({messageId: data.id}, {status: data.status})
+    .exec()
+    .then(result => {
+      logger.serverLog(TAG, `Message Status updated for ${data}`)
+    })
+    .catch(err => {
+      logger.serverLog(TAG, `Failed to update message status ${err}`)
+    })
+  return data
+}
+
 exports.getMediaFromDocker = (mediaId, mediaType) => {
   logger.serverLog(TAG, `going to fetch media: ${mediaId}`)
 
