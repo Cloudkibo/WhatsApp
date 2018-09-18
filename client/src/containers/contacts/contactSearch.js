@@ -23,7 +23,7 @@ class ContactSearch extends Component {
 
   handleResultSelect = (result) => {
     console.log(result)
-    this.props.showUpdate(result[0])
+    this.props.showUpdate(result)
   }
 
   handleSearchChange = (e, { value }) => {
@@ -34,7 +34,7 @@ class ContactSearch extends Component {
       const re = new RegExp(escapeRegExp(this.state.value), 'i')
       const isMatch = result => re.test(result.name)
       let arr = filter(this.props.contacts, isMatch)
-      let payload = arr.map(item => ({ title: item.name, description: item.phone }))
+      let payload = arr.map(item => ({ ...item, title: item.name, description: item.phone, contactId: item.wa_id }))
       this.setState({ isLoading: false, results: payload, shownContacts: arr })
     }, 300)
   }
@@ -50,7 +50,7 @@ class ContactSearch extends Component {
                 <Search
                   style={{ marginTop: 0 + 'px', padding: 5 + 'px', marginLeft: '25px' }}
                   loading={this.state.isLoading}
-                  onResultSelect={() => { this.handleResultSelect(this.state.shownContacts) }}
+                  onResultSelect={(e, { result }) => { this.handleResultSelect(result) }}
                   onSearchChange={debounce(this.handleSearchChange, 500, { leading: true })}
                   results={this.state.results}
                   value={this.state.value}

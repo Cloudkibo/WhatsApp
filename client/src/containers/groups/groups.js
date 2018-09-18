@@ -42,7 +42,7 @@ class Groups extends Component {
   }
   goToInfo = (groupId) => {
     this.props.history.push({
-      pathname: `/groupDetail`,
+      pathname: `/groups/${groupId}`,
       state: {
         groupId: groupId
       }
@@ -96,7 +96,7 @@ class Groups extends Component {
               <div className='m-portlet'>
                 <PortletHead title={'Groups'} buttonTitle={'New Group'} buttonAction={() => { this.setState({showModal: true}) }} />
                 <div className='m-portlet__body' />
-                <GroupSearch groups={this.props.groups} leaveGroup={this.leaveGroup} />
+                <GroupSearch groups={this.props.groups} viewDetail={this.goToInfo} leaveGroup={this.leaveGroup} />
                 <GroupTable viewDetail={this.goToInfo} groups={this.props.groups}
                   getInvite={this.groupInvite} handleCheck={this.handleCheck} />
               </div>

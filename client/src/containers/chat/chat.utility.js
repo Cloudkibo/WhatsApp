@@ -1,11 +1,12 @@
 export const getMessagePayload = (sessionId, messageType, message,
-  previewUrl = false, recipientType = 'individual') => {
+  previewUrl = false, recipientType = 'individual', status = 'pending') => {
   if (messageType === 'text') {
     return {
       recipient_type: recipientType,
       to: sessionId,
       previewUrl,
       type: 'text',
+      status: status,
       messagePayload: {
         body: message
       }
@@ -17,6 +18,7 @@ export const getMessagePayload = (sessionId, messageType, message,
       to: sessionId,
       previewUrl,
       type: 'image',
+      status: status,
       messagePayload: message
     }
   }
@@ -26,6 +28,7 @@ export const getMessagePayload = (sessionId, messageType, message,
       to: sessionId,
       previewUrl,
       type: 'document',
+      status: status,
       messagePayload: message
     }
   }
@@ -35,6 +38,7 @@ export const getMessagePayload = (sessionId, messageType, message,
       to: sessionId,
       previewUrl,
       type: 'audio',
+      status: status,
       messagePayload: message
     }
   }

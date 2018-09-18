@@ -29,9 +29,9 @@ exports.create = (req, res) => {
       status: 'pending',
       messagePayload: req.body.messagePayload
     })
-      .then(result => {
+      .then(savedMessage => {
         let resp = []
-        resp.push({id: result._id})
+        resp.push({id: result.data.messages[0].id})
         return res.status(200).json({ messages: resp })
       })
       .catch(err => {

@@ -42,6 +42,10 @@ export function chatReducer (state = initialState, action) {
       return Object.assign({}, state, {
         chats: ChatMutator.manageSessions(state, action.payload)
       })
+    case ActionTypes.UPDATE_MESSAGE_STATUS:
+      return Object.assign({}, state, {
+        chats: ChatMutator.updateMessageStatus(state, action.payload)
+      })
 
     default:
       return state

@@ -37,6 +37,28 @@ export const manageSessions = (currentState, messages) => {
   return newChats
 }
 
+export const updateMessageStatus = (currentState, payload) => {
+  console.log('Payload', payload)
+  let newChats = JSON.parse(JSON.stringify(currentState.chats))
+  const sessionId = payload.recipient_id
+  const messageId = payload.id
+  let updatedChats = _.map(newChats, (sessionItem) => {
+    if (sessionItem.sessionIdentifier === sessionId) {
+      // sessionItem.messages
+      let temp = _.map(sessionItem.messages, (msg) => {
+        if (msg.messageId === messageId) {
+          msg.status = payload.status
+        }
+        return msg
+      })
+      sessionItem.messages = temp
+    }
+    return sessionItem
+  })
+
+  return updatedChats
+}
+
 export const addTextMessage = (currentState, payload) => {
   return addNewMessage(currentState, payload)
 }

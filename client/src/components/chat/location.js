@@ -27,6 +27,12 @@ class Location extends Component {
                   <tr><td><p style={{fontWeight: 'bold'}}>{ this.props.location.address }</p></td></tr>
                 </tbody>
               </table>
+              {
+                this.props.class === 'out' &&
+                <div>
+                  <small style={{float: 'right', margin: '5px'}}><p><strong><i>{this.props.message.status}</i></strong></p></small>
+                </div>
+              }
             </div>
           </div>
         </div>

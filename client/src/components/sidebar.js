@@ -105,11 +105,9 @@ class Sidebar extends Component {
             <div id='mCSB_2' className='mCustomScrollBox mCS-minimal-dark mCSB_vertical mCSB_outside' tabIndex='0' style={{maxHeight: 'none'}}>
               <div id='mCSB_2_container' className='mCSB_container' style={{position: 'relative', top: '0px', left: '0px'}} dir='ltr'>
                 <ul style={{height: '87vh', overflow: 'auto'}} className='m-menu__nav  m-menu__nav--dropdown-submenu-arrow '>
-                  {this.showOperationalDashboard()}
                   {this.showDashboard()}
                   {this.showContacts()}
                   {this.showGroups()}
-                  {this.showMedia()}
                   {this.showMessages()}
                   <li className='m-menu__item  m-menu__item--submenu' aria-haspopup='true' data-menu-submenu-toggle='hover'>
                     <Link to='settings' className='m-menu__link m-menu__toggle'>

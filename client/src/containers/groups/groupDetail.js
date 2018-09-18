@@ -17,13 +17,15 @@ class GroupDetail extends Component {
       title: '',
       selectedGroup: false
     }
+    props.loadGroupsList()
     props.getGroupIcon(props.history.location.state.groupId)
   }
   updateTitle = (e) => {
     this.setState({title: e.target.value})
   }
   componentDidMount () {
-    let selectedGroup = this.props.groups.filter(item => item.groupId === this.props.history.location.state.groupId)[0]
+    const { groupId } = this.props.match.params
+    let selectedGroup = this.props.groups.filter(item => item.groupId === groupId)[0]
     this.setState({selectedGroup, title: selectedGroup.title})
     this.props.getParticiapnts(selectedGroup.groupId, {ids: selectedGroup.participants})
   }
@@ -113,7 +115,8 @@ function mapDispatchToProps (dispatch) {
     createAdmin: GroupActions.createAdmin,
     deleteAdmin: GroupActions.deleteAdmin,
     getParticiapnts: GroupActions.getParticiapnts,
-    deleteParticipants: GroupActions.deleteParticipants
+    deleteParticipants: GroupActions.deleteParticipants,
+    loadGroupsList: GroupActions.loadGroupsList
   }, dispatch)
 }
 

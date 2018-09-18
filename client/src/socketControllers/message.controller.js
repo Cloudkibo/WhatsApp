@@ -13,7 +13,8 @@ export const handleNewMessage = (payload) => {
 
 export const handleMessageStatus = (payload) => {
   if (payload.type !== 'message_status') { return }
-  console.log(payload.payload)
+  console.log('New Message Status', payload.payload)
+  ChatActions.updateMessageStatus(storeDispatcher(), payload.payload)
 }
 
 const handleTextMessage = (payload) => {
