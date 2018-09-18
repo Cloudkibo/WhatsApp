@@ -2,7 +2,7 @@ import * as ActionTypes from '../constants/constants'
 import * as GroupMutator from './../mutators/group.mutator'
 
 let initialState = {
-  groups: [],
+  groups: false,
   participants: [], // Particpants of currently active group
   groupsInfo: false,
   inviteLink: ''

@@ -8,22 +8,22 @@ class Conversation extends Component {
   getChatComponent = (message) => {
     const classType = (message.to) ? 'out' : 'in'
     if (message.type === 'text') {
-      return <Text class={classType} text={message.messagePayload.body} />
+      return <Text class={classType} text={message.messagePayload.body} message={message} />
     }
     if (message.type === 'location') {
-      return <Location class={classType} location={message.messagePayload} />
+      return <Location class={classType} location={message.messagePayload} message={message} />
     }
     if (message.type === 'image') {
-      return <ImageItem class={classType} src={`/api/v1/media/${message.messagePayload.id}`} text={message.messagePayload.caption} />
+      return <ImageItem class={classType} src={`/api/v1/media/${message.messagePayload.id}`} text={message.messagePayload.caption} message={message} />
     }
     if (message.type === 'video') {
-      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='video' />
+      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='video' message={message} />
     }
     if (message.type === 'audio') {
-      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='audio' />
+      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='audio' message={message} />
     }
     if (message.type === 'voice') {
-      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='audio' />
+      return <VideoAudio class={classType} url={`/api/v1/media/${message.messagePayload.id}`} type='audio' message={message} />
     }
     if (message.type === 'document') {
       return <File class={classType} link={`/api/v1/media/${message.messagePayload.id}`} fileName={message.messagePayload.caption} />

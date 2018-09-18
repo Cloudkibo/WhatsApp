@@ -55,3 +55,10 @@ export function manageSessions (data) {
     payload: data
   }
 }
+
+export function updateMessageStatus (data) {
+  return {
+    type: ActionTypes.UPDATE_MESSAGE_STATUS,
+    payload: data
+  }
+}

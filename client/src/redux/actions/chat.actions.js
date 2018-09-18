@@ -74,3 +74,7 @@ export function addNewAudioMessage (dispatcher, data) {
 export function addNewDocumentMessage (dispatcher, data) {
   dispatcher(chatDispatcher.newDocumentMessage(data))
 }
+
+export function updateMessageStatus (dispatcher, data) {
+  dispatcher(chatDispatcher.updateMessageStatus(data))
+}

@@ -12,6 +12,7 @@ import PortletHead from './../../components/themeComponents/portletHead'
 import ContactTable from './../../components/contacts/contactTable'
 import ContactSearch from '../contacts/contactSearch'
 import AddContacts from './../../components/contacts/addContacts'
+import * as UserActions from '../../redux/actions/user.actions'
 import UpdateContact from './../../components/contacts/updateContact'
 
 class Contacts extends Component {
@@ -91,6 +92,13 @@ class Contacts extends Component {
     // Need to do filteration after pagination
   }
 
+  componentDidMount () {
+    console.log('User Details In Contact', this.props.user)
+    if (!this.props.user) {
+      this.props.loadUserDetails()
+    }
+  }
+
   render () {
     return (
       <div style={{width: '100%'}}>
@@ -130,7 +138,8 @@ class Contacts extends Component {
 function mapStateToProps (state) {
   console.log(state)
   return {
-    contactsList: state.contactsReducer.contactsList
+    contactsList: state.contactsReducer.contactsList,
+    user: state.userReducer.user
   }
 }
 
@@ -139,7 +148,8 @@ function mapDispatchToProps (dispatch) {
     loadContactsList: ContactActions.loadContactsList,
     updateContact: ContactActions.updateContact,
     uploadFile: ContactActions.uploadFile,
-    deleteContact: ContactActions.deleteContact
+    deleteContact: ContactActions.deleteContact,
+    loadUserDetails: UserActions.loadUserDetails
   }, dispatch)
 }
 

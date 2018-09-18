@@ -16,7 +16,8 @@ exports.saveMessage = (payload) => {
     messageId: data.id,
     timestamp: data.timestamp,
     type: data.type,
-    messagePayload: data[data.type] // Extract the message body using message type
+    messagePayload: data[data.type], // Extract the message body using message type
+    status: 'pending'
   })
   message.save()
     .then((result) => {

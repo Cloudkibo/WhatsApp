@@ -28,6 +28,7 @@ class GroupSearch extends Component {
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
       const isMatch = result => re.test(result.title)
       const payload = this.props.groups.map(item => ({
+        groupId: item.groupId,
         title: item.title,
         description: item.createtime,
         image: (item.iconURL && item.iconURL !== '')
@@ -47,7 +48,7 @@ class GroupSearch extends Component {
           <Search
             style={{ marginTop: '0px', padding: '5px', marginLeft: '25px' }}
             loading={this.state.isLoading}
-            onResultSelect={() => { console.log('Group Selected') }}
+            onResultSelect={(e, { result }) => { this.props.viewDetail(result.groupId) }}
             onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
             results={this.state.results}
             value={this.state.value}
