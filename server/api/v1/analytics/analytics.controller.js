@@ -4,12 +4,12 @@ const Media = require('../media/media.model')
 const Groups = require('../groups/groups.model')
 const TAG = '/server/api/v1/analytics/analytics.controller.js'
 
-exports.getSentMessages = function (req, res) {
+exports.getTotalMessages = function (req, res) {
   logger.serverLog(TAG, 'Hit the retrieve sent messages endpoint')
-  Messages.find({from: req.params.wa_id})
+  Messages.find({})
     .exec()
-    .then(sentMessages => {
-      return res.status(200).json({ status: 'success', payload: sentMessages })
+    .then(messages => {
+      return res.status(200).json({ status: 'success', payload: messages.length })
     })
     .catch(err => {
       return res.status(500).json({ status: 'failed', payload: err })
@@ -18,7 +18,7 @@ exports.getSentMessages = function (req, res) {
 
 exports.getRecievedMessages = function (req, res) {
   logger.serverLog(TAG, 'Hit the retrieve recieved messages endpoint')
-  Messages.find({to: req.params.wa_id})
+  Messages.find({to: req.user.wa_id})
     .exec()
     .then(recievedMessages => {
       return res.status(200).json({ status: 'success', payload: recievedMessages })
@@ -30,10 +30,10 @@ exports.getRecievedMessages = function (req, res) {
 
 exports.getUnreadMessages = function (req, res) {
   logger.serverLog(TAG, 'Hit the retrieve unread messages endpoint')
-  Messages.find({to: req.params.wa_id, status: 'delivered'})
+  Messages.find({status: 'delivered'})
     .exec()
     .then(unreadMessages => {
-      return res.status(200).json({ status: 'success', payload: unreadMessages })
+      return res.status(200).json({ status: 'success', payload: unreadMessages.length })
     })
     .catch(err => {
       return res.status(500).json({ status: 'failed', payload: err })
@@ -42,7 +42,7 @@ exports.getUnreadMessages = function (req, res) {
 
 exports.getUploadedMedia = function (req, res) {
   logger.serverLog(TAG, 'Hit the retrieve uploaded media endpoint')
-  Media.find({uploadedBy: req.params.wa_id})
+  Media.find({uploadedBy: req.user.wa_id})
     .exec()
     .then(uploadedMedia => {
       return res.status(200).json({ status: 'success', payload: uploadedMedia })
@@ -54,22 +54,22 @@ exports.getUploadedMedia = function (req, res) {
 
 exports.getJoinedGroups = function (req, res) {
   logger.serverLog(TAG, 'Hit the retrieve uploaded media endpoint')
-  Groups.find({participants: req.params.wa_id})
+  Groups.find({groupLeft: false})
     .exec()
     .then(joinedGroups => {
-      return res.status(200).json({ status: 'success', payload: joinedGroups })
+      return res.status(200).json({ status: 'success', payload: joinedGroups.length })
     })
     .catch(err => {
       return res.status(500).json({ status: 'failed', payload: err })
     })
 }
 
-exports.getAdminGroups = function (req, res) {
+exports.getLeftGroups = function (req, res) {
   logger.serverLog(TAG, 'Hit the retrieve uploaded media endpoint')
-  Groups.find({admins: req.params.wa_id})
+  Groups.find({groupLeft: true})
     .exec()
-    .then(adminGroups => {
-      return res.status(200).json({ status: 'success', payload: adminGroups })
+    .then(leftGroups => {
+      return res.status(200).json({ status: 'success', payload: leftGroups.length })
     })
     .catch(err => {
       return res.status(500).json({ status: 'failed', payload: err })

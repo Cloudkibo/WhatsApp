@@ -57,7 +57,7 @@ class CardWithProgress extends Component {
                       </span>
                       <div className='m-widget21__info'>
                         <span className='m-widget21__title'>
-                          {this.props.joinedGroups}
+                          {this.props.LeftGroups}
                         </span>
                         <br />
                         <span className='m-widget21__sub'>
@@ -72,14 +72,14 @@ class CardWithProgress extends Component {
               <div className='m-widget15'>
                 <div className='m-widget15__item'>
                   <span style={{fontSize: '1.1rem', fontWeight: '600', color: '#6f727d'}}>
-                    {'50.0%'}
+                    { (this.props.joinedGroups / this.props.totalGroups * 100) + '%'}
                   </span>
                   <span style={{fontSize: '0.85rem', float: 'right', marginTop: '0.3rem', color: '#9699a2'}}>
-                    Some KPI
+                    Joined Percentages
                   </span>
                   <div className='m--space-10' />
                   <div className='progress m-progress--sm' style={{height: '6px'}}>
-                    <div className='progress-bar bg-success' role='progressbar' style={{width: '50%'}} aria-valuenow={(2 / 10) * 100} aria-valuemin='0' aria-valuemax='100' />
+                    <div className='progress-bar bg-success' role='progressbar' style={{width: (this.props.joinedGroups / this.props.totalGroups * 100) + '%'}} aria-valuenow={(this.props.joinedGroups / this.props.totalGroups * 100)} aria-valuemin='0' aria-valuemax='100' />
                   </div>
                 </div>
               </div>
