@@ -13,9 +13,9 @@ class Location extends Component {
           </div>
         }
         <div className='m-messenger__message-body'>
-          <div className='m-messenger__message-arrow' />
-          <div className='m-messenger__message-content'>
-            <div className='m-messenger__message-text'>
+          <div className='m-messenger__message-arrow' style={{color: '#F4F4F8'}} />
+          <div className='m-messenger__message-content' style={{background: '#F4F4F8'}}>
+            <div className='m-messenger__message-text' style={{color: '#7D7C86'}}>
               <table style={{border: '1px solid #ccc', borderRadius: '15px', borderCollapse: 'separate', padding: '5px'}}>
                 <tbody>
                   <tr><td>
@@ -27,6 +27,12 @@ class Location extends Component {
                   <tr><td><p style={{fontWeight: 'bold'}}>{ this.props.location.address }</p></td></tr>
                 </tbody>
               </table>
+              {
+                this.props.class === 'out' &&
+                <div>
+                  <small style={{float: 'right', margin: '5px'}}><p><strong><i>{this.props.message.status}</i></strong></p></small>
+                </div>
+              }
             </div>
           </div>
         </div>

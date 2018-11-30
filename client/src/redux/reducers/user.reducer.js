@@ -1,6 +1,7 @@
 import * as ActionTypes from '../constants/constants'
 
 let initialState = {
+  user: false
 }
 
 export function userReducer (state = initialState, action) {

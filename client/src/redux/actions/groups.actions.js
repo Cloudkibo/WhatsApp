@@ -82,17 +82,6 @@ export function getParticiapnts (groupId, data) {
   }
 }
 
-export function getAdmins (data) {
-  return (dispatch) => {
-    callApi('v1/contacts', 'post', data)
-      .then(res => {
-        if (res.status === 'success') {
-          dispatch(groupDispatcher.showAdmins(res.payload))
-        }
-      })
-  }
-}
-
 export function getGroupInvite (groupId) {
   return (dispatch) => {
     return callApi(`v1/groups/${groupId}/invite`)
@@ -115,9 +104,40 @@ export function deleteParticipants (groupId, waIds) {
     callApi(`v1/groups/${groupId}/participants`, 'delete', {wa_ids: waIds})
       .then(res => {
         if (res.status === 'success') {
-          // dispatch(getParticiapnts(res.payload))
+          dispatch(groupDispatcher.deleteParticipants({groupId, waIds}))
           console.log('Deleted Successfully')
         }
       })
   }
+}
+
+export function createAdmin (groupId, waIds) {
+  return (dispatch) => {
+    callApi(`v1/groups/${groupId}/admins`, 'put', {wa_ids: waIds})
+      .then(res => {
+        console.log('Reponse From Action', res)
+        if (res.status === 'success') {
+          dispatch(groupDispatcher.updateGroupAdmin({groupId, waIds}))
+          console.log('Promoted to Admins Successfully')
+        }
+      })
+  }
+}
+
+export function deleteAdmin (groupId, waIds) {
+  return (dispatch) => {
+    callApi(`v1/groups/${groupId}/admins`, 'delete', {wa_ids: waIds})
+      .then(res => {
+        console.log('Reponse From Action', res)
+        if (res.status === 'success') {
+          dispatch(groupDispatcher.demoteGroupAdmin({groupId, waIds}))
+          console.log('Demoted from Admin Successfully')
+        }
+      })
+  }
+}
+
+export function addNewParticipant (dispatcher, data) {
+  dispatcher(groupDispatcher.newParticipant(data))
+  // We need to update the participant array as well
 }

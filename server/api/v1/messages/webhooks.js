@@ -9,6 +9,12 @@ exports.handleTextMessage = (payload) => {
   helper.sendToClient(savedMessage)
 }
 
+exports.handleMessageStatus = (payload) => {
+  logger.serverLog(TAG, `Message Status Handled ${JSON.stringify(payload)}`)
+  const updatedMessage = messageUtility.updateMessageStatus(payload)
+  helper.sendToClient({type: 'message_status', payload: updatedMessage})
+}
+
 exports.handleImageMessage = (payload) => {
   logger.serverLog(TAG, `Image Message Handled ${JSON.stringify(payload)}`)
   let message = payload.messages[0] ? payload.messages[0] : null

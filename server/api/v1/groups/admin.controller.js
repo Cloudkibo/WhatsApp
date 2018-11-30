@@ -1,5 +1,6 @@
 const logger = require('./../../../components/logger')
 const Groups = require('./groups.model')
+const Participants = require('./participants.model')
 const _ = require('lodash')
 const TAG = '/server/api/v1/groups/admin.controller.js'
 const utility = require('./../../../components/utility')
@@ -18,26 +19,10 @@ exports.addAdmin = function (req, res) {
       logger.serverLog(TAG, `Internal Server Error ${err}`)
       return res.status(500).json({ status: 'failed', err: err })
     }
-    Groups.findOne({groupId: groupId})
+    Participants.updateMany({ groupId: groupId, wa_id: {$in: newAdmins} }, {admin: true})
       .exec()
-      .then(group => {
-        group.admins = _.union(group.admins, newAdmins)
-        group.save(function (err) {
-          if (err) {
-            logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
-            return res.status(500).json({ status: 'failed', err: err })
-          }
-          return res.status(200).json({})
-        })
-      })
-      .catch(err => {
-        if (Object.keys(err).length === 0) {
-          logger.serverLog(TAG, `Group not found`)
-          return res.status(404).json({})
-        }
-        logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
-        return res.status(500).json({ status: 'failed', err: err })
-      })
+      .then(result => (res.status(200).json({status: 'success'})))
+      .catch(err => (res.status(500).json({ status: 'failed', err: err })))
   })
 }
 
@@ -50,31 +35,14 @@ exports.deleteAdmin = function (req, res) {
   const newAdmins = req.body.wa_ids
   logger.serverLog(TAG, `Delete Admins of Group ${groupId}`)
 
-  utility.deleteFromWhatsapp(`/v1/groups/${groupId}/admins`, {wa_ids: newAdmins}, (err, result) => {
+  utility.deleteFromWhatsappWithData(`/v1/groups/${groupId}/admins`, {wa_ids: newAdmins}, (err, result) => {
     if (err) {
-      logger.serverLog(TAG, `Internal Server Error ${err}`)
+      logger.serverLog(TAG, 'Internal Server Error' + err)
       return res.status(500).json({ status: 'failed', err: err })
     }
-    Groups.findOne({groupId: groupId})
+    Participants.updateMany({ groupId: groupId, wa_id: {$in: newAdmins} }, {admin: false})
       .exec()
-      .then(group => {
-        group.admins = _.difference(group.admins, newAdmins)
-
-        group.save(function (err) {
-          if (err) {
-            logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
-            return res.status(500).json({ status: 'failed', err: err })
-          }
-          return res.status(200).json({})
-        })
-      })
-      .catch(err => {
-        if (Object.keys(err).length === 0) {
-          logger.serverLog(TAG, `Group not found`)
-          return res.status(404).json({})
-        }
-        logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
-        return res.status(500).json({ status: 'failed', err: err })
-      })
+      .then(result => (res.status(200).json({status: 'success'})))
+      .catch(err => (res.status(500).json({ status: 'failed', err: err })))
   })
 }

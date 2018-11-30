@@ -12,6 +12,7 @@ function initRegistry () {
   init.registerCallback(validationSchema.videoMessageSchema, messageWebhook.handleVideoMessage)
   init.registerCallback(validationSchema.audioMessageSchema, messageWebhook.handleAudioMessage)
   init.registerCallback(validationSchema.textMessageSchema, messageWebhook.handleTextMessage)
+  init.registerCallback(validationSchema.messageStatusSchema, messageWebhook.handleMessageStatus)
   init.registerCallback(validationSchema.groupNotificationsSchema, groupWebhook.handleGroupNotifications)
 }
 

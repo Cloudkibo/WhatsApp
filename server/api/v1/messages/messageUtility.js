@@ -16,7 +16,8 @@ exports.saveMessage = (payload) => {
     messageId: data.id,
     timestamp: data.timestamp,
     type: data.type,
-    messagePayload: data[data.type] // Extract the message body using message type
+    messagePayload: data[data.type], // Extract the message body using message type
+    status: 'pending'
   })
   message.save()
     .then((result) => {
@@ -26,6 +27,19 @@ exports.saveMessage = (payload) => {
       logger.serverLog(TAG, `Failed to save new message ${err}`)
     })
   return message
+}
+
+exports.updateMessageStatus = (payload) => {
+  const data = payload.statuses.pop()
+  Message.updateOne({messageId: data.id}, {status: data.status})
+    .exec()
+    .then(result => {
+      logger.serverLog(TAG, `Message Status updated for ${data}`)
+    })
+    .catch(err => {
+      logger.serverLog(TAG, `Failed to update message status ${err}`)
+    })
+  return data
 }
 
 exports.getMediaFromDocker = (mediaId, mediaType) => {

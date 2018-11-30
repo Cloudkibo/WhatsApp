@@ -17,17 +17,27 @@ class Main extends Component {
     }
   }
 
+  userPropValidation = (WrappedComponent) => {
+    if (!auth.loggedIn()) {
+      return <Redirect to='/login' />
+    } else if (!this.props.user) {
+      return <Dashboard />
+    } else {
+      return <WrappedComponent />
+    }
+  }
+
   render () {
     return (
       <Switch>
-        <Route exact path='/' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Dashboard />))} />
-        <Route exact path='/groups' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Groups />))} />
-        <Route exact path='/groupDetail' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<GroupDetail />))} />
-        <Route exact path='/contacts' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Contacts />))} />
+        <Route exact path='/' render={() => this.userPropValidation(Dashboard)} />
+        <Route exact path='/groups' render={() => this.userPropValidation(Groups)} />
+        <Route exact path='/groups/:groupId' render={() => this.userPropValidation(GroupDetail)} />
+        <Route exact path='/contacts' render={() => this.userPropValidation(Contacts)} />
         <Route exact path='/signup' render={() => (auth.loggedIn() ? (<Redirect to='/' />) : (<Signup />))} />
         <Route exact path='/login' render={() => (auth.loggedIn() ? (<Redirect to='/' />) : (<Login />))} />
-        <Route exact path='/chat' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Chat />))} />
-        <Route exact path='/settings' render={() => (!auth.loggedIn() ? (<Redirect to='/login' />) : (<Settings />))} />
+        <Route exact path='/chat' render={() => this.userPropValidation(Chat)} />
+        <Route exact path='/settings' render={() => this.userPropValidation(Settings)} />
       </Switch>
 
     )

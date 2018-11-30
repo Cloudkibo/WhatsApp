@@ -8,7 +8,6 @@ import PageTile from './../../components/pageTitle'
 import InfoHeader from './../../components/groups/infoHeader'
 import ParticipantList from './../../components/groups/participants'
 import CreateGroup from './../../components/groups/createGroup'
-import * as _ from 'lodash'
 
 class GroupDetail extends Component {
   constructor (props) {
@@ -16,28 +15,19 @@ class GroupDetail extends Component {
     this.state = {
       showModal: false,
       title: '',
-      participants: [],
       selectedGroup: false
     }
+    props.loadGroupsList()
     props.getGroupIcon(props.history.location.state.groupId)
   }
   updateTitle = (e) => {
     this.setState({title: e.target.value})
   }
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.participants) {
-      let temp = _.map(nextProps.participants, (item) => ({
-        ...item,
-        admin: _.includes(this.state.selectedGroup.admins, item.wa_id)
-      }))
-      this.setState({participants: temp})
-    }
-  }
   componentDidMount () {
-    let selectedGroup = this.props.groups.filter(item => item.groupId === this.props.history.location.state.groupId)[0]
+    const { groupId } = this.props.match.params
+    let selectedGroup = this.props.groups.filter(item => item.groupId === groupId)[0]
     this.setState({selectedGroup, title: selectedGroup.title})
     this.props.getParticiapnts(selectedGroup.groupId, {ids: selectedGroup.participants})
-    this.props.getAdmins({ids: selectedGroup.participants})
   }
   showModal = (nextProps) => {
     this.setState({showModal: true})
@@ -70,6 +60,11 @@ class GroupDetail extends Component {
 
   handleAdmin = (particpant) => {
     console.log('Participant', particpant.wa_id, particpant.admin)
+    if (particpant.admin) {
+      this.props.deleteAdmin(this.state.selectedGroup.groupId, [particpant.wa_id])
+    } else {
+      this.props.createAdmin(this.state.selectedGroup.groupId, [particpant.wa_id])
+    }
   }
 
   render () {
@@ -86,10 +81,11 @@ class GroupDetail extends Component {
               <div className='m-portlet'>
                 <div className='m-portlet__body'>
                   {this.state.selectedGroup &&
-                  <InfoHeader groupsInfo={this.state.selectedGroup} handleImage={this._onChange} showModal={this.showModal} />
+                  <InfoHeader groupsInfo={this.state.selectedGroup} participants={this.props.participants} handleImage={this._onChange} showModal={this.showModal} />
                   }
-                  {this.state.participants && this.state.participants.length > 0 &&
-                  <ParticipantList participants={this.state.participants} deleteParticipants={this.props.deleteParticipants} handleAdmin={this.handleAdmin} groupsInfo={this.state.selectedGroup} />
+                  {this.props.participants && this.props.participants.length > 0 &&
+                  <ParticipantList participants={this.props.participants} deleteParticipants={this.props.deleteParticipants}
+                    handleAdmin={this.handleAdmin} groupsInfo={this.state.selectedGroup} />
                   }
                 </div>
               </div>
@@ -107,7 +103,6 @@ function mapStateToProps (state) {
     groupsInfo: state.groupReducer.groupsInfo,
     groups: state.groupReducer.groups,
     participants: state.groupReducer.participants,
-    admins: state.groupReducer.admins,
     user: state.userReducer.user
   }
 }
@@ -117,9 +112,11 @@ function mapDispatchToProps (dispatch) {
     uploadImage: GroupActions.uploadImage,
     getGroupIcon: GroupActions.getGroupIcon,
     updateGroup: GroupActions.updateGroup,
+    createAdmin: GroupActions.createAdmin,
+    deleteAdmin: GroupActions.deleteAdmin,
     getParticiapnts: GroupActions.getParticiapnts,
-    getAdmins: GroupActions.getAdmins,
-    deleteParticipants: GroupActions.deleteParticipants
+    deleteParticipants: GroupActions.deleteParticipants,
+    loadGroupsList: GroupActions.loadGroupsList
   }, dispatch)
 }
 

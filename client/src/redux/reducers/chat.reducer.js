@@ -14,29 +14,37 @@ export function chatReducer (state = initialState, action) {
       return Object.assign({}, state, {
         chats: ChatMutator.addTextMessage(state, action.payload)
       })
-    case ActionTypes.NEW_LOCATION_MESSAGE_RECEIVED:
+    case ActionTypes.NEW_LOCATION_MESSAGE:
       return Object.assign({}, state, {
         chats: ChatMutator.addLocationMessage(state, action.payload)
       })
-    case ActionTypes.NEW_IMAGE_MESSAGE_RECEIVED:
+    case ActionTypes.NEW_IMAGE_MESSAGE:
       return Object.assign({}, state, {
         chats: ChatMutator.addImageMessage(state, action.payload)
       })
-    case ActionTypes.NEW_VIDEO_MESSAGE_RECEIVED:
+    case ActionTypes.NEW_VIDEO_MESSAGE:
       return Object.assign({}, state, {
         chats: ChatMutator.addVideoMessage(state, action.payload)
       })
-    case ActionTypes.NEW_AUDIO_MESSAGE_RECEIVED:
+    case ActionTypes.NEW_AUDIO_MESSAGE:
       return Object.assign({}, state, {
         chats: ChatMutator.addVideoMessage(state, action.payload)
       })
-    case ActionTypes.NEW_VOICE_MESSAGE_RECEIVED:
+    case ActionTypes.NEW_VOICE_MESSAGE:
       return Object.assign({}, state, {
         chats: ChatMutator.addVideoMessage(state, action.payload)
       })
-    case ActionTypes.NEW_DOCUMENT_MESSAGE_RECEIVED:
+    case ActionTypes.NEW_DOCUMENT_MESSAGE:
       return Object.assign({}, state, {
         chats: ChatMutator.addVideoMessage(state, action.payload)
+      })
+    case ActionTypes.FETCH_SESSIONS:
+      return Object.assign({}, state, {
+        chats: ChatMutator.manageSessions(state, action.payload)
+      })
+    case ActionTypes.UPDATE_MESSAGE_STATUS:
+      return Object.assign({}, state, {
+        chats: ChatMutator.updateMessageStatus(state, action.payload)
       })
 
     default:

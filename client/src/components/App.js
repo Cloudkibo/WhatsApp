@@ -26,7 +26,7 @@ class App extends Component {
           {window.location.pathname !== '/signup' && window.location.pathname !== '/login' &&
           <Sidebar />
           }
-          <Main />
+          <Main user={this.props.user} />
         </div>
       </div>
     )
@@ -35,7 +35,8 @@ class App extends Component {
 
 function mapStateToProps (state) {
   return {
-    message: state.testReducer.serverMessage
+    message: state.testReducer.serverMessage,
+    user: state.userReducer.user
   }
 }
 

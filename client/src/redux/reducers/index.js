@@ -8,6 +8,7 @@ import { loginReducer } from './login.reducer'
 import { signupReducer } from './signup.reducer'
 import { userReducer } from './user.reducer'
 import { chatReducer } from './chat.reducer'
+import { dashboardReducer } from './dashboard.reducer'
 
 // Make a app reducer
 const appReducer = combineReducers({testReducer,
@@ -16,7 +17,8 @@ const appReducer = combineReducers({testReducer,
   loginReducer,
   signupReducer,
   userReducer,
-  chatReducer
+  chatReducer,
+  dashboardReducer
 })
 
 export default appReducer

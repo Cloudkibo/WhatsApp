@@ -11,6 +11,12 @@ export const handleNewMessage = (payload) => {
   if (payload.type === 'voice') { handleVoiceMessage(payload) }
 }
 
+export const handleMessageStatus = (payload) => {
+  if (payload.type !== 'message_status') { return }
+  console.log('New Message Status', payload.payload)
+  ChatActions.updateMessageStatus(storeDispatcher(), payload.payload)
+}
+
 const handleTextMessage = (payload) => {
   console.log('New Text Message Received', payload)
   ChatActions.addNewTextMessage(storeDispatcher(), payload)

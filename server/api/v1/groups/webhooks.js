@@ -2,11 +2,12 @@ const _includes = require('lodash/includes')
 const logger = require('./../../../components/logger')
 const TAG = '/server/api/v1/groups/webhooks.js'
 const Groups = require('./groups.model')
-const Contact = require('./../contacts/contacts.model')
 const helper = require('./../../../config/socketio')
 const utility = require('./../../../components/utility')
 const util = require('util')
 const _union = require('lodash/union')
+const GroupUtility = require('./groups.utility')
+const Contact = require('./../contacts/contacts.model')
 
 exports.handleGroupNotifications = (payload) => {
   logger.serverLog(TAG, `Group Notification Handled ${JSON.stringify(payload)}`)
@@ -20,15 +21,15 @@ const participantJoined = (payload) => {
   const phone = message.from
   const groupId = message.group_id
   // @TODO: Fetch wa_id
-  getWhatsappIdFromDocker(phone, groupId)
+  getWhatsappIdFromDocker(phone, groupId, payload)
   // Add in group participant
   // Add in contacts
 
   // Send Notification to Client
-  helper.sendToClient(payload)
+  // Moving to getWhatsapp ID function
 }
 
-const getWhatsappIdFromDocker = (phone, groupId) => {
+const getWhatsappIdFromDocker = (phone, groupId, payload) => {
   utility.postToWhatsapp('/v1/contacts', {contacts: [phone]}, (err, result) => {
     if (err) {
       return logger.serverLog(TAG, `failed at getting status from docker ${err}`)
@@ -38,8 +39,22 @@ const getWhatsappIdFromDocker = (phone, groupId) => {
       .filter(item => item.status === 'valid')
       .map(item => item.wa_id)
     if (data.length === 0) { return logger.serverLog(TAG, `Phone Number Not Valid`) }
-    addToGroupParticipants(groupId, data)
-    createContact(data[0], phone)
+    const waId = data[0]
+    addToGroupParticipants(groupId, [waId])
+    Contact.findOne({phone: phone})
+      .exec()
+      .then(result => {
+        if (result) {
+          GroupUtility.createParticipant(waId, phone, groupId, result.name)
+          // Sending push to client
+          payload = payload.message[0]
+          payload.wa_id = waId
+          helper.sendToClient({type: 'system', payload: payload})
+        } else {
+          GroupUtility.createParticipant(waId, phone, groupId)
+        }
+      })
+      .catch(err => logger.serverLog(TAG, `failed to add new participant ${err}`))
   })
 }
 
@@ -57,22 +72,6 @@ const addToGroupParticipants = (groupId, waIds) => {
         }
         logger.serverLog(TAG, `Added a new participant to the group`)
       })
-    })
-    .catch(err => {
-      logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)
-    })
-}
-
-const createContact = (waId, phone) => {
-  const contact = {
-    phone: phone,
-    status: 'valid',
-    wa_id: waId
-  }
-  Contact.findOneAndUpdate({phone: phone, wa_id: waId}, contact, {upsert: true})
-    .exec()
-    .then((result) => {
-      logger.serverLog(TAG, `Added Contact Successfully`)
     })
     .catch(err => {
       logger.serverLog(TAG, `Internal Server Error ${JSON.stringify(err)}`)

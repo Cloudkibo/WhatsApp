@@ -33,7 +33,7 @@ class InfoHeader extends Component {
           <div className='m-widget5__stats1' style={{width: '200px', verticalAlign: 'middle'}}>
             <center style={{cursor: 'pointer', marginTop: '-10px'}}>
               <span className='m-widget5__number'>
-                {this.props.groupsInfo.participants.length}
+                {this.props.participants.length}
               </span>
               <br />
               <span className='m-widget5__sales'>
@@ -44,7 +44,7 @@ class InfoHeader extends Component {
           <div className='m-widget5__stats1' style={{width: '200px', verticalAlign: 'middle'}}>
             <center style={{cursor: 'pointer', marginTop: '-10px'}}>
               <span className='m-widget5__number'>
-                {this.props.groupsInfo.admins.length}
+                {this.props.participants.filter(item => item.admin).length}
               </span>
               <br />
               <span className='m-widget5__sales'>

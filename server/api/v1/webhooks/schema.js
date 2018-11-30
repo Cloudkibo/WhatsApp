@@ -506,3 +506,41 @@ exports.groupNotificationsSchema = {
     'messages'
   ]
 }
+
+exports.messageStatusSchema = {
+  '$schema': 'http://json-schema.org/draft-04/schema#',
+  'type': 'object',
+  'properties': {
+    'statuses': {
+      'type': 'array',
+      'items': [
+        {
+          'type': 'object',
+          'properties': {
+            'id': {
+              'type': 'string'
+            },
+            'recipient_id': {
+              'type': 'string'
+            },
+            'status': {
+              'type': 'string'
+            },
+            'timestamp': {
+              'type': 'string'
+            }
+          },
+          'required': [
+            'id',
+            'recipient_id',
+            'status',
+            'timestamp'
+          ]
+        }
+      ]
+    }
+  },
+  'required': [
+    'statuses'
+  ]
+}

@@ -22,6 +22,7 @@ socket.on('disconnect', () => {
 
 socket.on('message', (data) => {
   // Emitted event
+  console.log(data)
   controller.init(data)
 })
 
